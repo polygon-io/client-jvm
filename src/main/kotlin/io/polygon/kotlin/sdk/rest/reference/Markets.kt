@@ -1,19 +1,18 @@
 package io.polygon.kotlin.sdk.rest.reference
 
-import io.ktor.client.request.get
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/** See [PolygonReferenceRestClient.getSupportedMarketsBlocking] */
 suspend fun PolygonReferenceRestClient.getSupportedMarkets(): MarketsDTO =
-    polygonClient.withHttpClient { httpClient ->
-        val url = polygonClient.urlBuilder.path("v2", "reference", "markets").build()
-        return httpClient.get(url)
+    polygonClient.fetchResult {
+        path("v2", "reference", "markets")
     }
 
 @Serializable
 data class MarketsDTO(
-    val status: String,
-    val results: List<MarketDescriptionDTO> = listOf()
+    val status: String? = null,
+    val results: List<MarketDescriptionDTO> = emptyList()
 )
 
 @Serializable

@@ -6,7 +6,9 @@ A client SDK for Polygon.io's API usable by any JVM language
 Everything you'd expect from a client SDK plus...
 - Configurable HTTP client via [HttpClientProvider](src/main/kotlin/io/polygon/kotlin/sdk/HttpClientProvider.kt)
 - Asynchronous APIs built on top of Kotlin co-routines
-- Idiomatic interoperability with Java via synchronous and callback based APIs
+- Idiomatic interoperability with Java
+  - Synchronous and callback based APIs
+  - Generated builder classes for API parameter data classes
 
 ## Sample code
 See the sample module in this repo; There's a short [Kotlin sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/KotlinUsageSample.kt) 

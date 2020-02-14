@@ -7,6 +7,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+
+    // For pretty printing data classes
+    implementation("com.tylerthrailkill.helpers:pretty-print:2.0.2")
 }
 
 task(name = "javaSample", type = JavaExec::class) {

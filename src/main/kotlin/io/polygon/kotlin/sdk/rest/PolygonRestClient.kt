@@ -1,6 +1,7 @@
 package io.polygon.kotlin.sdk.rest
 
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
@@ -21,21 +22,32 @@ constructor(
     private val polygonApiDomain: String = "api.polygon.io"
 ) {
 
+    companion object {
+
+        /**
+         * The API status to expect if the endpoint returned successfully
+         */
+        const val STATUS_OK = "OK"
+    }
+
     /**
      * A [PolygonReferenceRestClient] that can be used to access Polygon reference APIs
      */
     val referenceClient by lazy { PolygonReferenceRestClient(this) }
 
-    /**
-     * A [URLBuilder] pre-populated with default values like host and apiKey
-     */
-    internal val urlBuilder: URLBuilder
+    private val baseUrlBuilder: URLBuilder
         get() = httpClientProvider.getDefaultRestURLBuilder().apply {
             host = polygonApiDomain
             parameters["apiKey"] = apiKey
         }
 
-    internal inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
+    private inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
         httpClientProvider.buildClient().use(codeBlock)
 
+    internal suspend inline fun <reified T> fetchResult(
+        urlBuilderBlock: URLBuilder.() -> Unit
+    ): T {
+        val url = baseUrlBuilder.apply(urlBuilderBlock).build()
+        return withHttpClient { httpClient -> httpClient.get(url) }
+    }
 }
