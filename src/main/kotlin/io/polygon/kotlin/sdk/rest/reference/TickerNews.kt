@@ -30,11 +30,11 @@ data class TickerNewsParameters(
 @Serializable
 data class TickerNewsDTO(
     val symbols: List<String> = emptyList(),
-    val title: String,
-    val url: String,
-    val source: String,
-    val summary: String,
-    val timestamp: String,
+    val title: String? = null,
+    val url: String? = null,
+    val source: String? = null,
+    val summary: String? = null,
+    val timestamp: String? = null,
     val image: String? = null,
     val keywords: List<String> = emptyList()
 )

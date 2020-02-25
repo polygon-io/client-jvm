@@ -99,16 +99,16 @@ data class TickersDTO(
 
 @Serializable
 data class TickerDTO(
-    val ticker: String,
-    val name: String,
-    val market: String,
-    val locale: String,
+    val ticker: String? = null,
+    val name: String? = null,
+    val market: String? = null,
+    val locale: String? = null,
     val type: String? = null,
-    val currency: String,
-    val active: Boolean,
-    @SerialName("primaryExch") val primaryExchange: String,
-    @SerialName("updated") val lastUpdated: String,
-    val url: String,
+    val currency: String? = null,
+    val active: Boolean = false,
+    @SerialName("primaryExch") val primaryExchange: String? = null,
+    @SerialName("updated") val lastUpdated: String? = null,
+    val url: String? = null,
     val codes: Map<String, String> = emptyMap(),
     val attrs: Map<String, String> = emptyMap()
 )

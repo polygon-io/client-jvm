@@ -10,12 +10,12 @@ suspend fun PolygonReferenceRestClient.getTickerDetails(symbol: String): TickerD
 @Serializable
 data class TickerDetailsDTO(
     @SerialName("logo") val logoUrl: String? = null,
-    val exchange: String,
+    val exchange: String? = null,
     val exchangeSymbol: String? = null,
-    val name: String,
-    val symbol: String,
-    val description: String,
-    @SerialName("updated") val lastUpdated: String,
+    val name: String? = null,
+    val symbol: String? = null,
+    val description: String? = null,
+    @SerialName("updated") val lastUpdated: String? = null,
     @SerialName("listdate") val listDate: String? = null,
     val type: String? = null,
     val cik: String? = null,

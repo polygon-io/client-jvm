@@ -17,6 +17,6 @@ data class MarketsDTO(
 
 @Serializable
 data class MarketDescriptionDTO(
-    val market: String,
-    @SerialName("desc") val description: String
+    val market: String? = null,
+    @SerialName("desc") val description: String? = null
 )

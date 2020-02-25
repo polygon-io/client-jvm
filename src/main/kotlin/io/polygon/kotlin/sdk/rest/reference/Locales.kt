@@ -16,6 +16,6 @@ data class LocalesDTO(
 
 @Serializable
 data class LocaleDTO(
-    val locale: String,
-    val name: String
+    val locale: String? = null,
+    val name: String? = null
 )
