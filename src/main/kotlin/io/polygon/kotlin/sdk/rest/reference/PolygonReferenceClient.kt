@@ -99,4 +99,63 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         coroutineToRestCallback(callback, { getSupportedLocales() })
     }
 
+    /**
+     * Gets the historical splits for a symbol
+     *
+     * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_splits_symbol
+     */
+    fun getStockSplitsBlocking(symbol: String): StockSplitsDTO =
+        runBlocking { getStockSplits(symbol) }
+    
+    /** See [getStockSplitsBlocking] */
+    fun getStockSplits(symbol: String, callback: PolygonRestApiCallback<StockSplitsDTO>) =
+        coroutineToRestCallback(callback, { getStockSplits(symbol) })
+    
+    /**
+     * Gets the historical dividends for a symbol
+     *
+     * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_dividends_symbol
+     */
+    fun getStockDividendsBlocking(symbol: String): StockDividendsDTO =
+        runBlocking { getStockDividends(symbol) }
+    
+    /** See [getStockDividendsBlocking] */
+    fun getStockDividends(symbol: String, callback: PolygonRestApiCallback<StockDividendsDTO>) =
+        coroutineToRestCallback(callback, { getStockDividends(symbol) })
+    
+    /**
+     * Gets the historical financials for a symbol
+     *
+     * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_financials_symbol
+     */
+    fun getStockFinancialsBlocking(params: StockFinancialsParameters): StockFinancialsResultsDTO =
+        runBlocking { getStockFinancials(params) }
+    
+    /** See [getStockFinancialsBlocking] */
+    fun getStockFinancials(params: StockFinancialsParameters, callback: PolygonRestApiCallback<StockFinancialsResultsDTO>) =
+        coroutineToRestCallback(callback, { getStockFinancials(params) })
+
+    /**
+     * Current status of each market
+     *
+     * API Doc: https://polygon.io/docs/#!/Reference/get_v1_marketstatus_now
+     */
+    fun getMarketStatusBlocking(): MarketStatusDTO =
+        runBlocking { getMarketStatus() }
+    
+    /** See [getMarketStatusBlocking] */
+    fun getMarketStatus(callback: PolygonRestApiCallback<MarketStatusDTO>) =
+        coroutineToRestCallback(callback, { getMarketStatus() })
+    
+    /**
+     * Get upcoming market holidays and their open/close times
+     *
+     * API Doc: https://polygon.io/docs/#!/Reference/get_v1_marketstatus_upcoming
+     */
+    fun getMarketHolidaysBlocking(): List<MarketHolidayDTO> =
+        runBlocking { getMarketHolidays() }
+    
+    /** See [getMarketHolidaysBlocking] */
+    fun getMarketHolidays(callback: PolygonRestApiCallback<List<MarketHolidayDTO>>) =
+        coroutineToRestCallback(callback, { getMarketHolidays() })
 }

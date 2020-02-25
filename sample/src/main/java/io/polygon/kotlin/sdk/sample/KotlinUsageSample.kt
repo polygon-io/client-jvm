@@ -2,10 +2,7 @@ package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters
-import io.polygon.kotlin.sdk.rest.reference.TickerNewsParameters
-import io.polygon.kotlin.sdk.rest.reference.getSupportedMarkets
-import io.polygon.kotlin.sdk.rest.reference.getTickerNews
+import io.polygon.kotlin.sdk.rest.reference.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlin.system.exitProcess
@@ -34,7 +31,8 @@ suspend fun main() {
     println("Done getting markets asynchronously!")
 
     println("\n\n")
-    tickerNewsSample(polygonClient)
+
+    marketHolidaysSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -63,4 +61,30 @@ fun tickerNewsSample(polygonClient: PolygonRestClient) {
     println("Redfin news:")
     val params = TickerNewsParameters(symbol = "RDFN", resultsPerPage = 2)
     polygonClient.referenceClient.getTickerNewsBlocking(params).pp()
+}
+
+fun stockSplitsSample(polygonClient: PolygonRestClient) {
+    println("Apple splits:")
+    polygonClient.referenceClient.getStockSplitsBlocking("AAPL").pp()
+}
+
+
+fun stockDividendsSample(polygonClient: PolygonRestClient) {
+    println("GE dividends:")
+    polygonClient.referenceClient.getStockDividendsBlocking("GE").pp()
+}
+
+fun stockFinancialsSample(polygonClient: PolygonRestClient) {
+    println("RDFN financials")
+    polygonClient.referenceClient.getStockFinancialsBlocking(StockFinancialsParameters(symbol = "RDFN", limit = 1)).pp()
+}
+
+fun marketStatusesSample(polygonClient: PolygonRestClient) {
+    println("Market status:")
+    polygonClient.referenceClient.getMarketStatusBlocking().pp()
+}
+
+fun marketHolidaysSample(polygonClient: PolygonRestClient) {
+    println("Market holidays:")
+    polygonClient.referenceClient.getMarketHolidaysBlocking().pp()
 }
