@@ -6,6 +6,7 @@ import io.ktor.http.URLBuilder
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceRestClient
+import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
 
 /**
  * A client for the Polygon.io RESTful API
@@ -34,6 +35,11 @@ constructor(
      * A [PolygonReferenceRestClient] that can be used to access Polygon reference APIs
      */
     val referenceClient by lazy { PolygonReferenceRestClient(this) }
+
+    /**
+     * A [PolygonStocksClient] that can be used to access Polygon stocks/equities APIs
+     */
+    val stocksClient by lazy { PolygonStocksClient(this) }
 
     private val baseUrlBuilder: URLBuilder
         get() = httpClientProvider.getDefaultRestURLBuilder().apply {

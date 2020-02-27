@@ -3,6 +3,8 @@ package io.polygon.kotlin.sdk.sample
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.reference.*
+import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
+import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlin.system.exitProcess
@@ -32,7 +34,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    marketHolidaysSample(polygonClient)
+    lastQuoteSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -88,3 +90,29 @@ fun marketHolidaysSample(polygonClient: PolygonRestClient) {
     println("Market holidays:")
     polygonClient.referenceClient.getMarketHolidaysBlocking().pp()
 }
+
+fun supportedExchangesSample(polygonClient: PolygonRestClient) {
+    println("Supported stock exchanges: ")
+    polygonClient.stocksClient.getSupportedExchangesBlocking().pp()
+}
+
+fun historicTradesSample(polygonClient: PolygonRestClient) {
+    println("RDFN historic trades: ")
+    polygonClient.stocksClient.getHistoricTradesBlocking(HistoricTradesParameters(ticker = "RDFN", date = "2020-02-26")).pp()
+}
+
+fun historicQuotesSample(polygonClient: PolygonRestClient) {
+    println("RDFN historic quotes: ")
+    polygonClient.stocksClient.getHistoricQuotesBlocking(HistoricQuotesParameters(ticker = "RDFN", date = "2020-02-26")).pp()
+}
+
+fun lastTradeSample(polygonClient: PolygonRestClient) {
+    println("RDFN last trade: ")
+    polygonClient.stocksClient.getLastTradeBlocking("RDFN").pp()
+}
+
+fun lastQuoteSample(polygonClient: PolygonRestClient) {
+    println("RDFN last quote: ")
+    polygonClient.stocksClient.getLastQuoteBlocking("RDFN").pp()
+}
+

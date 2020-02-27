@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceRestClient.getSupportedTickerTypesBlocking] */
 suspend fun PolygonReferenceRestClient.getSupportedTickerTypes(): TickerTypesDTO =
-    polygonClient.fetchResult { path("v2/reference/types") }
+    polygonClient.fetchResult { path("v2", "reference", "types") }
 
 @Serializable
 data class TickerTypesDTO(

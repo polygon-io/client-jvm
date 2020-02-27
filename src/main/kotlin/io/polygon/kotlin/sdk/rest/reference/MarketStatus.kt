@@ -2,6 +2,7 @@ package io.polygon.kotlin.sdk.rest.reference
 
 import kotlinx.serialization.Serializable
 
+/** See [PolygonReferenceRestClient.getMarketStatusBlocking] */
 suspend fun PolygonReferenceRestClient.getMarketStatus(): MarketStatusDTO =
     polygonClient.fetchResult {
         path("v1", "marketstatus", "now")

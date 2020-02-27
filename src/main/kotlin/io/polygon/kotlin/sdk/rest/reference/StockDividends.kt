@@ -3,6 +3,7 @@ package io.polygon.kotlin.sdk.rest.reference
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/** See [PolygonReferenceRestClient.getStockDividendsBlocking] */
 suspend fun PolygonReferenceRestClient.getStockDividends(symbol: String): StockDividendsDTO =
     polygonClient.fetchResult {
         path("v2", "reference", "dividends", symbol)
