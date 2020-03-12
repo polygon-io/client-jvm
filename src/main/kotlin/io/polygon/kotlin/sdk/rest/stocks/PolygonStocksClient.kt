@@ -72,5 +72,43 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /** See [getLastQuoteBlocking] */
     fun getLastQuote(symbol: String, callback: PolygonRestApiCallback<LastQuoteResultDTO>) =
         coroutineToRestCallback(callback, { getLastQuote(symbol) })
+    
+    /**
+     * Get the open, close and afterhours prices of a symbol on a certain date.
+     * @param date The date to get the open, close and after hours prices for (YYYY-MM-DD)
+     *
+     * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_open_close_symbol_date
+     */
+    fun getDailyOpenCloseBlocking(symbol: String, date: String): DailyOpenCloseDTO =
+        runBlocking { getDailyOpenClose(symbol, date) }
+    
+    /** See [getDailyOpenCloseBlocking] */
+    fun getDailyOpenClose(symbol: String, date: String, callback: PolygonRestApiCallback<DailyOpenCloseDTO>) =
+        coroutineToRestCallback(callback, { getDailyOpenClose(symbol, date) })
 
+    /**
+     * The mappings for conditions on trades and quotes.
+     *
+     * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_meta_conditions_ticktype
+     */
+    fun getConditionMappingsBlocking(tickType: ConditionMappingTickerType): Map<String, String> =
+        runBlocking { getConditionMappings(tickType) }
+    
+    /** See [getConditionMappingsBlocking] */
+    fun getConditionMappings(tickType: ConditionMappingTickerType, callback: PolygonRestApiCallback<Map<String, String>>) =
+        coroutineToRestCallback(callback, { getConditionMappings(tickType) })
+
+    /**
+     * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade.
+     * As well as previous days aggregate and calculated change for today.
+     * The response size is large.
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_snapshot_locale_us_markets_stocks_tickers_anchor
+     */
+    fun getSnapshotAllTickersBlocking(): SnapshotAllTickersDTO =
+        runBlocking { getSnapshotAllTickers() }
+    
+    /** See [getSnapshotAllTickersBlocking] */
+    fun getSnapshotAllTickers(callback: PolygonRestApiCallback<SnapshotAllTickersDTO>) =
+        coroutineToRestCallback(callback, { getSnapshotAllTickers() })
 }

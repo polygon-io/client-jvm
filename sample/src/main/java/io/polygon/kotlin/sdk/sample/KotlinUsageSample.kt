@@ -3,6 +3,7 @@ package io.polygon.kotlin.sdk.sample
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.reference.*
+import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
 import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
 import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
 import kotlinx.coroutines.GlobalScope
@@ -34,7 +35,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    lastQuoteSample(polygonClient)
+    snapshotAllTickersSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -116,3 +117,17 @@ fun lastQuoteSample(polygonClient: PolygonRestClient) {
     polygonClient.stocksClient.getLastQuoteBlocking("RDFN").pp()
 }
 
+fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
+    println("RDFN open/close on 2020-02-19")
+    polygonClient.stocksClient.getDailyOpenCloseBlocking("RDFN", "2020-02-19").pp()
+}
+
+fun conditionsMappingSample(polygonClient: PolygonRestClient) {
+    println("Condition mapping:")
+    polygonClient.stocksClient.getConditionMappingsBlocking(ConditionMappingTickerType.TRADES).pp()
+}
+
+fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
+    println("All tickers snapshot: ")
+    polygonClient.stocksClient.getSnapshotAllTickersBlocking().pp()
+}
