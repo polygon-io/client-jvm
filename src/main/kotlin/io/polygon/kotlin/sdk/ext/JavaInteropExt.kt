@@ -1,7 +1,6 @@
 package io.polygon.kotlin.sdk.ext
 
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
-import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceRestClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

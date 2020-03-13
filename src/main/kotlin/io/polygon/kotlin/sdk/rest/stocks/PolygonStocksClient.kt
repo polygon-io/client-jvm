@@ -135,4 +135,19 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /** See [getSnapshotGainersOrLosersBlocking] */
     fun getSnapshotGainersOrLosers(direction: GainersOrLosersDirection, callback: PolygonRestApiCallback<SnapshotGainersOrLosersDTO>) =
         coroutineToRestCallback(callback, { getSnapshotGainersOrLosers(direction) })
+
+    /**
+     * Get the previous day close for the specified ticker
+     *
+     * @param unadjusted Set to true if the results should NOT be adjusted for splits.
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_aggs_ticker__ticker__prev_anchor
+     */
+    fun getPreviousCloseBlocking(symbol: String, unadjusted: Boolean): PreviousCloseDTO =
+        runBlocking { getPreviousClose(symbol, unadjusted) }
+
+    /** See [getPreviousCloseBlocking] */
+    fun getPreviousClose(symbol: String, unadjusted: Boolean, callback: PolygonRestApiCallback<PreviousCloseDTO>) =
+        coroutineToRestCallback(callback, { getPreviousClose(symbol, unadjusted) })
+
 }

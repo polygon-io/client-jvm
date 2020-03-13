@@ -33,8 +33,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    snapshotSingleTickerSample(polygonClient)
-    snapshotGainersSample(polygonClient)
+    previousCloseSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -139,5 +138,10 @@ fun snapshotSingleTickerSample(polygonClient: PolygonRestClient) {
 fun snapshotGainersSample(polygonClient: PolygonRestClient) {
     println("Today's gainers:")
     polygonClient.stocksClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
+}
+
+fun previousCloseSample(polygonClient: PolygonRestClient) {
+    println("RDFN Prev close:")
+    polygonClient.stocksClient.getPreviousCloseBlocking("RDFN", true).pp()
 }
 
