@@ -7,8 +7,32 @@ import kotlinx.serialization.Serializable
 suspend fun PolygonStocksClient.getSnapshotAllTickers(): SnapshotAllTickersDTO =
     polygonClient.fetchResult { path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers") }
 
+/** See [PolygonStocksClient.getSnapshotBlocking] */
+suspend fun PolygonStocksClient.getSnapshot(symbol: String): SnapshotSingleTickerDTO =
+    polygonClient.fetchResult { path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers", symbol) }
+
+suspend fun PolygonStocksClient.getSnapshotGainersOrLosers(direction: GainersOrLosersDirection): SnapshotGainersOrLosersDTO =
+    polygonClient.fetchResult { path("v2", "snapshot", "locale", "us", "markets", "stocks", direction.queryParamValue) }
+
+enum class GainersOrLosersDirection(internal val queryParamValue: String) {
+    GAINERS("gainers"),
+    LOSERS("losers")
+}
+
 @Serializable
 data class SnapshotAllTickersDTO(
+    val status: String? = null,
+    val tickers: List<SnapshotTickerDTO> = emptyList()
+)
+
+@Serializable
+data class SnapshotSingleTickerDTO(
+    val status: String? = null,
+    val ticker: SnapshotTickerDTO = SnapshotTickerDTO()
+)
+
+@Serializable
+data class SnapshotGainersOrLosersDTO(
     val status: String? = null,
     val tickers: List<SnapshotTickerDTO> = emptyList()
 )

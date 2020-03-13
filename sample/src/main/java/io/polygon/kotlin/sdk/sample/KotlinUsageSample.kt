@@ -3,9 +3,7 @@ package io.polygon.kotlin.sdk.sample
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.reference.*
-import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
-import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
-import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
+import io.polygon.kotlin.sdk.rest.stocks.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlin.system.exitProcess
@@ -35,7 +33,8 @@ suspend fun main() {
 
     println("\n\n")
 
-    snapshotAllTickersSample(polygonClient)
+    snapshotSingleTickerSample(polygonClient)
+    snapshotGainersSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -131,3 +130,14 @@ fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
     println("All tickers snapshot: ")
     polygonClient.stocksClient.getSnapshotAllTickersBlocking().pp()
 }
+
+fun snapshotSingleTickerSample(polygonClient: PolygonRestClient) {
+    println("RDFN snapshot:")
+    polygonClient.stocksClient.getSnapshotBlocking("RDFN").pp()
+}
+
+fun snapshotGainersSample(polygonClient: PolygonRestClient) {
+    println("Today's gainers:")
+    polygonClient.stocksClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
+}
+

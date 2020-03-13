@@ -111,4 +111,28 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /** See [getSnapshotAllTickersBlocking] */
     fun getSnapshotAllTickers(callback: PolygonRestApiCallback<SnapshotAllTickersDTO>) =
         coroutineToRestCallback(callback, { getSnapshotAllTickers() })
+
+    /**
+     * See the current snapshot of a single ticker
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_snapshot_locale_us_markets_stocks_tickers__ticker__anchor
+     */
+    fun getSnapshotBlocking(symbol: String): SnapshotSingleTickerDTO =
+        runBlocking { getSnapshot(symbol) }
+    
+    /** See [getSnapshotBlocking] */
+    fun getSnapshot(symbol: String, callback: PolygonRestApiCallback<SnapshotSingleTickerDTO>) =
+        coroutineToRestCallback(callback, { getSnapshot(symbol) })
+
+    /**
+     * See the current snapshot of the top 20 gainers or losers of the day at the moment.
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_snapshot_locale_us_markets_stocks__direction__anchor
+     */
+    fun getSnapshotGainersOrLosersBlocking(direction: GainersOrLosersDirection): SnapshotGainersOrLosersDTO =
+        runBlocking { getSnapshotGainersOrLosers(direction) }
+    
+    /** See [getSnapshotGainersOrLosersBlocking] */
+    fun getSnapshotGainersOrLosers(direction: GainersOrLosersDirection, callback: PolygonRestApiCallback<SnapshotGainersOrLosersDTO>) =
+        coroutineToRestCallback(callback, { getSnapshotGainersOrLosers(direction) })
 }
