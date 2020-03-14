@@ -5,8 +5,10 @@ import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
+import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceRestClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
+import kotlinx.coroutines.runBlocking
 
 /**
  * A client for the Polygon.io RESTful API
@@ -56,4 +58,35 @@ constructor(
         val url = baseUrlBuilder.apply(urlBuilderBlock).build()
         return withHttpClient { httpClient -> httpClient.get(url) }
     }
+
+    /**
+     * Get aggregates for a date range, in custom time window sizes.
+     *
+     * Some tickers require a prefix, see examples below:
+     *
+     * Stocks: AAPL
+     * Currencies: C:EURUSD
+     * Crypto: X:BTCUSD
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_aggs_ticker__ticker__range__multiplier___timespan___from___to__anchor
+     */
+    fun getAggregatesBlocking(params: AggregatesParameters): AggregatesDTO =
+        runBlocking { getAggregates(params) }
+
+    /** See [getAggregatesBlocking] */
+    fun getAggregates(params: AggregatesParameters, callback: PolygonRestApiCallback<AggregatesDTO>) =
+        coroutineToRestCallback(callback, { getAggregates(params) })
+
+    /**
+     * Get the daily OHLC for entire markets.
+     * The response size is large.
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_aggs_grouped_locale__locale__market__market___date__anchor
+     */
+    fun getGroupedDailyAggregatesBlocking(params: GroupedDailyParameters): AggregatesDTO =
+        runBlocking { getGroupedDailyAggregates(params) }
+
+    /** See [getGroupedDailyAggregatesBlocking] */
+    fun getGroupedDailyAggregates(params: GroupedDailyParameters, callback: PolygonRestApiCallback<AggregatesDTO>) =
+        coroutineToRestCallback(callback, { getGroupedDailyAggregates(params) })
 }

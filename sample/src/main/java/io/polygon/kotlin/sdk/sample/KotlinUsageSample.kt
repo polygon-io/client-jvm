@@ -1,6 +1,8 @@
 package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
+import io.polygon.kotlin.sdk.rest.AggregatesParameters
+import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.*
@@ -33,7 +35,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    previousCloseSample(polygonClient)
+    groupedDailiesSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -145,3 +147,25 @@ fun previousCloseSample(polygonClient: PolygonRestClient) {
     polygonClient.stocksClient.getPreviousCloseBlocking("RDFN", true).pp()
 }
 
+fun aggregatesSample(polygonClient: PolygonRestClient) {
+    println("RDFN Aggs")
+    val params = AggregatesParameters(
+        ticker = "RDFN",
+        timespan = "day",
+        fromDate = "2020-02-17",
+        toDate = "2020-02-20"
+    )
+
+    polygonClient.getAggregatesBlocking(params).pp()
+}
+
+fun groupedDailiesSample(polygonClient: PolygonRestClient) {
+    println("Grouped dailies for 2020-02-20")
+    val params = GroupedDailyParameters(
+        locale = "us",
+        market = "stocks",
+        date = "2020-02-20"
+    )
+
+    polygonClient.getGroupedDailyAggregatesBlocking(params).pp()
+}

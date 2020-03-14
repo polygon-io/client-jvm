@@ -1,6 +1,6 @@
 package io.polygon.kotlin.sdk.rest.stocks
 
-import kotlinx.serialization.SerialName
+import io.polygon.kotlin.sdk.rest.AggregateDTO
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getPreviousCloseBlocking] */
@@ -15,16 +15,4 @@ data class PreviousCloseDTO(
     val resultsCount: Long? = null,
     val adjusted: Boolean? = null,
     val results: List<AggregateDTO> = emptyList()
-)
-
-@Serializable
-data class AggregateDTO(
-    @SerialName("T") val ticker: String? = null,
-    @SerialName("v") val volume: Double? = null,
-    @SerialName("o") val open: Double? = null,
-    @SerialName("c") val close: Double? = null,
-    @SerialName("l") val low: Double? = null,
-    @SerialName("h") val high: Double? = null,
-    @SerialName("t") val timestampMillis: Long? = null,
-    @SerialName("n") val numItemsInWindow: Long? = null
 )
