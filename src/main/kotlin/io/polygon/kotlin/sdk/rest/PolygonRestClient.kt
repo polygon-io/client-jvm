@@ -6,6 +6,7 @@ import io.ktor.http.URLBuilder
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
+import io.polygon.kotlin.sdk.rest.forex.PolygonForexClient
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
 import kotlinx.coroutines.runBlocking
@@ -35,21 +36,10 @@ constructor(
      */
     val stocksClient by lazy { PolygonStocksClient(this) }
 
-    private val baseUrlBuilder: URLBuilder
-        get() = httpClientProvider.getDefaultRestURLBuilder().apply {
-            host = polygonApiDomain
-            parameters["apiKey"] = apiKey
-        }
-
-    private inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
-        httpClientProvider.buildClient().use(codeBlock)
-
-    internal suspend inline fun <reified T> fetchResult(
-        urlBuilderBlock: URLBuilder.() -> Unit
-    ): T {
-        val url = baseUrlBuilder.apply(urlBuilderBlock).build()
-        return withHttpClient { httpClient -> httpClient.get(url) }
-    }
+    /**
+     * A [PolygonForexClient] that can be used to access Polygon forex/currencies APIs
+     */
+    val forexClient by lazy { PolygonForexClient(this) }
 
     /**
      * Get aggregates for a date range, in custom time window sizes.
@@ -81,4 +71,22 @@ constructor(
     /** See [getGroupedDailyAggregatesBlocking] */
     fun getGroupedDailyAggregates(params: GroupedDailyParameters, callback: PolygonRestApiCallback<AggregatesDTO>) =
         coroutineToRestCallback(callback, { getGroupedDailyAggregates(params) })
+
+
+    private val baseUrlBuilder: URLBuilder
+        get() = httpClientProvider.getDefaultRestURLBuilder().apply {
+            host = polygonApiDomain
+            parameters["apiKey"] = apiKey
+        }
+
+    private inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
+        httpClientProvider.buildClient().use(codeBlock)
+
+    internal suspend inline fun <reified T> fetchResult(
+        urlBuilderBlock: URLBuilder.() -> Unit
+    ): T {
+        val url = baseUrlBuilder.apply(urlBuilderBlock).build()
+        return withHttpClient { httpClient -> httpClient.get(url) }
+    }
+
 }

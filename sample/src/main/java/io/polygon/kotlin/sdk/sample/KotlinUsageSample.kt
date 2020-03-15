@@ -4,6 +4,8 @@ import com.tylerthrailkill.helpers.prettyprint.pp
 import io.polygon.kotlin.sdk.rest.AggregatesParameters
 import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
+import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
+import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.*
 import kotlinx.coroutines.GlobalScope
@@ -35,7 +37,8 @@ suspend fun main() {
 
     println("\n\n")
 
-    groupedDailiesSample(polygonClient)
+    forexSnapshotSample(polygonClient)
+    forexGainersOrLosersSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -168,4 +171,43 @@ fun groupedDailiesSample(polygonClient: PolygonRestClient) {
     )
 
     polygonClient.getGroupedDailyAggregatesBlocking(params).pp()
+}
+
+fun historicForexSample(polygonClient: PolygonRestClient) {
+    println("Historic ticks for USD/EUR on 2020-02-20")
+    val params = HistoricTicksParameters(
+        fromCurrency = "USD",
+        toCurrency = "EUR",
+        date = "2020-02-20",
+        limit = 10
+    )
+
+    polygonClient.forexClient.getHistoricTicksBlocking(params).pp()
+}
+
+fun realTimeConversionSample(polygonClient: PolygonRestClient) {
+    println("Converting $100 to EUR100")
+    val params = RealTimeConversionParameters(
+        fromCurrency = "USD",
+        toCurrency = "EUR",
+        amount = 100.0,
+        precision = 3
+    )
+
+    polygonClient.forexClient.getRealTimeConversionBlocking(params).pp()
+}
+
+fun lastQuoteForexSample(polygonClient: PolygonRestClient) {
+    println("Last quote for USD/EUR")
+    polygonClient.forexClient.getLastQuoteBlocking("USD", "EUR").pp()
+}
+
+fun forexSnapshotSample(polygonClient: PolygonRestClient) {
+    println("Forex snapshot:")
+    polygonClient.forexClient.getSnapshotAllTickersBlocking().pp()
+}
+
+fun forexGainersOrLosersSample(polygonClient: PolygonRestClient) {
+    println("Forex gainers:")
+    polygonClient.forexClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
 }
