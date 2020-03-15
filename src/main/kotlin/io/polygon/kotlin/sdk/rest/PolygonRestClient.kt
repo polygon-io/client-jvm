@@ -6,7 +6,7 @@ import io.ktor.http.URLBuilder
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
-import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceRestClient
+import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
 import kotlinx.coroutines.runBlocking
 
@@ -25,18 +25,10 @@ constructor(
     private val polygonApiDomain: String = "api.polygon.io"
 ) {
 
-    companion object {
-
-        /**
-         * The API status to expect if the endpoint returned successfully
-         */
-        const val STATUS_OK = "OK"
-    }
-
     /**
-     * A [PolygonReferenceRestClient] that can be used to access Polygon reference APIs
+     * A [PolygonReferenceClient] that can be used to access Polygon reference APIs
      */
-    val referenceClient by lazy { PolygonReferenceRestClient(this) }
+    val referenceClient by lazy { PolygonReferenceClient(this) }
 
     /**
      * A [PolygonStocksClient] that can be used to access Polygon stocks/equities APIs

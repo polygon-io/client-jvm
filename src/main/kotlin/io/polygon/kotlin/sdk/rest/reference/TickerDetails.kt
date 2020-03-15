@@ -3,8 +3,8 @@ package io.polygon.kotlin.sdk.rest.reference
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getTickerDetailsBlocking] */
-suspend fun PolygonReferenceRestClient.getTickerDetails(symbol: String): TickerDetailsDTO =
+/** See [PolygonReferenceClient.getTickerDetailsBlocking] */
+suspend fun PolygonReferenceClient.getTickerDetails(symbol: String): TickerDetailsDTO =
     polygonClient.fetchResult { path("v1", "meta", "symbols", symbol, "company") }
 
 @Serializable

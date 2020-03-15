@@ -2,7 +2,7 @@ package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
-import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceRestClient
+import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 
 /** See [PolygonRestClient.getGroupedDailyAggregatesBlocking] */
 suspend fun PolygonRestClient.getGroupedDailyAggregates(params: GroupedDailyParameters): AggregatesDTO =
@@ -23,10 +23,10 @@ suspend fun PolygonRestClient.getGroupedDailyAggregates(params: GroupedDailyPara
 
 @Builder
 data class GroupedDailyParameters(
-    /** Locale of the aggregates. See [PolygonReferenceRestClient.getSupportedLocalesBlocking] */
+    /** Locale of the aggregates. See [PolygonReferenceClient.getSupportedLocalesBlocking] */
     val locale: String,
 
-    /** Market of the aggregates. See [PolygonReferenceRestClient.getSupportedMarketsBlocking] */
+    /** Market of the aggregates. See [PolygonReferenceClient.getSupportedMarketsBlocking] */
     val market: String,
 
     /** The date to group by (formatted YYYY-MM-DD) */

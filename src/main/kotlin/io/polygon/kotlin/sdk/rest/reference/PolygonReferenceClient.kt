@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
  *
  * You should access this client through [PolygonRestClient]
  */
-class PolygonReferenceRestClient
+class PolygonReferenceClient
 internal constructor(internal val polygonClient: PolygonRestClient) {
 
     /**

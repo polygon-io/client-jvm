@@ -2,8 +2,8 @@ package io.polygon.kotlin.sdk.rest.reference
 
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getSupportedLocalesBlocking] */
-suspend fun PolygonReferenceRestClient.getSupportedLocales(): LocalesDTO =
+/** See [PolygonReferenceClient.getSupportedLocalesBlocking] */
+suspend fun PolygonReferenceClient.getSupportedLocales(): LocalesDTO =
     polygonClient.fetchResult {
         path("v2", "reference", "locales")
     }

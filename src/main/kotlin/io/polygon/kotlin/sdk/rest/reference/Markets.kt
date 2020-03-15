@@ -3,8 +3,8 @@ package io.polygon.kotlin.sdk.rest.reference
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getSupportedMarketsBlocking] */
-suspend fun PolygonReferenceRestClient.getSupportedMarkets(): MarketsDTO =
+/** See [PolygonReferenceClient.getSupportedMarketsBlocking] */
+suspend fun PolygonReferenceClient.getSupportedMarkets(): MarketsDTO =
     polygonClient.fetchResult {
         path("v2", "reference", "markets")
     }

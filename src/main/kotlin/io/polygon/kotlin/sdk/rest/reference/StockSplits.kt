@@ -3,8 +3,8 @@ package io.polygon.kotlin.sdk.rest.reference
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getStockSplitsBlocking] */
-suspend fun PolygonReferenceRestClient.getStockSplits(symbol: String): StockSplitsDTO =
+/** See [PolygonReferenceClient.getStockSplitsBlocking] */
+suspend fun PolygonReferenceClient.getStockSplits(symbol: String): StockSplitsDTO =
     polygonClient.fetchResult {
         path("v2", "reference", "splits", symbol)
     }

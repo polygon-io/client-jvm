@@ -4,8 +4,8 @@ import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getTickerNewsBlocking] */
-suspend fun PolygonReferenceRestClient.getTickerNews(params: TickerNewsParameters): List<TickerNewsDTO> =
+/** See [PolygonReferenceClient.getTickerNewsBlocking] */
+suspend fun PolygonReferenceClient.getTickerNews(params: TickerNewsParameters): List<TickerNewsDTO> =
     polygonClient.fetchResult {
         path("v1", "meta", "symbols", params.symbol, "news")
 

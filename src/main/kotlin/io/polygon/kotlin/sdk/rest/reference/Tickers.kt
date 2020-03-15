@@ -5,8 +5,8 @@ import com.thinkinglogic.builder.annotation.DefaultValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getSupportedTickersBlocking] */
-suspend fun PolygonReferenceRestClient.getSupportedTickers(
+/** See [PolygonReferenceClient.getSupportedTickersBlocking] */
+suspend fun PolygonReferenceClient.getSupportedTickers(
     params: SupportedTickersParameters
 ): TickersDTO =
     polygonClient.fetchResult {
@@ -45,21 +45,21 @@ data class SupportedTickersParameters(
 
     /**
      * (Optional) The type of tickers to return.
-     * See [PolygonReferenceRestClient.getSupportedTickerTypes] for supported types.
+     * See [PolygonReferenceClient.getSupportedTickerTypes] for supported types.
      * If not set, returns all ticker types.
      */
     val type: String? = null,
 
     /**
      * (Optional) If set, only return tickers for a specific market (ex: "stocks", "indices").
-     * See [PolygonReferenceRestClient.getSupportedMarkets].
+     * See [PolygonReferenceClient.getSupportedMarkets].
      * If not set, returns tickers from all markets
      */
     val market: String? = null,
 
     /**
      * (Optional) If set, only return tickers for a specific region/locale.
-     * See [PolygonReferenceRestClient.getSupportedLocales].
+     * See [PolygonReferenceClient.getSupportedLocales].
      * If not set, returns tickers for all regions/locales.
      */
     val locale: String? = null,

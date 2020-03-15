@@ -3,8 +3,8 @@ package io.polygon.kotlin.sdk.rest.reference
 import com.thinkinglogic.builder.annotation.Builder
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceRestClient.getStockFinancialsBlocking] */
-suspend fun PolygonReferenceRestClient.getStockFinancials(params: StockFinancialsParameters): StockFinancialsResultsDTO =
+/** See [PolygonReferenceClient.getStockFinancialsBlocking] */
+suspend fun PolygonReferenceClient.getStockFinancials(params: StockFinancialsParameters): StockFinancialsResultsDTO =
     polygonClient.fetchResult {
         path("v2", "reference", "financials", params.symbol)
 
