@@ -4,6 +4,7 @@ import com.tylerthrailkill.helpers.prettyprint.pp
 import io.polygon.kotlin.sdk.rest.AggregatesParameters
 import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
+import io.polygon.kotlin.sdk.rest.crypto.CryptoDailyOpenCloseParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
@@ -37,8 +38,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    forexSnapshotSample(polygonClient)
-    forexGainersOrLosersSample(polygonClient)
+    cryptoDailyOpenCloseSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -210,4 +210,23 @@ fun forexSnapshotSample(polygonClient: PolygonRestClient) {
 fun forexGainersOrLosersSample(polygonClient: PolygonRestClient) {
     println("Forex gainers:")
     polygonClient.forexClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
+}
+
+fun cryptoExchangesSample(polygonClient: PolygonRestClient) {
+    println("Crypto exchanges")
+    polygonClient.cryptoClient.getSupportedExchangesBlocking().pp()
+}
+
+fun cryptoLastTradeSample(polygonClient: PolygonRestClient) {
+    println("Last BTC/USD trade")
+    polygonClient.cryptoClient.getLastTradeBlocking("BTC", "USD").pp()
+}
+
+fun cryptoDailyOpenCloseSample(polygonClient: PolygonRestClient) {
+    println("BTC open/close on 2020-02-20")
+    val params = CryptoDailyOpenCloseParameters(
+        from = "BTC", to = "USD", date = "2020-02-20"
+    )
+
+    polygonClient.cryptoClient.getDailyOpenCloseBlocking(params).pp()
 }
