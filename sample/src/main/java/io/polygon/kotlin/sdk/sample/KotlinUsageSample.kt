@@ -5,6 +5,8 @@ import io.polygon.kotlin.sdk.rest.AggregatesParameters
 import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.crypto.CryptoDailyOpenCloseParameters
+import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesDTO
+import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
@@ -38,7 +40,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    cryptoDailyOpenCloseSample(polygonClient)
+    cryptoGainersOrLosersSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -229,4 +231,28 @@ fun cryptoDailyOpenCloseSample(polygonClient: PolygonRestClient) {
     )
 
     polygonClient.cryptoClient.getDailyOpenCloseBlocking(params).pp()
+}
+
+fun historicCryptoTradesSample(polygonClient: PolygonRestClient) {
+    println("10 BTC-USD trades on 2020-02-20")
+    val params = HistoricCryptoTradesParameters(
+        from = "BTC", to = "USD", date = "2020-02-20", limit = 10
+    )
+
+    polygonClient.cryptoClient.getHistoricTradesBlocking(params).pp()
+}
+
+fun cryptoAllTickersSample(polygonClient: PolygonRestClient) {
+    println("All crypto snapshot:")
+    polygonClient.cryptoClient.getSnapshotAllTickersBlocking().pp()
+}
+
+fun cryptoSingleTickerSnapshotSample(polygonClient: PolygonRestClient) {
+    println("Snapshot for X:BTCUSD")
+    polygonClient.cryptoClient.getSnapshotSingleTickerBlocking("X:BTCUSD").pp()
+}
+
+fun cryptoGainersOrLosersSample(polygonClient: PolygonRestClient) {
+    println("Today's crypto losers: ")
+    polygonClient.cryptoClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.LOSERS).pp()
 }
