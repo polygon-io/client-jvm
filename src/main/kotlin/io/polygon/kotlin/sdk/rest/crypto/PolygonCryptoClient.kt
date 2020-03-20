@@ -100,4 +100,15 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun getSnapshotGainersOrLosers(direction: GainersOrLosersDirection, callback: PolygonRestApiCallback<CryptoMultiTickerSnapshotDTO>) =
         coroutineToRestCallback(callback, { getSnapshotGainersOrLosers(direction) })
     
+    /**
+     * See the current level 2 book of a single ticker. This is the combined book from all the exchanges.
+     *
+     * API Doc: https://polygon.io/docs/#get_v2_snapshot_locale_global_markets_crypto_tickers__ticker__book_anchor
+     */
+    fun getL2SnapshotSingleTickerBlocking(ticker: String): CryptoTickerL2SnapshotResponseDTO =
+        runBlocking { getL2SnapshotSingleTicker(ticker) }
+    
+    /** See [getL2SnapshotSingleTickerBlocking] */
+    fun getL2SnapshotSingleTicker(ticker: String, callback: PolygonRestApiCallback<CryptoTickerL2SnapshotResponseDTO>) =
+        coroutineToRestCallback(callback, { getL2SnapshotSingleTicker(ticker) })
 }

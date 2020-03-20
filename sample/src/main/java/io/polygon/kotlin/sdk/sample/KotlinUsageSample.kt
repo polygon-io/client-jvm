@@ -40,7 +40,7 @@ suspend fun main() {
 
     println("\n\n")
 
-    cryptoGainersOrLosersSample(polygonClient)
+    cryptoL2SnapshotSample(polygonClient)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
@@ -255,4 +255,9 @@ fun cryptoSingleTickerSnapshotSample(polygonClient: PolygonRestClient) {
 fun cryptoGainersOrLosersSample(polygonClient: PolygonRestClient) {
     println("Today's crypto losers: ")
     polygonClient.cryptoClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.LOSERS).pp()
+}
+
+fun cryptoL2SnapshotSample(polygonClient: PolygonRestClient) {
+    println("X:BTCUSD L2 data:")
+    polygonClient.cryptoClient.getL2SnapshotSingleTickerBlocking("X:BTCUSD").pp()
 }
