@@ -11,36 +11,56 @@ import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.*
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketClient
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import java.lang.System.exit
+import java.lang.management.ManagementFactory
 import kotlin.system.exitProcess
 
 suspend fun main() {
     val polygonKey = System.getenv("POLYGON_API_KEY")
 
-    if (polygonKey.isNullOrEmpty()) {
-        println("Make sure you set your polygon API key in the POLYGON_API_KEY environment variable!")
-        exitProcess(1)
-    }
-
+//    if (polygonKey.isNullOrEmpty()) {
+//        println("Make sure you set your polygon API key in the POLYGON_API_KEY environment variable!")
+//        exitProcess(1)
+//    }
+//
     val polygonClient = PolygonRestClient(polygonKey)
 
     println("Blocking for markets...")
     val markets = polygonClient.referenceClient.getSupportedMarketsBlocking()
     println("Got markets synchronously: $markets")
 
-    println("Getting markets asynchronously...")
-    val deferred = GlobalScope.async {
-        val asyncMarkets = polygonClient.referenceClient.getSupportedMarkets()
-        println("Got markets asynchronously: $asyncMarkets")
+//    println("Getting markets asynchronously...")
+//    val deferred = GlobalScope.async {
+//        val asyncMarkets = polygonClient.referenceClient.getSupportedMarkets()
+//        println("Got markets asynchronously: $asyncMarkets")
+//    }
+//
+//    deferred.await()
+//    println("Done getting markets asynchronously!")
+//
+//    println("\n\n")
+
+    println(ManagementFactory.getRuntimeMXBean().name)
+
+    try {
+
+        println("Socket stuff:")
+        val webSocketClient = PolygonWebSocketClient(polygonKey)
+        webSocketClient.socketTest()
+//        webSocketClient.anotherSocketTest()
+        println("Done??")
+    } catch (ex: Throwable) {
+        println("on ho")
+        ex.printStackTrace()
+    } finally {
+        println("FINALLY!")
     }
-
-    deferred.await()
-    println("Done getting markets asynchronously!")
-
-    println("\n\n")
-
-    cryptoL2SnapshotSample(polygonClient)
+//    exitProcess(0)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {

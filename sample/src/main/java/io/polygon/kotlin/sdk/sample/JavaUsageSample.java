@@ -9,6 +9,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestClient;
 import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
 import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
 import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketClient;
 
 public class JavaUsageSample {
 
@@ -47,6 +48,10 @@ public class JavaUsageSample {
         latch.await();
         System.out.println("Done waiting for async market data\n\n");
 
+        //PolygonWebSocketClient wsClient = new PolygonWebSocketClient(polygonKey);
+        //wsClient.anotherSocketTest();
+
+//        System.out.println("We're at the end of the line here dawg");
     }
 
     public static void supportedTickersSample(PolygonRestClient polygonRestClient) {
