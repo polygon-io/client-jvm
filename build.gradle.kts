@@ -23,6 +23,7 @@ dependencies {
 
     val ktorVersion = "1.3.0"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-websockets:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
 
