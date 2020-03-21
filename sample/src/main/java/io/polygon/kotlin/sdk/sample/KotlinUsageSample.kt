@@ -5,51 +5,55 @@ import io.polygon.kotlin.sdk.rest.AggregatesParameters
 import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.crypto.CryptoDailyOpenCloseParameters
-import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesDTO
 import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
-import io.polygon.kotlin.sdk.rest.reference.*
-import io.polygon.kotlin.sdk.rest.stocks.*
+import io.polygon.kotlin.sdk.rest.reference.StockFinancialsParameters
+import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters
+import io.polygon.kotlin.sdk.rest.reference.TickerNewsParameters
+import io.polygon.kotlin.sdk.rest.reference.getSupportedMarkets
+import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
+import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
+import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
+import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
 import io.polygon.kotlin.sdk.websocket.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import java.lang.System.exit
-import java.lang.management.ManagementFactory
 import kotlin.system.exitProcess
 
 suspend fun main() {
     val polygonKey = System.getenv("POLYGON_API_KEY")
 
-//    if (polygonKey.isNullOrEmpty()) {
-//        println("Make sure you set your polygon API key in the POLYGON_API_KEY environment variable!")
-//        exitProcess(1)
-//    }
-//
+    if (polygonKey.isNullOrEmpty()) {
+        println("Make sure you set your polygon API key in the POLYGON_API_KEY environment variable!")
+        exitProcess(1)
+    }
+
     val polygonClient = PolygonRestClient(polygonKey)
 
     println("Blocking for markets...")
     val markets = polygonClient.referenceClient.getSupportedMarketsBlocking()
     println("Got markets synchronously: $markets")
 
-//    println("Getting markets asynchronously...")
-//    val deferred = GlobalScope.async {
-//        val asyncMarkets = polygonClient.referenceClient.getSupportedMarkets()
-//        println("Got markets asynchronously: $asyncMarkets")
-//    }
-//
-//    deferred.await()
-//    println("Done getting markets asynchronously!")
-//
-//    println("\n\n")
+    println("Getting markets asynchronously...")
+    val deferred = GlobalScope.async {
+        val asyncMarkets = polygonClient.referenceClient.getSupportedMarkets()
+        println("Got markets asynchronously: $asyncMarkets")
+    }
 
-    println(ManagementFactory.getRuntimeMXBean().name)
+    deferred.await()
+    println("Done getting markets asynchronously!")
 
+    println("\n\nWebsocket sample:")
+
+    websocketSample(polygonKey)
+}
+
+suspend fun websocketSample(polygonKey: String) {
     val websocketClient = PolygonWebSocketClient(
         polygonKey,
-        WebSocketCluster.Crypto,
+        PolygonWebSocketCluster.Crypto,
         object : PolygonWebSocketListener {
             override fun onAuthenticated(client: PolygonWebSocketClient) {
                 println("Connected!")
@@ -74,8 +78,7 @@ suspend fun main() {
         })
 
     val subscriptions = listOf(
-        PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "ETH-USD"),
-        PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Level2Books, "ETH-USD")
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "BTC-USD")
     )
 
     websocketClient.connect()

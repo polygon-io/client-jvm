@@ -16,7 +16,7 @@ data class PolygonWebSocketSubscription(
 sealed class PolygonWebSocketChannel(val prefix: String) {
 
     /**
-     * Usable in the [WebSocketCluster.Stocks] cluster
+     * Usable in the [PolygonWebSocketCluster.Stocks] cluster
      */
     sealed class Stocks(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Trades: Stocks("T")
@@ -26,18 +26,18 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
     }
 
     /**
-     * Usable in the [WebSocketCluster.Forex] cluster
+     * Usable in the [PolygonWebSocketCluster.Forex] cluster
      */
     sealed class Forex(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
-        object Currencies: Forex("C")
-        object CurrenciesAggPerMinute: Forex("CA")
+        object Quotes: Forex("C")
+        object AggPerMinute: Forex("CA")
         object Bonds: Forex("BONDS")
         object Commodities: Forex("COMMODITIES")
         object Metals: Forex("METALS")
     }
 
     /**
-     * Usable in the [WebSocketCluster.Crypto] cluster
+     * Usable in the [PolygonWebSocketCluster.Crypto] cluster
      */
     sealed class Crypto(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Trades : Crypto("XT")

@@ -1,7 +1,9 @@
 package io.polygon.kotlin.sdk.sample;
 
-import com.tylerthrailkill.helpers.prettyprint.PrettyPrintKt;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback;
@@ -9,7 +11,12 @@ import io.polygon.kotlin.sdk.rest.PolygonRestClient;
 import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
 import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
 import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
+import io.polygon.kotlin.sdk.websocket.DefaultPolygonWebSocketListener;
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketChannel;
 import io.polygon.kotlin.sdk.websocket.PolygonWebSocketClient;
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketCluster;
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage;
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketSubscription;
 
 public class JavaUsageSample {
 
@@ -48,10 +55,41 @@ public class JavaUsageSample {
         latch.await();
         System.out.println("Done waiting for async market data\n\n");
 
-        //PolygonWebSocketClient wsClient = new PolygonWebSocketClient(polygonKey);
-        //wsClient.anotherSocketTest();
+        System.out.println("Websocket sample:");
+        websocketSample(polygonKey);
+    }
 
-//        System.out.println("We're at the end of the line here dawg");
+    public static void websocketSample(String polygonKey) {
+        PolygonWebSocketClient client = new PolygonWebSocketClient(
+                polygonKey,
+                PolygonWebSocketCluster.Crypto,
+                new DefaultPolygonWebSocketListener() {
+                    @Override
+                    public void onReceive(@NotNull PolygonWebSocketClient client, @NotNull PolygonWebSocketMessage message) {
+                        System.out.println(message.toString());
+                    }
+
+                    @Override
+                    public void onError(@NotNull PolygonWebSocketClient client, @NotNull Throwable error) {
+                        System.out.println("Error in websocket");
+                        error.printStackTrace();
+                    }
+                });
+
+        client.connectBlocking();
+
+        List<PolygonWebSocketSubscription> subs = Collections.singletonList(
+                new PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades.INSTANCE, "BTC-USD"));
+        client.subscribeBlocking(subs);
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        client.unsubscribeBlocking(subs);
+        client.disconnectBlocking();
     }
 
     public static void supportedTickersSample(PolygonRestClient polygonRestClient) {

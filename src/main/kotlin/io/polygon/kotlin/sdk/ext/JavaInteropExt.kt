@@ -21,3 +21,26 @@ internal inline fun <T> coroutineToRestCallback(
         }
     }
 }
+
+/**
+ * Take a suspend function with no return value and exposes it as an async function with callbacks
+ */
+internal inline fun coroutineToCompletionCallback(
+    callback: PolygonCompletionCallback?,
+    coroutineScope: CoroutineScope,
+    crossinline suspendingFunc: suspend () -> Unit
+) {
+    coroutineScope.launch {
+        try {
+            suspendingFunc()
+            callback?.onComplete()
+        } catch (error: Throwable) {
+            callback?.onError(error)
+        }
+    }
+}
+
+interface PolygonCompletionCallback {
+    fun onComplete()
+    fun onError(error: Throwable)
+}
