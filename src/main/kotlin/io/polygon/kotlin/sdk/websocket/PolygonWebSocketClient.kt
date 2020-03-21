@@ -8,6 +8,8 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.cio.websocket.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage.*
+import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage.StatusMessage.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
@@ -17,6 +19,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.*
+
+private const val EVENT_TYPE_MESSAGE_KEY = "ev"
 
 enum class WebSocketCluster(internal vararg val pathComponents: String) {
     Stocks("stocks"),
@@ -89,7 +93,7 @@ constructor(
      * Subscribe to one or more data streams. Be sure to subscribe to streams available in the
      * current cluster
      */
-    suspend fun subscribe(vararg subscriptions: PolygonWebSocketSubscription) {
+    suspend fun subscribe(subscriptions: List<PolygonWebSocketSubscription>) {
         if (subscriptions.isEmpty()) return
 
         activeConnection
@@ -100,7 +104,7 @@ constructor(
     /**
      * Unsubscribe to one or more data streams
      */
-    suspend fun unsubscribe(vararg subscriptions: PolygonWebSocketSubscription) {
+    suspend fun unsubscribe(subscriptions: List<PolygonWebSocketSubscription>) {
         if (subscriptions.isEmpty()) return
 
         activeConnection
@@ -127,13 +131,38 @@ constructor(
             }
 
             if (sendRaw) {
-                listener.onReceive(this, PolygonWebSocketMessage.RawMessage(frame.readBytes()))
+                listener.onReceive(this, RawMessage(frame.readBytes()))
             } else {
-
+                val json = serializer.parseJson(String(frame.readBytes()))
+                processFrameJson(json).forEach { listener.onReceive(this, it) }
             }
         } catch (ex: Exception) {
+            listener.onReceive(this, RawMessage(frame.readBytes()))
             listener.onError(this, ex)
         }
+    }
+
+    @Throws(SerializationException::class, JsonException::class)
+    private fun processFrameJson(
+        frame: JsonElement,
+        collector: MutableList<PolygonWebSocketMessage> = mutableListOf()
+    ): List<PolygonWebSocketMessage> {
+
+        if (frame is JsonArray) {
+            frame.jsonArray.forEach { processFrameJson(it, collector) }
+        }
+
+        if (frame is JsonObject) {
+            val message = when (frame.jsonObject.getPrimitive(EVENT_TYPE_MESSAGE_KEY).contentOrNull) {
+                "status" -> serializer.fromJson(StatusMessage.serializer(), frame)
+                "XQ" -> serializer.fromJson(CryptoMessage.Quote.serializer(), frame)
+                "XT" -> serializer.fromJson(CryptoMessage.Trade.serializer(), frame)
+                else -> RawMessage(frame.toString().toByteArray())
+            }
+            collector.add(message)
+        }
+
+        return collector
     }
 
     @Throws(SerializationException::class, JsonException::class)
@@ -154,7 +183,7 @@ constructor(
     @Throws(SerializationException::class, JsonException::class)
     private fun parseStatusMessageForAuthenticationResult(message: JsonElement): Boolean {
         if (message.isStatusMessage()) {
-            val status = serializer.fromJson(PolygonWebSocketMessage.StatusMessage.serializer(), message)
+            val status = serializer.fromJson(StatusMessage.serializer(), message)
             if (status.message == "authenticated") {
                 activeConnection?.isAuthenticated = true
                 listener.onAuthenticated(this)
@@ -165,39 +194,11 @@ constructor(
         return false
     }
 
-    suspend fun socketTest() {
-        val client = httpClientProvider.buildClient()
-
-        val session = client.webSocketSession {
-            url.protocol = URLProtocol.WSS
-            url.port = URLProtocol.WSS.defaultPort
-            host = polygonWebSocketDomain
-            url.path("crypto")
-        }
-
-        session.incoming.consumeAsFlow()
-            .onEach { println("From flow: " + (it as Frame.Text).readText()) }
-            .onCompletion { println("complete") }
-            .launchIn(coroutineScope)
-
-        session.send("""{"action": "auth", "params": "$apiKey"}""")
-        session.send("""{"action": "subscribe", "params": "XT.BTC-USD"}""")
-
-        delay(1000)
-
-        session.send("""{"action": "unsubscribe", "params": "XT.BTC-USD"}""")
-
-        println("closing")
-        session.close()
-        client.close()
-        println("Closed")
-    }
-
     /**
      * If the first byte in the message is an open square bracket, this frame is housing an array
      */
     private fun JsonElement.isStatusMessage() =
-        this is JsonObject && jsonObject.getPrimitive("ev").contentOrNull == "status"
+        this is JsonObject && jsonObject.getPrimitive(EVENT_TYPE_MESSAGE_KEY).contentOrNull == "status"
 }
 
 private class WebSocketConnection(
