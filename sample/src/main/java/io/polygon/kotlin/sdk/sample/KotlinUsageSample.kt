@@ -11,7 +11,7 @@ import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.*
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketClient
+import io.polygon.kotlin.sdk.websocket.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -47,20 +47,41 @@ suspend fun main() {
 
     println(ManagementFactory.getRuntimeMXBean().name)
 
-    try {
+    val websocketClient = PolygonWebSocketClient(
+        polygonKey,
+        WebSocketCluster.Crypto,
+        object : PolygonWebSocketListener {
+            override fun onAuthenticated(client: PolygonWebSocketClient) {
+                println("Connected!")
+            }
 
-        println("Socket stuff:")
-        val webSocketClient = PolygonWebSocketClient(polygonKey)
-        webSocketClient.socketTest()
-//        webSocketClient.anotherSocketTest()
-        println("Done??")
-    } catch (ex: Throwable) {
-        println("on ho")
-        ex.printStackTrace()
-    } finally {
-        println("FINALLY!")
-    }
-//    exitProcess(0)
+            override fun onReceive(
+                client: PolygonWebSocketClient,
+                message: PolygonWebSocketMessage
+            ) {
+                println("Receieved Message: ${String((message as PolygonWebSocketMessage.RawMessage).data)}")
+            }
+
+            override fun onDisconnect(client: PolygonWebSocketClient) {
+                println("Disconnected!")
+            }
+
+            override fun onError(client: PolygonWebSocketClient, error: Throwable) {
+                println("Error: ")
+                error.printStackTrace()
+            }
+
+        })
+
+    websocketClient.sendRaw = true
+
+    val subscription = PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "BTC-USD")
+
+    websocketClient.connect()
+    websocketClient.subscribe(subscription)
+    delay(5000)
+    websocketClient.unsubscribe(subscription)
+    websocketClient.disconnect()
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
