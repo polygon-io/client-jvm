@@ -59,7 +59,7 @@ suspend fun main() {
                 client: PolygonWebSocketClient,
                 message: PolygonWebSocketMessage
             ) {
-                println("Receieved Message: ${String((message as PolygonWebSocketMessage.RawMessage).data)}")
+                println("Receieved Message: $message")
             }
 
             override fun onDisconnect(client: PolygonWebSocketClient) {
@@ -73,14 +73,15 @@ suspend fun main() {
 
         })
 
-    websocketClient.sendRaw = true
-
-    val subscription = PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "BTC-USD")
+    val subscriptions = listOf(
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "ETH-USD"),
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Level2Books, "ETH-USD")
+    )
 
     websocketClient.connect()
-    websocketClient.subscribe(subscription)
+    websocketClient.subscribe(subscriptions)
     delay(5000)
-    websocketClient.unsubscribe(subscription)
+    websocketClient.unsubscribe(subscriptions)
     websocketClient.disconnect()
 }
 
