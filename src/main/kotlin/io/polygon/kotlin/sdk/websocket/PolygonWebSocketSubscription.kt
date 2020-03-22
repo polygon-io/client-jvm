@@ -42,6 +42,8 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
     sealed class Crypto(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Trades : Crypto("XT")
         object Quotes : Crypto("XQ")
+        object Aggregates : Crypto("XA")
+        object ConsolidatedQuotes : Crypto("XS")
         object Level2Books : Crypto("XL2")
     }
 

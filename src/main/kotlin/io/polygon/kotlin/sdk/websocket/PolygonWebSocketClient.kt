@@ -30,7 +30,9 @@ enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
 }
 
 /**
- * A client for the Polygon.io RESTful API
+ * A client for the Polygon.io WebSocket API
+ *
+ * https://polygon.io/sockets
  *
  * @param apiKey the API key to use with all API requests
  * @param cluster the [PolygonWebSocketCluster] to connect to
@@ -117,7 +119,7 @@ constructor(
 
         activeConnection
             ?.webSocketSession
-            ?.send("""{"action": "subscribe", "params":"${subscriptions.joinToString()}"}""")
+            ?.send("""{"action": "subscribe", "params":"${subscriptions.joinToString(separator = ",")}"}""")
     }
 
     /** Blocking version of [subscribe]  */
@@ -138,7 +140,7 @@ constructor(
 
         activeConnection
             ?.webSocketSession
-            ?.send("""{"action": "unsubscribe", "params":"${subscriptions.joinToString()}"}""")
+            ?.send("""{"action": "unsubscribe", "params":"${subscriptions.joinToString(separator = ",")}"}""")
     }
 
     /** Blocking version of [unsubscribe] */
@@ -208,6 +210,9 @@ constructor(
                 "CA" -> serializer.fromJson(ForexMessage.Aggregate.serializer(), frame)
                 "XQ" -> serializer.fromJson(CryptoMessage.Quote.serializer(), frame)
                 "XT" -> serializer.fromJson(CryptoMessage.Trade.serializer(), frame)
+                "XA" -> serializer.fromJson(CryptoMessage.Aggregate.serializer(), frame)
+                "XS" -> serializer.fromJson(CryptoMessage.ConsolidatedQuote.serializer(), frame)
+                "XL2" -> serializer.fromJson(CryptoMessage.Level2Tick.serializer(), frame)
                 else -> RawMessage(frame.toString().toByteArray())
             }
             collector.add(message)

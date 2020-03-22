@@ -84,7 +84,7 @@ sealed class PolygonWebSocketMessage {
             @SerialName("c") val closePrice: Double? = null,
             @SerialName("h") val highPrice: Double? = null,
             @SerialName("l") val lowPrice: Double? = null,
-            @SerialName("v") val quoteInAgg: Int? = null,
+            @SerialName("v") val volumeInAgg: Double? = null,
             @SerialName("s") val startTimestampMillis: Long? = null,
             @SerialName("e") val endTimestampMillis: Long? = null
         ) : ForexMessage()
@@ -116,6 +116,47 @@ sealed class PolygonWebSocketMessage {
             @SerialName("c") val conditions: List<Int> = emptyList(),
             @SerialName("i") val tradeId: String? = null,
             @SerialName("t") val exchangeTimestampMillis: Long? = null,
+            @SerialName("x") val exchangeId: Long? = null,
+            @SerialName("r") val receivedAtPolygonTimestamp: Long? = null
+        ) : CryptoMessage()
+
+        @Serializable
+        data class Aggregate(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("pair") val cryptoPair: String? = null,
+            @SerialName("o") val openPrice: Double? = null,
+            @SerialName("ox") val openExchangeId: Long? = null,
+            @SerialName("h") val highPrice: Double? = null,
+            @SerialName("hx") val highExchangeId: Long? = null,
+            @SerialName("l") val lowPrice: Double? = null,
+            @SerialName("lx") val lowExchangeId: Long? = null,
+            @SerialName("c") val closePrice: Double? = null,
+            @SerialName("cx") val closeExchangeId: Long? = null,
+            @SerialName("v") val volumeInAgg: Double? = null,
+            @SerialName("s") val aggStartTimestamp: Long? = null,
+            @SerialName("e") val aggEndTimestamp: Long? = null
+        ) : CryptoMessage()
+
+        @Serializable
+        data class ConsolidatedQuote(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("pair") val cryptoPair: String? = null,
+            @SerialName("as") val askSize: Double? = null,
+            @SerialName("ap") val askPrice: Double? = null,
+            @SerialName("ax") val askExchangeId: Long? = null,
+            @SerialName("bs") val bidSize: Double? = null,
+            @SerialName("bp") val bidPrice: Double? = null,
+            @SerialName("bx") val bidExchangeId: Long? = null,
+            @SerialName("t") val timestamp: Long? = null
+        ) : CryptoMessage()
+
+        @Serializable
+        data class Level2Tick(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("pair") val cryptoPair: String? = null,
+            @SerialName("b") val bidPrices: List<List<Double>> = emptyList(),
+            @SerialName("a") val askPrices: List<List<Double>> = emptyList(),
+            @SerialName("t") val timestampMillis: Long? = null,
             @SerialName("x") val exchangeId: Long? = null,
             @SerialName("r") val receivedAtPolygonTimestamp: Long? = null
         ) : CryptoMessage()

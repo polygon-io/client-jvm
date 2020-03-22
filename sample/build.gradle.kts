@@ -1,10 +1,5 @@
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow") version "5.1.0"
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -15,12 +10,6 @@ dependencies {
 
     // For pretty printing data classes
     implementation("com.tylerthrailkill.helpers:pretty-print:2.0.2")
-}
-
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>() {
-    manifest {
-        attributes["Main-Class"] = "io.polygon.kotlin.sdk.sample.KotlinUsageSampleKt"
-    }
 }
 
 task(name = "javaSample", type = JavaExec::class) {
