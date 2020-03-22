@@ -1,8 +1,20 @@
 # Polygon Kotlin Client SDK
 
-A client SDK for Polygon.io's API usable by any JVM language
+A client SDK for Polygon.io's API usable by any JVM language (including in Android SDK version 21+)
 
 Supports Polygon's [REST](https://polygon.io/docs/#getting-started) and [WebSocket](https://polygon.io/sockets) APIs
+
+To use the SDK in a Gradle project:
+```groovy
+repositories {
+    jcenter()
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation 'com.github.mmoghaddam385:polygon-kotlin-client:1.0' 
+}
+```
 
 ## Features
 Everything you'd expect from a client SDK plus...
