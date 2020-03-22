@@ -15,11 +15,14 @@ plugins {
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.serialization") version "1.3.61"
     kotlin("kapt") version "1.3.61"
+    maven
 }
 
+group = "com.github.mmoghaddam385"
+version = "0.9"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61")
 
     val ktorVersion = "1.3.0"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
