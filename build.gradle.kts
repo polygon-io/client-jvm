@@ -15,11 +15,13 @@ plugins {
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.serialization") version "1.3.61"
     kotlin("kapt") version "1.3.61"
+    maven
 }
 
+group = "com.github.mmoghaddam385"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61")
 
     val ktorVersion = "1.3.0"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -42,6 +44,19 @@ allprojects {
     }
 }
 
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    val sourcesJar by creating(Jar::class) {
+        dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+        classifier = "sources"
+        from(sourceSets["main"].allSource)
+    }
+
+    artifacts {
+        add("archives", sourcesJar)
+        add("archives", jar)
+    }
 }

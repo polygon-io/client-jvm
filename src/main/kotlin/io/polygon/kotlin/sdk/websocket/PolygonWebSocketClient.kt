@@ -10,11 +10,9 @@ import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.ext.PolygonCompletionCallback
 import io.polygon.kotlin.sdk.ext.coroutineToCompletionCallback
 import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.*
 
@@ -50,8 +48,7 @@ constructor(
     private val listener: PolygonWebSocketListener,
     private val bufferSize: Int = Channel.UNLIMITED,
     private val httpClientProvider: HttpClientProvider = DefaultJvmHttpClientProvider(),
-    private val polygonWebSocketDomain: String = "socket.polygon.io",
-    private val coroutineScope: CoroutineScope = GlobalScope
+    private val polygonWebSocketDomain: String = "socket.polygon.io"
 ) {
 
     private val serializer by lazy {
@@ -64,6 +61,14 @@ constructor(
      * Set this to true if you want to parse incoming messages yourself
      */
     var sendRaw: Boolean = false
+
+    /**
+     * The coroutine scope to launch the web socket processing in.
+     * This should be set before connecting to the websocket
+     * For info on coroutines, see here: https://kotlinlang.org/docs/reference/coroutines/coroutines-guide.html
+     */
+    var coroutineScope: CoroutineScope = GlobalScope
+
 
     /**
      * Connect and authenticate to the given [PolygonWebSocketCluster].
