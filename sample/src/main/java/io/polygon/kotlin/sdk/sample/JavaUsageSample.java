@@ -66,7 +66,12 @@ public class JavaUsageSample {
                 new DefaultPolygonWebSocketListener() {
                     @Override
                     public void onReceive(@NotNull PolygonWebSocketClient client, @NotNull PolygonWebSocketMessage message) {
-                        System.out.println(message.toString());
+                        if (message instanceof PolygonWebSocketMessage.RawMessage) {
+                            System.out.println(new String(((PolygonWebSocketMessage.RawMessage) message).getData()));
+                        } else {
+
+                            System.out.println(message.toString());
+                        }
                     }
 
                     @Override
@@ -79,7 +84,7 @@ public class JavaUsageSample {
         client.connectBlocking();
 
         List<PolygonWebSocketSubscription> subs = Collections.singletonList(
-                new PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades.INSTANCE, "BTC-USD"));
+                new PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Level2Books.INSTANCE, "BTC-USD"));
         client.subscribeBlocking(subs);
 
         try {
