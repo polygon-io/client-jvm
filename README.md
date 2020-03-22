@@ -1,6 +1,8 @@
-# Polygon Kotlin Client SDK (WIP)
+# Polygon Kotlin Client SDK
 
 A client SDK for Polygon.io's API usable by any JVM language
+
+Supports Polygon's [REST](https://polygon.io/docs/#getting-started) and [WebSocket](https://polygon.io/sockets) APIs
 
 ## Features
 Everything you'd expect from a client SDK plus...
