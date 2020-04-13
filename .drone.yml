@@ -1,0 +1,22 @@
+---
+kind: pipeline
+type: docker
+name: review
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build
+  image: gradle:5.4.1-jdk8
+  commands:
+  - ./gradlew assemble
+
+trigger:
+  branch:
+  - master
+  event:
+  - pull_request
+
+...
