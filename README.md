@@ -1,4 +1,4 @@
-# Polygon Kotlin Client SDK
+# Polygon JVM Client SDK written in Kotlin
 
 A client SDK for Polygon.io's API usable by any JVM language (including in Android SDK version 21+)
 
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.mmoghaddam385:polygon-kotlin-client:1.0' 
+    implementation 'com.github.polygon-io:client-jvm:1.0' 
 }
 ```
 
