@@ -1,6 +1,10 @@
 package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
+import io.ktor.client.engine.cio.CIO
+import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
+import io.polygon.kotlin.sdk.DefaultOkHttpClientProvider
+import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.AggregatesParameters
 import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
@@ -20,7 +24,29 @@ import io.polygon.kotlin.sdk.websocket.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import okhttp3.Interceptor
+import okhttp3.Response
 import kotlin.system.exitProcess
+
+val okHttpClientProvider: HttpClientProvider
+    get() = DefaultOkHttpClientProvider(
+        applicationInterceptors = listOf(object : okhttp3.Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                println("Intercepting application level")
+                return chain.proceed(chain.request())
+            }
+        }),
+        networkInterceptors = listOf(object : Interceptor{
+            override fun intercept(chain: Interceptor.Chain): Response {
+                println("Intercepting network level")
+                return chain.proceed(chain.request())
+            }
+        })
+    )
+
+val cioClientProvider: HttpClientProvider
+    get() = DefaultJvmHttpClientProvider(engine = CIO.create())
+
 
 suspend fun main() {
     val polygonKey = System.getenv("POLYGON_API_KEY")
@@ -30,7 +56,7 @@ suspend fun main() {
         exitProcess(1)
     }
 
-    val polygonClient = PolygonRestClient(polygonKey)
+    val polygonClient = PolygonRestClient(polygonKey, httpClientProvider = okHttpClientProvider)
 
     println("Blocking for markets...")
     val markets = polygonClient.referenceClient.getSupportedMarketsBlocking()
@@ -78,7 +104,8 @@ suspend fun websocketSample(polygonKey: String) {
                 error.printStackTrace()
             }
 
-        })
+        },
+        httpClientProvider = cioClientProvider)
 
     val subscriptions = listOf(
         PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "ETH-USD"),
