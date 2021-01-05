@@ -21,6 +21,7 @@ suspend fun PolygonRestClient.getAggregates(params: AggregatesParameters): Aggre
         )
 
         parameters["unadjusted"] = params.unadjusted.toString()
+        parameters["limit"] = params.limit.toString()
     }
 
 @Builder
@@ -50,7 +51,11 @@ data class AggregatesParameters(
 
     /** Set to true if the results should NOT be adjusted for splits. Default: false */
     @DefaultValue("false")
-    val unadjusted: Boolean = false
+    val unadjusted: Boolean = false,
+
+    /** Limits the number of base aggregates */
+    @DefaultValue("5000")
+    val limit: Long = 5000
 )
 
 @Serializable
