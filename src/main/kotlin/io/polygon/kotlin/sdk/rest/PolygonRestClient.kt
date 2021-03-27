@@ -1,8 +1,8 @@
 package io.polygon.kotlin.sdk.rest
 
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.http.URLBuilder
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
@@ -25,7 +25,7 @@ constructor(
     private val apiKey: String,
     private val httpClientProvider: HttpClientProvider = DefaultJvmHttpClientProvider(),
     private val polygonApiDomain: String = "api.polygon.io"
-) {
+): AutoCloseable {
 
     /**
      * A [PolygonReferenceClient] that can be used to access Polygon reference APIs
@@ -46,6 +46,17 @@ constructor(
      * A [PolygonCryptoClient] that can be used to access Polygon crypto APIs
      */
     val cryptoClient by lazy { PolygonCryptoClient(this) }
+
+    /**
+     * Lazy delegate used for instantiating the internal [HttpClient].
+     * Needed for providing NOOP close semantics if the httpClient wasn't instantiated.
+     */
+    val httpClientDelegate = lazy { httpClientProvider.buildClient() }
+
+    /**
+     * A [HttpClient] used to submit all API requests.
+     */
+    val httpClient by httpClientDelegate
 
     /**
      * Get aggregates for a date range, in custom time window sizes.
@@ -85,14 +96,17 @@ constructor(
             parameters["apiKey"] = apiKey
         }
 
-    private inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
-        httpClientProvider.buildClient().use(codeBlock)
-
     internal suspend inline fun <reified T> fetchResult(
         urlBuilderBlock: URLBuilder.() -> Unit
     ): T {
         val url = baseUrlBuilder.apply(urlBuilderBlock).build()
-        return withHttpClient { httpClient -> httpClient.get(url) }
+        return httpClient.get(url)
+    }
+
+    override fun close() {
+        if (httpClientDelegate.isInitialized()) {
+            httpClient.close()
+        }
     }
 
 }
