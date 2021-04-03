@@ -79,12 +79,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_open_close_symbol_date
      */
-    fun getDailyOpenCloseBlocking(symbol: String, date: String): DailyOpenCloseDTO =
-        runBlocking { getDailyOpenClose(symbol, date) }
+    fun getDailyOpenCloseBlocking(symbol: String, date: String, unadjusted: Boolean): DailyOpenCloseDTO =
+        runBlocking { getDailyOpenClose(symbol, date, unadjusted) }
     
     /** See [getDailyOpenCloseBlocking] */
-    fun getDailyOpenClose(symbol: String, date: String, callback: PolygonRestApiCallback<DailyOpenCloseDTO>) =
-        coroutineToRestCallback(callback, { getDailyOpenClose(symbol, date) })
+    fun getDailyOpenClose(symbol: String, date: String, unadjusted: Boolean, callback: PolygonRestApiCallback<DailyOpenCloseDTO>) =
+        coroutineToRestCallback(callback, { getDailyOpenClose(symbol, date, unadjusted) })
 
     /**
      * The mappings for conditions on trades and quotes.

@@ -200,7 +200,7 @@ fun lastQuoteSample(polygonClient: PolygonRestClient) {
 
 fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
     println("RDFN open/close on 2020-02-19")
-    polygonClient.stocksClient.getDailyOpenCloseBlocking("RDFN", "2020-02-19").pp()
+    polygonClient.stocksClient.getDailyOpenCloseBlocking("RDFN", "2020-02-19", true).pp()
 }
 
 fun conditionsMappingSample(polygonClient: PolygonRestClient) {
