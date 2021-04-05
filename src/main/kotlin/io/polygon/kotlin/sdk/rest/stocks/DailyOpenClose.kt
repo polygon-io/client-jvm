@@ -3,8 +3,11 @@ package io.polygon.kotlin.sdk.rest.stocks
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getDailyOpenCloseBlocking] */
-suspend fun PolygonStocksClient.getDailyOpenClose(symbol: String, date: String): DailyOpenCloseDTO =
-    polygonClient.fetchResult { path("v1", "open-close", symbol, date) }
+suspend fun PolygonStocksClient.getDailyOpenClose(symbol: String, date: String, unadjusted: Boolean): DailyOpenCloseDTO =
+    polygonClient.fetchResult { 
+        path("v1", "open-close", symbol, date)
+        parameters["unadjusted"] = unadjusted.toString()
+    }
 
 @Serializable
 data class DailyOpenCloseDTO(
@@ -16,5 +19,5 @@ data class DailyOpenCloseDTO(
     val low: Double? = null,
     val close: Double? = null,
     val afterHours: Double? = null,
-    val volume: Long? = null
+    val volume: Double? = null
 )
