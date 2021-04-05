@@ -19,5 +19,6 @@ data class DailyOpenCloseDTO(
     val low: Double? = null,
     val close: Double? = null,
     val afterHours: Double? = null,
+    val preMarket: Double? = null,
     val volume: Double? = null
 )
