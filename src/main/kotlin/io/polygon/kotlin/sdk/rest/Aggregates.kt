@@ -72,6 +72,7 @@ data class AggregatesDTO(
 data class AggregateDTO(
     @SerialName("T") val ticker: String? = null,
     @SerialName("v") val volume: Double? = null,
+    @SerialName("vw") val volumeWeightedAveragePrice: Double? = null,
     @SerialName("o") val open: Double? = null,
     @SerialName("c") val close: Double? = null,
     @SerialName("l") val low: Double? = null,
