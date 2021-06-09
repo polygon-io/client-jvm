@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.polygon-io:client-jvm:1.1.1' 
+    implementation 'com.github.polygon-io:client-jvm:1.2.2' 
 }
 ```
 
