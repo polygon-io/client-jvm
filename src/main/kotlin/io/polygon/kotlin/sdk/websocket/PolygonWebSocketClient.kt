@@ -24,7 +24,8 @@ private const val EVENT_TYPE_MESSAGE_KEY = "ev"
 enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
     Stocks("stocks"),
     Forex("forex"),
-    Crypto("crypto")
+    Crypto("crypto"),
+    Options("options")
 }
 
 /**
