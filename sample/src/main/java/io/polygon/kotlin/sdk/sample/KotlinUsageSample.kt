@@ -124,8 +124,8 @@ fun supportedTickersSample(polygonClient: PolygonRestClient) {
     val params = SupportedTickersParameters(
         sortBy = "ticker",
         sortDescending = false,
-        market = "FX",
-        tickersPerPage = 3
+        market = "fx",
+        limit = 3
     )
 
     polygonClient.referenceClient.getSupportedTickersBlocking(params).pp()
