@@ -154,6 +154,7 @@ data class TickerDTO(
     @SerialName("composite_figi") val compositeFigi: String? = null,
     @SerialName("currency_name") val currencyName: String? = null,
     @SerialName("last_updated_utc") val lastUpdatedUtc: String? = null,
+    @SerialName("delisted_utc") val delistedUtc: String? = null,
     val locale: String? = null,
     val market: String? = null,
     val name: String? = null,
