@@ -12,9 +12,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.polygon-io:client-jvm:1.2.2' 
+    implementation 'com.github.polygon-io:client-jvm:vX.Y.Z' 
 }
 ```
+
+(See GitHub releases for the current release version)
 
 ## Features
 Everything you'd expect from a client SDK plus...
