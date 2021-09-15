@@ -100,8 +100,8 @@ public class JavaUsageSample {
     public static void supportedTickersSample(PolygonRestClient polygonRestClient) {
         System.out.println("3 Supported Tickers: ");
         SupportedTickersParameters params = new SupportedTickersParametersBuilder()
-                .tickersPerPage(3)
-                .market("FX")
+                .limit(3)
+                .market("fx")
                 .build();
 
         System.out.println(polygonRestClient
