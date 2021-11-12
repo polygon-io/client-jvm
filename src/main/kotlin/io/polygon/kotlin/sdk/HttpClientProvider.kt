@@ -61,7 +61,10 @@ constructor(
         HttpClient(buildEngine()) {
             install(WebSockets)
             install(JsonFeature) {
-                serializer = KotlinxSerializer(Json.nonstrict)
+                serializer = KotlinxSerializer(Json {
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                })
             }
         }
 

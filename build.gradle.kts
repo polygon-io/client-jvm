@@ -23,7 +23,7 @@ group = "com.github.mmoghaddam385"
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61")
 
-    val ktorVersion = "1.3.1"
+    val ktorVersion = "1.6.5"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-websockets:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
