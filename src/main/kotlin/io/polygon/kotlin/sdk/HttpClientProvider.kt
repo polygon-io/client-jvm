@@ -65,7 +65,7 @@ constructor(
                     isLenient = true
                     ignoreUnknownKeys = true
                 })
-            }
+0            }
         }
 
     override fun getDefaultRestURLBuilder() =

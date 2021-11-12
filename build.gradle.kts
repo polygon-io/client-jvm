@@ -12,9 +12,9 @@ buildscript {
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.3.61"
-    kotlin("plugin.serialization") version "1.3.61"
-    kotlin("kapt") version "1.3.61"
+    kotlin("jvm") version "1.5.31"
+    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("kapt") version "1.5.31"
     maven
 }
 
@@ -30,7 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
 
     // Annotation processor that generates Java builders for data classes
-    val ktBuilderVersion = "1.1.0"
+    val ktBuilderVersion = "1.2.1"
     implementation("com.thinkinglogic.builder:kotlin-builder-annotation:$ktBuilderVersion")
     kapt("com.thinkinglogic.builder:kotlin-builder-processor:$ktBuilderVersion")
 
@@ -46,7 +46,7 @@ allprojects {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     val sourcesJar by creating(Jar::class) {
