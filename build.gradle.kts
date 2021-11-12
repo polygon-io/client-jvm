@@ -5,8 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.3.61")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.5.31")
     }
 }
 
@@ -21,7 +21,7 @@ plugins {
 group = "com.github.mmoghaddam385"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31")
 
     val ktorVersion = "1.6.5"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
