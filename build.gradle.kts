@@ -46,7 +46,7 @@ allprojects {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     val sourcesJar by creating(Jar::class) {
