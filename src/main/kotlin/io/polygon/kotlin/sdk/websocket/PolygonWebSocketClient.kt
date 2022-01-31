@@ -1,9 +1,9 @@
 package io.polygon.kotlin.sdk.websocket
 
-import io.ktor.client.HttpClient
-import io.ktor.client.features.websocket.webSocketSession
-import io.ktor.client.request.host
-import io.ktor.http.URLProtocol
+import io.ktor.client.*
+import io.ktor.client.features.websocket.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
@@ -137,7 +137,7 @@ constructor(
 
     /** Async/callback version of [subscribe] */
     fun subscribeAsync(subscriptions: List<PolygonWebSocketSubscription>, callback: PolygonCompletionCallback?) =
-        coroutineToCompletionCallback(callback, coroutineScope)  { subscribe(subscriptions) }
+        coroutineToCompletionCallback(callback, coroutineScope) { subscribe(subscriptions) }
 
     /**
      * Unsubscribe to one or more data streams
@@ -210,7 +210,7 @@ constructor(
         }
 
         if (frame is JsonObject) {
-            val message = when (JsonPrimitive(EVENT_TYPE_MESSAGE_KEY).contentOrNull) {
+            val message = when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
                 "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
                 "T" -> serializer.decodeFromJsonElement(StocksMessage.Trade.serializer(), frame)
                 "Q" -> serializer.decodeFromJsonElement(StocksMessage.Quote.serializer(), frame)
