@@ -1,17 +1,12 @@
 package io.polygon.kotlin.sdk
 
-import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.HttpClientEngineConfig
-import io.ktor.client.engine.HttpClientEngineFactory
-import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.*
+import io.ktor.client.engine.*
+import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.websocket.WebSockets
-import io.ktor.http.DEFAULT_PORT
-import io.ktor.http.URLBuilder
-import io.ktor.http.URLProtocol
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.websocket.*
+import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 
@@ -65,7 +60,7 @@ constructor(
                     isLenient = true
                     ignoreUnknownKeys = true
                 })
-0            }
+            }
         }
 
     override fun getDefaultRestURLBuilder() =
