@@ -44,10 +44,6 @@ val okHttpClientProvider: HttpClientProvider
         })
     )
 
-val cioClientProvider: HttpClientProvider
-    get() = DefaultJvmHttpClientProvider(engine = CIO.create())
-
-
 suspend fun main() {
     val polygonKey = System.getenv("POLYGON_API_KEY")
 
@@ -104,8 +100,7 @@ suspend fun websocketSample(polygonKey: String) {
                 error.printStackTrace()
             }
 
-        },
-        httpClientProvider = cioClientProvider)
+        })
 
     val subscriptions = listOf(
         PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "ETH-USD"),
