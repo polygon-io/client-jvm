@@ -1,6 +1,7 @@
 package io.polygon.kotlin.sdk.rest.crypto
 
 import com.thinkinglogic.builder.annotation.Builder
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getHistoricTradesBlocking] */

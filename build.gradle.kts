@@ -23,10 +23,10 @@ group = "com.github.mmoghaddam385"
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
 
-    val ktorVersion = "1.6.7"
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    val ktorVersion = "2.1.2"
+    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-websockets-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
 
     // Annotation processor that generates Java builders for data classes
@@ -34,7 +34,7 @@ dependencies {
     implementation("com.thinkinglogic.builder:kotlin-builder-annotation:$ktBuilderVersion")
     kapt("com.thinkinglogic.builder:kotlin-builder-processor:$ktBuilderVersion")
 
-    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.13.2")
 }
 
 allprojects {

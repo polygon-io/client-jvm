@@ -2,6 +2,7 @@ package io.polygon.kotlin.sdk.rest.forex
 
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getRealTimeConversionBlocking] */

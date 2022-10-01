@@ -1,5 +1,6 @@
 package io.polygon.kotlin.sdk.rest.forex
 
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getLastQuoteBlocking] */

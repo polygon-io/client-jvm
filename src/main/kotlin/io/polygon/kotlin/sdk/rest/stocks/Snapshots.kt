@@ -1,5 +1,6 @@
 package io.polygon.kotlin.sdk.rest.stocks
 
+import io.ktor.http.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

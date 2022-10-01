@@ -1,5 +1,6 @@
 package io.polygon.kotlin.sdk.rest.reference
 
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketHolidaysBlocking] */
