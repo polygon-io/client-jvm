@@ -1,5 +1,6 @@
 package io.polygon.kotlin.sdk.rest.crypto
 
+import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

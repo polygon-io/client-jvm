@@ -1,5 +1,6 @@
 package io.polygon.kotlin.sdk.rest.forex
 
+import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import io.polygon.kotlin.sdk.rest.stocks.SnapshotAggregateDTO
 import kotlinx.serialization.SerialName

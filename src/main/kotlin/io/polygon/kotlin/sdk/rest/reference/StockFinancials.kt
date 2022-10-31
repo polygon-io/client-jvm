@@ -1,6 +1,7 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import com.thinkinglogic.builder.annotation.Builder
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockFinancialsBlocking] */

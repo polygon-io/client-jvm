@@ -1,5 +1,6 @@
 package io.polygon.kotlin.sdk.rest.crypto
 
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getLastTradeBlocking] */

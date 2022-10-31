@@ -1,6 +1,7 @@
 package io.polygon.kotlin.sdk.rest.forex
 
 import com.thinkinglogic.builder.annotation.Builder
+import io.ktor.http.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
