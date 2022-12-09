@@ -71,6 +71,7 @@ suspend fun main() {
         GroupedDailyParameters("us", "stocks", "2022-12-08"),
         PolygonRestOptions.withTimeout(10_000), // Custom timeout for this request
         PolygonRestOptions.withQueryParam("additional-param", "additional-value"), // Additional query parameter
+        PolygonRestOptions.withHeader("X-Custom-Header", "custom-value"), // Custom header for this request
         { this.expectSuccess = true }, // Example of an arbitrary option that doesn't use a helper function
     )
 

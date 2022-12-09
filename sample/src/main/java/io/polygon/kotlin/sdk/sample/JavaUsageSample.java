@@ -52,7 +52,8 @@ public class JavaUsageSample {
         AggregatesDTO groupedDaily = client.getGroupedDailyAggregatesBlocking(
                 new GroupedDailyParametersBuilder().locale("us").market("stocks").date("2022-12-08").build(),
                 PolygonRestOptions.withTimeout(10_000),
-                PolygonRestOptions.withQueryParam("additional-param", "additional-value")
+                PolygonRestOptions.withQueryParam("additional-param", "additional-value"),
+                PolygonRestOptions.withHeader("X-Custom-Header", "custom-header-value")
         );
 
         System.out.println("Got " + groupedDaily.getResults().size() + " results from grouped daily");
