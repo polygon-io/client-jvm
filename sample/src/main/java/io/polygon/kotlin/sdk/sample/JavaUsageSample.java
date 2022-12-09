@@ -1,22 +1,15 @@
 package io.polygon.kotlin.sdk.sample;
 
+import io.polygon.kotlin.sdk.rest.*;
+import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
+import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
+import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
+import io.polygon.kotlin.sdk.websocket.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
-import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback;
-import io.polygon.kotlin.sdk.rest.PolygonRestClient;
-import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
-import io.polygon.kotlin.sdk.websocket.DefaultPolygonWebSocketListener;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketChannel;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketClient;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketCluster;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketSubscription;
 
 public class JavaUsageSample {
 
@@ -54,6 +47,16 @@ public class JavaUsageSample {
 
         latch.await();
         System.out.println("Done waiting for async market data\n\n");
+
+        System.out.println("Using options");
+        AggregatesDTO groupedDaily = client.getGroupedDailyAggregatesBlocking(
+                new GroupedDailyParametersBuilder().locale("us").market("stocks").date("2022-12-08").build(),
+                PolygonRestOptions.withTimeout(10_000),
+                PolygonRestOptions.withQueryParam("additional-param", "additional-value"),
+                PolygonRestOptions.withHeader("X-Custom-Header", "custom-header-value")
+        );
+
+        System.out.println("Got " + groupedDaily.getResults().size() + " results from grouped daily");
 
         System.out.println("Websocket sample:");
         websocketSample(polygonKey);
