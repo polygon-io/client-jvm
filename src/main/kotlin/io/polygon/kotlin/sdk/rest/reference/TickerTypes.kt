@@ -1,12 +1,13 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedTickerTypesBlocking] */
-suspend fun PolygonReferenceClient.getSupportedTickerTypes(): TickerTypesDTO =
-    polygonClient.fetchResult { path("v2", "reference", "types") }
+suspend fun PolygonReferenceClient.getSupportedTickerTypes(vararg opts: PolygonRestOption): TickerTypesDTO =
+    polygonClient.fetchResultWithOptions({ path("v2", "reference", "types") }, *opts)
 
 @Serializable
 data class TickerTypesDTO(

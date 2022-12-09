@@ -3,16 +3,20 @@ package io.polygon.kotlin.sdk.rest.reference
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getTickerNewsBlocking] */
-suspend fun PolygonReferenceClient.getTickerNews(params: TickerNewsParameters): List<TickerNewsDTO> =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getTickerNews(
+    params: TickerNewsParameters,
+    vararg opts: PolygonRestOption
+): List<TickerNewsDTO> =
+    polygonClient.fetchResultWithOptions({
         path("v1", "meta", "symbols", params.symbol, "news")
 
         parameters["perpage"] = params.resultsPerPage.toString()
         parameters["page"] = params.page.toString()
-    }
+    }, *opts)
 
 @Builder
 data class TickerNewsParameters(

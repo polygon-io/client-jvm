@@ -1,13 +1,14 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketHolidaysBlocking] */
-suspend fun PolygonReferenceClient.getMarketHolidays(): List<MarketHolidayDTO> =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getMarketHolidays(vararg opts: PolygonRestOption): List<MarketHolidayDTO> =
+    polygonClient.fetchResultWithOptions({
         path("v1", "marketstatus", "upcoming")
-    }
+    }, *opts)
 
 @Serializable
 data class MarketHolidayDTO(
