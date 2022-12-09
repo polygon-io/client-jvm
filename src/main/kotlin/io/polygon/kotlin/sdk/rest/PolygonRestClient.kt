@@ -3,7 +3,7 @@ package io.polygon.kotlin.sdk.rest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.http.URLBuilder
+import io.ktor.http.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
@@ -57,27 +57,38 @@ constructor(
      * Currencies: C:EURUSD
      * Crypto: X:BTCUSD
      *
-     * API Doc: https://polygon.io/docs/#get_v2_aggs_ticker__ticker__range__multiplier___timespan___from___to__anchor
+     * API Doc: https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__range__multiplier___timespan___from___to
      */
-    fun getAggregatesBlocking(params: AggregatesParameters): AggregatesDTO =
-        runBlocking { getAggregates(params) }
+    fun getAggregatesBlocking(params: AggregatesParameters, vararg opts: PolygonRestOption): AggregatesDTO =
+        runBlocking { getAggregates(params, *opts) }
 
     /** See [getAggregatesBlocking] */
-    fun getAggregates(params: AggregatesParameters, callback: PolygonRestApiCallback<AggregatesDTO>) =
-        coroutineToRestCallback(callback, { getAggregates(params) })
+    fun getAggregates(
+        params: AggregatesParameters,
+        callback: PolygonRestApiCallback<AggregatesDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getAggregates(params, *opts) })
 
     /**
      * Get the daily OHLC for entire markets.
      * The response size is large.
      *
-     * API Doc: https://polygon.io/docs/#get_v2_aggs_grouped_locale__locale__market__market___date__anchor
+     * API Doc: https://polygon.io/docs/stocks/get_v2_aggs_grouped_locale_us_market_stocks__date
      */
-    fun getGroupedDailyAggregatesBlocking(params: GroupedDailyParameters): AggregatesDTO =
-        runBlocking { getGroupedDailyAggregates(params) }
+    fun getGroupedDailyAggregatesBlocking(
+        params: GroupedDailyParameters,
+        vararg opts: PolygonRestOption
+    ): AggregatesDTO =
+        runBlocking { getGroupedDailyAggregates(params, *opts) }
 
     /** See [getGroupedDailyAggregatesBlocking] */
-    fun getGroupedDailyAggregates(params: GroupedDailyParameters, callback: PolygonRestApiCallback<AggregatesDTO>) =
-        coroutineToRestCallback(callback, { getGroupedDailyAggregates(params) })
+    fun getGroupedDailyAggregates(
+        params: GroupedDailyParameters,
+        callback: PolygonRestApiCallback<AggregatesDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getGroupedDailyAggregates(params, *opts) })
 
 
     private val baseUrlBuilder: URLBuilder
@@ -89,11 +100,21 @@ constructor(
     private inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
         httpClientProvider.buildClient().use(codeBlock)
 
+    // TODO: get rid of this once all functions are updated
     internal suspend inline fun <reified T> fetchResult(
         urlBuilderBlock: URLBuilder.() -> Unit
+    ): T = fetchResultWithOptions(urlBuilderBlock)
+
+    internal suspend inline fun <reified T> fetchResultWithOptions(
+        urlBuilderBlock: URLBuilder.() -> Unit,
+        vararg options: PolygonRestOption
     ): T {
         val url = baseUrlBuilder.apply(urlBuilderBlock).build()
-        return withHttpClient { httpClient -> httpClient.get(url) }.body()
+        return withHttpClient { httpClient ->
+            httpClient.get(url) {
+                options.forEach { this.it() }
+            }
+        }.body()
     }
 
 }
