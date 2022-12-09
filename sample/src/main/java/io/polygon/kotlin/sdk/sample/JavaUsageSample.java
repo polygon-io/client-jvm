@@ -1,24 +1,15 @@
 package io.polygon.kotlin.sdk.sample;
 
-import io.ktor.client.request.HttpRequestBuilder;
 import io.polygon.kotlin.sdk.rest.*;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
+import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
+import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
+import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
+import io.polygon.kotlin.sdk.websocket.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
-import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
-import io.polygon.kotlin.sdk.websocket.DefaultPolygonWebSocketListener;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketChannel;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketClient;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketCluster;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage;
-import io.polygon.kotlin.sdk.websocket.PolygonWebSocketSubscription;
 
 public class JavaUsageSample {
 
