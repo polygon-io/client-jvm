@@ -1,19 +1,30 @@
 package io.polygon.kotlin.sdk.rest.stocks
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getSnapshotAllTickersBlocking] */
-suspend fun PolygonStocksClient.getSnapshotAllTickers(): SnapshotAllTickersDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers") }
+suspend fun PolygonStocksClient.getSnapshotAllTickers(vararg opts: PolygonRestOption): SnapshotAllTickersDTO =
+    polygonClient.fetchResultWithOptions({
+        path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers")
+    }, *opts)
 
 /** See [PolygonStocksClient.getSnapshotBlocking] */
-suspend fun PolygonStocksClient.getSnapshot(symbol: String): SnapshotSingleTickerDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers", symbol) }
+suspend fun PolygonStocksClient.getSnapshot(symbol: String, vararg opts: PolygonRestOption): SnapshotSingleTickerDTO =
+    polygonClient.fetchResultWithOptions({
+        path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers", symbol)
+    }, *opts)
 
-suspend fun PolygonStocksClient.getSnapshotGainersOrLosers(direction: GainersOrLosersDirection): SnapshotGainersOrLosersDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "us", "markets", "stocks", direction.queryParamValue) }
+/** See [PolygonStocksClient.getSnapshotGainersOrLosersBlocking] */
+suspend fun PolygonStocksClient.getSnapshotGainersOrLosers(
+    direction: GainersOrLosersDirection,
+    vararg opts: PolygonRestOption
+): SnapshotGainersOrLosersDTO =
+    polygonClient.fetchResultWithOptions({
+        path("v2", "snapshot", "locale", "us", "markets", "stocks", direction.queryParamValue)
+    }, *opts)
 
 enum class GainersOrLosersDirection(internal val queryParamValue: String) {
     GAINERS("gainers"),

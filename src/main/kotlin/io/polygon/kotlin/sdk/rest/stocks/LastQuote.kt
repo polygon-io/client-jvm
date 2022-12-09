@@ -1,12 +1,13 @@
 package io.polygon.kotlin.sdk.rest.stocks
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getLastQuoteBlocking] */
-suspend fun PolygonStocksClient.getLastQuote(symbol: String): LastQuoteResultDTO =
-    polygonClient.fetchResult { path("v1", "last_quote", "stocks", symbol) }
+suspend fun PolygonStocksClient.getLastQuote(symbol: String, vararg opts: PolygonRestOption): LastQuoteResultDTO =
+    polygonClient.fetchResultWithOptions({ path("v1", "last_quote", "stocks", symbol) }, *opts)
 
 @Serializable
 data class LastQuoteResultDTO(
