@@ -1,14 +1,18 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockDividendsBlocking] */
-suspend fun PolygonReferenceClient.getStockDividends(symbol: String): StockDividendsDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getStockDividends(
+    symbol: String,
+    vararg opts: PolygonRestOption
+): StockDividendsDTO =
+    polygonClient.fetchResultWithOptions({
         path("v2", "reference", "dividends", symbol)
-    }
+    }, *opts)
 
 @Serializable
 data class StockDividendsDTO(

@@ -3,6 +3,7 @@ package io.polygon.kotlin.sdk.rest.reference
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -16,17 +17,18 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /**
      * Gets the supported tickers based on the given parameters
      *
-     * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_tickers
+     * API Doc: https://polygon.io/docs/stocks/get_v3_reference_tickers
      */
-    fun getSupportedTickersBlocking(params: SupportedTickersParameters): TickersDTO =
-        runBlocking { getSupportedTickers(params) }
+    fun getSupportedTickersBlocking(params: SupportedTickersParameters, vararg opts: PolygonRestOption): TickersDTO =
+        runBlocking { getSupportedTickers(params, *opts) }
 
     /** See [getSupportedTickersBlocking] */
     fun getSupportedTickers(
         params: SupportedTickersParameters,
-        callback: PolygonRestApiCallback<TickersDTO>
+        callback: PolygonRestApiCallback<TickersDTO>,
+        vararg opts: PolygonRestOption
     ) {
-        coroutineToRestCallback(callback, { getSupportedTickers(params) })
+        coroutineToRestCallback(callback, { getSupportedTickers(params, *opts) })
     }
 
     /**
@@ -34,12 +36,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_types
      */
-    fun getSupportedTickerTypesBlocking(): TickerTypesDTO =
-        runBlocking { getSupportedTickerTypes() }
+    fun getSupportedTickerTypesBlocking(vararg opts: PolygonRestOption): TickerTypesDTO =
+        runBlocking { getSupportedTickerTypes(*opts) }
 
     /** See [getSupportedTickerTypesBlocking] */
-    fun getSupportedTickerTypes(callback: PolygonRestApiCallback<TickerTypesDTO>) {
-        coroutineToRestCallback(callback, { getSupportedTickerTypes() })
+    fun getSupportedTickerTypes(callback: PolygonRestApiCallback<TickerTypesDTO>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, { getSupportedTickerTypes(*opts) })
     }
 
     /**
@@ -49,12 +51,16 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v1_meta_symbols_symbol_company
      */
-    fun getTickerDetailsBlocking(symbol: String): TickerDetailsDTO =
-        runBlocking { getTickerDetails(symbol) }
+    fun getTickerDetailsBlocking(symbol: String, vararg opts: PolygonRestOption): TickerDetailsDTO =
+        runBlocking { getTickerDetails(symbol, *opts) }
 
     /** See [getTickerDetailsBlocking] */
-    fun getTickerDetails(symbol: String, callback: PolygonRestApiCallback<TickerDetailsDTO>) {
-        coroutineToRestCallback(callback, { getTickerDetails(symbol) })
+    fun getTickerDetails(
+        symbol: String,
+        callback: PolygonRestApiCallback<TickerDetailsDTO>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getTickerDetails(symbol, *opts) })
     }
 
     /**
@@ -62,15 +68,16 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v1_meta_symbols_symbol_news
      */
-    fun getTickerNewsBlocking(params: TickerNewsParameters): List<TickerNewsDTO> =
-        runBlocking { getTickerNews(params) }
+    fun getTickerNewsBlocking(params: TickerNewsParameters, vararg opts: PolygonRestOption): List<TickerNewsDTO> =
+        runBlocking { getTickerNews(params, *opts) }
 
     /** See [getTickerNewsBlocking] */
     fun getTickerNews(
         params: TickerNewsParameters,
-        callback: PolygonRestApiCallback<List<TickerNewsDTO>>
+        callback: PolygonRestApiCallback<List<TickerNewsDTO>>,
+        vararg opts: PolygonRestOption
     ) {
-        coroutineToRestCallback(callback, { getTickerNews(params) })
+        coroutineToRestCallback(callback, { getTickerNews(params, *opts) })
     }
 
     /**
@@ -78,12 +85,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_markets
      */
-    fun getSupportedMarketsBlocking(): MarketsDTO =
-        runBlocking { getSupportedMarkets() }
+    fun getSupportedMarketsBlocking(vararg opts: PolygonRestOption): MarketsDTO =
+        runBlocking { getSupportedMarkets(*opts) }
 
     /** See [getSupportedMarketsBlocking] */
-    fun getSupportedMarkets(callback: PolygonRestApiCallback<MarketsDTO>) {
-        coroutineToRestCallback(callback, { getSupportedMarkets() })
+    fun getSupportedMarkets(callback: PolygonRestApiCallback<MarketsDTO>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, { getSupportedMarkets(*opts) })
     }
 
     /**
@@ -91,12 +98,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_locales
      */
-    fun getSupportedLocalesBlocking(): LocalesDTO =
-        runBlocking { getSupportedLocales() }
+    fun getSupportedLocalesBlocking(vararg opts: PolygonRestOption): LocalesDTO =
+        runBlocking { getSupportedLocales(*opts) }
 
     /** See [getSupportedLocalesBlocking] */
-    fun getSupportedLocales(callback: PolygonRestApiCallback<LocalesDTO>) {
-        coroutineToRestCallback(callback, { getSupportedLocales() })
+    fun getSupportedLocales(callback: PolygonRestApiCallback<LocalesDTO>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, { getSupportedLocales(*opts) })
     }
 
     /**
@@ -104,58 +111,73 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_splits_symbol
      */
-    fun getStockSplitsBlocking(symbol: String): StockSplitsDTO =
-        runBlocking { getStockSplits(symbol) }
-    
+    fun getStockSplitsBlocking(symbol: String, vararg opts: PolygonRestOption): StockSplitsDTO =
+        runBlocking { getStockSplits(symbol, *opts) }
+
     /** See [getStockSplitsBlocking] */
-    fun getStockSplits(symbol: String, callback: PolygonRestApiCallback<StockSplitsDTO>) =
-        coroutineToRestCallback(callback, { getStockSplits(symbol) })
-    
+    fun getStockSplits(
+        symbol: String,
+        callback: PolygonRestApiCallback<StockSplitsDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getStockSplits(symbol, *opts) })
+
     /**
      * Gets the historical dividends for a symbol
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_dividends_symbol
      */
-    fun getStockDividendsBlocking(symbol: String): StockDividendsDTO =
-        runBlocking { getStockDividends(symbol) }
-    
+    fun getStockDividendsBlocking(symbol: String, vararg opts: PolygonRestOption): StockDividendsDTO =
+        runBlocking { getStockDividends(symbol, *opts) }
+
     /** See [getStockDividendsBlocking] */
-    fun getStockDividends(symbol: String, callback: PolygonRestApiCallback<StockDividendsDTO>) =
-        coroutineToRestCallback(callback, { getStockDividends(symbol) })
-    
+    fun getStockDividends(
+        symbol: String,
+        callback: PolygonRestApiCallback<StockDividendsDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getStockDividends(symbol, *opts) })
+
     /**
      * Gets the historical financials for a symbol
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_financials_symbol
      */
-    fun getStockFinancialsBlocking(params: StockFinancialsParameters): StockFinancialsResultsDTO =
-        runBlocking { getStockFinancials(params) }
-    
+    fun getStockFinancialsBlocking(
+        params: StockFinancialsParameters,
+        vararg opts: PolygonRestOption
+    ): StockFinancialsResultsDTO =
+        runBlocking { getStockFinancials(params, *opts) }
+
     /** See [getStockFinancialsBlocking] */
-    fun getStockFinancials(params: StockFinancialsParameters, callback: PolygonRestApiCallback<StockFinancialsResultsDTO>) =
-        coroutineToRestCallback(callback, { getStockFinancials(params) })
+    fun getStockFinancials(
+        params: StockFinancialsParameters,
+        callback: PolygonRestApiCallback<StockFinancialsResultsDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getStockFinancials(params, *opts) })
 
     /**
      * Current status of each market
      *
-     * API Doc: https://polygon.io/docs/#!/Reference/get_v1_marketstatus_now
+     * API Doc: https://polygon.io/docs/stocks/get_v1_marketstatus_now
      */
-    fun getMarketStatusBlocking(): MarketStatusDTO =
-        runBlocking { getMarketStatus() }
-    
+    fun getMarketStatusBlocking(vararg opts: PolygonRestOption): MarketStatusDTO =
+        runBlocking { getMarketStatus(*opts) }
+
     /** See [getMarketStatusBlocking] */
-    fun getMarketStatus(callback: PolygonRestApiCallback<MarketStatusDTO>) =
-        coroutineToRestCallback(callback, { getMarketStatus() })
-    
+    fun getMarketStatus(callback: PolygonRestApiCallback<MarketStatusDTO>, vararg opts: PolygonRestOption) =
+        coroutineToRestCallback(callback, { getMarketStatus(*opts) })
+
     /**
      * Get upcoming market holidays and their open/close times
      *
-     * API Doc: https://polygon.io/docs/#!/Reference/get_v1_marketstatus_upcoming
+     * API Doc: https://polygon.io/docs/stocks/get_v1_marketstatus_upcoming
      */
-    fun getMarketHolidaysBlocking(): List<MarketHolidayDTO> =
-        runBlocking { getMarketHolidays() }
-    
+    fun getMarketHolidaysBlocking(vararg opts: PolygonRestOption): List<MarketHolidayDTO> =
+        runBlocking { getMarketHolidays(*opts) }
+
     /** See [getMarketHolidaysBlocking] */
-    fun getMarketHolidays(callback: PolygonRestApiCallback<List<MarketHolidayDTO>>) =
-        coroutineToRestCallback(callback, { getMarketHolidays() })
+    fun getMarketHolidays(callback: PolygonRestApiCallback<List<MarketHolidayDTO>>, vararg opts: PolygonRestOption) =
+        coroutineToRestCallback(callback, { getMarketHolidays(*opts) })
 }
