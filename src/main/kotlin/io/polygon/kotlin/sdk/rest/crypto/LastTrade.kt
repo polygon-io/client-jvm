@@ -9,7 +9,7 @@ suspend fun PolygonCryptoClient.getLastTrade(
     from: String,
     to: String,
     vararg opts: PolygonRestOption
-): CryptoLastTradeDTO = polygonClient.fetchResultWithOptions({ path("v1", "last", "crypto", from, to) }, *opts)
+): CryptoLastTradeDTO = polygonClient.fetchResult({ path("v1", "last", "crypto", from, to) }, *opts)
 
 @Serializable
 data class CryptoLastTradeDTO(

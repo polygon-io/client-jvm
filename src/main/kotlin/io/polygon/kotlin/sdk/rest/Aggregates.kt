@@ -11,7 +11,7 @@ suspend fun PolygonRestClient.getAggregates(
     params: AggregatesParameters,
     vararg opts: PolygonRestOption
 ): AggregatesDTO =
-    fetchResultWithOptions({
+    fetchResult({
         path(
             "v2",
             "aggs",

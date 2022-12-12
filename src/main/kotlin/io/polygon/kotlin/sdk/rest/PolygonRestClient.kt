@@ -100,12 +100,7 @@ constructor(
     private inline fun <R> withHttpClient(codeBlock: (client: HttpClient) -> R) =
         httpClientProvider.buildClient().use(codeBlock)
 
-    // TODO: get rid of this once all functions are updated
     internal suspend inline fun <reified T> fetchResult(
-        urlBuilderBlock: URLBuilder.() -> Unit
-    ): T = fetchResultWithOptions(urlBuilderBlock)
-
-    internal suspend inline fun <reified T> fetchResultWithOptions(
         urlBuilderBlock: URLBuilder.() -> Unit,
         vararg options: PolygonRestOption
     ): T {

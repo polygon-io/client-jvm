@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getTickerDetailsBlocking] */
 suspend fun PolygonReferenceClient.getTickerDetails(symbol: String, vararg opts: PolygonRestOption): TickerDetailsDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v1", "meta", "symbols", symbol, "company")
     }, *opts)
 

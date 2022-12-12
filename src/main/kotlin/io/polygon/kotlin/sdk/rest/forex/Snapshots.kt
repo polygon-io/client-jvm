@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getSnapshotAllTickersBlocking] */
 suspend fun PolygonForexClient.getSnapshotAllTickers(vararg opts: PolygonRestOption): SnapshotForexTickersDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "snapshot", "locale", "global", "markets", "forex", "tickers")}, *opts)
 
 /** See [PolygonForexClient.getSnapshotGainersOrLosersBlocking] */
@@ -17,7 +17,7 @@ suspend fun PolygonForexClient.getSnapshotGainersOrLosers(
     direction: GainersOrLosersDirection,
     vararg opts: PolygonRestOption
 ): SnapshotForexTickersDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path(
             "v2",
             "snapshot",

@@ -12,7 +12,7 @@ suspend fun PolygonStocksClient.getHistoricQuotes(
     params: HistoricQuotesParameters,
     vararg opts: PolygonRestOption
 ): HistoricQuotesDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "ticks", "stocks", "nbbo", params.ticker, params.date)
 
         parameters["limit"] = params.limit.toString()

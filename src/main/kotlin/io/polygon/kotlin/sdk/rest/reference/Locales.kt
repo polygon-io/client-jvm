@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedLocalesBlocking] */
 suspend fun PolygonReferenceClient.getSupportedLocales(vararg opts: PolygonRestOption): LocalesDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "reference", "locales")
     }, *opts)
 

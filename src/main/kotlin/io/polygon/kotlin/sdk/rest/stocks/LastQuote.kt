@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getLastQuoteBlocking] */
 suspend fun PolygonStocksClient.getLastQuote(symbol: String, vararg opts: PolygonRestOption): LastQuoteResultDTO =
-    polygonClient.fetchResultWithOptions({ path("v1", "last_quote", "stocks", symbol) }, *opts)
+    polygonClient.fetchResult({ path("v1", "last_quote", "stocks", symbol) }, *opts)
 
 @Serializable
 data class LastQuoteResultDTO(

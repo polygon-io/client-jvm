@@ -10,7 +10,7 @@ suspend fun PolygonStocksClient.getDailyOpenClose(
     date: String,
     unadjusted: Boolean,
     vararg opts: PolygonRestOption
-): DailyOpenCloseDTO = polygonClient.fetchResultWithOptions({
+): DailyOpenCloseDTO = polygonClient.fetchResult({
     path("v1", "open-close", symbol, date)
     parameters["unadjusted"] = unadjusted.toString()
 }, *opts)

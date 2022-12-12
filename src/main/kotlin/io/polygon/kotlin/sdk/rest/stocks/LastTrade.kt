@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getLastTradeBlocking] */
 suspend fun PolygonStocksClient.getLastTrade(symbol: String, vararg opts: PolygonRestOption): LastTradeResultDTO =
-    polygonClient.fetchResultWithOptions({ path("v1", "last", "stocks", symbol) }, *opts)
+    polygonClient.fetchResult({ path("v1", "last", "stocks", symbol) }, *opts)
 
 @Serializable
 data class LastTradeResultDTO(

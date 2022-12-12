@@ -11,7 +11,7 @@ suspend fun PolygonReferenceClient.getTickerNews(
     params: TickerNewsParameters,
     vararg opts: PolygonRestOption
 ): List<TickerNewsDTO> =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v1", "meta", "symbols", params.symbol, "news")
 
         parameters["perpage"] = params.resultsPerPage.toString()

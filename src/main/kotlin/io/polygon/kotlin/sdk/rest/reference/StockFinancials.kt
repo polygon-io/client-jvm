@@ -10,7 +10,7 @@ suspend fun PolygonReferenceClient.getStockFinancials(
     params: StockFinancialsParameters,
     vararg opts: PolygonRestOption
 ): StockFinancialsResultsDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "reference", "financials", params.symbol)
 
         params.limit?.let { parameters["limit"] = it.toString() }

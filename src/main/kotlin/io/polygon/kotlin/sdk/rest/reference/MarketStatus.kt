@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketStatusBlocking] */
 suspend fun PolygonReferenceClient.getMarketStatus(vararg opts: PolygonRestOption): MarketStatusDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v1", "marketstatus", "now")
     }, *opts)
 

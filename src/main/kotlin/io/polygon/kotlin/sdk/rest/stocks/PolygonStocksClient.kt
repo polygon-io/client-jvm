@@ -187,13 +187,22 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * @param unadjusted Set to true if the results should NOT be adjusted for splits.
      *
-     * API Doc: https://polygon.io/docs/#get_v2_aggs_ticker__ticker__prev_anchor
+     * API Doc: https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__prev
      */
-    fun getPreviousCloseBlocking(symbol: String, unadjusted: Boolean): PreviousCloseDTO =
-        runBlocking { getPreviousClose(symbol, unadjusted) }
+    fun getPreviousCloseBlocking(
+        symbol: String,
+        unadjusted: Boolean,
+        vararg opts: PolygonRestOption
+    ): PreviousCloseDTO =
+        runBlocking { getPreviousClose(symbol, unadjusted, *opts) }
 
     /** See [getPreviousCloseBlocking] */
-    fun getPreviousClose(symbol: String, unadjusted: Boolean, callback: PolygonRestApiCallback<PreviousCloseDTO>) =
-        coroutineToRestCallback(callback, { getPreviousClose(symbol, unadjusted) })
+    fun getPreviousClose(
+        symbol: String,
+        unadjusted: Boolean,
+        callback: PolygonRestApiCallback<PreviousCloseDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getPreviousClose(symbol, unadjusted, *opts) })
 
 }

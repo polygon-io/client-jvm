@@ -8,7 +8,7 @@ suspend fun PolygonStocksClient.getConditionMappings(
     type: ConditionMappingTickerType,
     vararg opts: PolygonRestOption
 ): Map<String, String> =
-    polygonClient.fetchResultWithOptions({ path("v1", "meta", "conditions", type.urlParamName) }, *opts)
+    polygonClient.fetchResult({ path("v1", "meta", "conditions", type.urlParamName) }, *opts)
 
 enum class ConditionMappingTickerType(internal val urlParamName: String) {
     TRADES("trades"),

@@ -11,7 +11,7 @@ suspend fun PolygonCryptoClient.getDailyOpenClose(
     params: CryptoDailyOpenCloseParameters,
     vararg opts: PolygonRestOption
 ): CryptoDailyOpenCloseDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
             path("v1", "open-close", "crypto", params.from, params.to, params.date)
         }, *opts)
 

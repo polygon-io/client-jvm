@@ -12,7 +12,7 @@ suspend fun PolygonStocksClient.getHistoricTrades(
     params: HistoricTradesParameters,
     vararg opts: PolygonRestOption
 ): HistoricTradesDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "ticks", "stocks", "trades", params.ticker, params.date)
 
         parameters["limit"] = params.limit.toString()

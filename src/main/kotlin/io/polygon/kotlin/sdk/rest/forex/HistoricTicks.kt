@@ -11,7 +11,7 @@ suspend fun PolygonForexClient.getHistoricTicks(
     params: HistoricTicksParameters,
     vararg opts: PolygonRestOption
 ): HistoricTicksDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v1", "historic", "forex", params.fromCurrency, params.toCurrency, params.date)
 
         params.offset?.let { parameters["offset"] = it.toString() }

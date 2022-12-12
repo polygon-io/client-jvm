@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getSnapshotAllTickersBlocking] */
 suspend fun PolygonStocksClient.getSnapshotAllTickers(vararg opts: PolygonRestOption): SnapshotAllTickersDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers")
     }, *opts)
 
 /** See [PolygonStocksClient.getSnapshotBlocking] */
 suspend fun PolygonStocksClient.getSnapshot(symbol: String, vararg opts: PolygonRestOption): SnapshotSingleTickerDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers", symbol)
     }, *opts)
 
@@ -22,7 +22,7 @@ suspend fun PolygonStocksClient.getSnapshotGainersOrLosers(
     direction: GainersOrLosersDirection,
     vararg opts: PolygonRestOption
 ): SnapshotGainersOrLosersDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "snapshot", "locale", "us", "markets", "stocks", direction.queryParamValue)
     }, *opts)
 

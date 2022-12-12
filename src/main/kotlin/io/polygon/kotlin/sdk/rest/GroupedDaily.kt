@@ -10,7 +10,7 @@ suspend fun PolygonRestClient.getGroupedDailyAggregates(
     params: GroupedDailyParameters,
     vararg opts: PolygonRestOption
 ): AggregatesDTO =
-    fetchResultWithOptions({
+    fetchResult({
         path(
             "v2",
             "aggs",

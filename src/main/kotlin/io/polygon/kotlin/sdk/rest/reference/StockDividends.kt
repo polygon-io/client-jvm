@@ -10,7 +10,7 @@ suspend fun PolygonReferenceClient.getStockDividends(
     symbol: String,
     vararg opts: PolygonRestOption
 ): StockDividendsDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "reference", "dividends", symbol)
     }, *opts)
 

@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedMarketsBlocking] */
 suspend fun PolygonReferenceClient.getSupportedMarkets(vararg opts: PolygonRestOption): MarketsDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "reference", "markets")
     }, *opts)
 

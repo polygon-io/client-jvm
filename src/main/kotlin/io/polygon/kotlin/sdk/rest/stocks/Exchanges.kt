@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getSupportedExchangesBlocking] */
 suspend fun PolygonStocksClient.getSupportedExchanges(vararg opts: PolygonRestOption): List<ExchangeDTO> =
-    polygonClient.fetchResultWithOptions({ path("v1", "meta", "exchanges") }, *opts)
+    polygonClient.fetchResult({ path("v1", "meta", "exchanges") }, *opts)
 
 @Serializable
 data class ExchangeDTO(

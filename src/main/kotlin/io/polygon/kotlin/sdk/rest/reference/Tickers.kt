@@ -12,7 +12,7 @@ suspend fun PolygonReferenceClient.getSupportedTickers(
     params: SupportedTickersParameters,
     vararg opts: PolygonRestOption
 ): TickersDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v3", "reference", "tickers")
 
         params.ticker?.let { parameters["ticker"] = it }

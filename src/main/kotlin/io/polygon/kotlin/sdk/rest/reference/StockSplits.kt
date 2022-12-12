@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockSplitsBlocking] */
 suspend fun PolygonReferenceClient.getStockSplits(symbol: String, vararg opts: PolygonRestOption): StockSplitsDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v2", "reference", "splits", symbol)
     }, *opts)
 

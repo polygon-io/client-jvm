@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getSupportedExchangesBlocking] */
 suspend fun PolygonCryptoClient.getSupportedExchanges(vararg opts: PolygonRestOption): List<CryptoExchangeDTO> =
-    polygonClient.fetchResultWithOptions({ path("v1", "meta", "crypto-exchanges") }, *opts)
+    polygonClient.fetchResult({ path("v1", "meta", "crypto-exchanges") }, *opts)
 
 @Serializable
 data class CryptoExchangeDTO(

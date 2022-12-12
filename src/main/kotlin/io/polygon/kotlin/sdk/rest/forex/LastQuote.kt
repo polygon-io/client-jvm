@@ -10,7 +10,7 @@ suspend fun PolygonForexClient.getLastQuote(
     toCurrency: String,
     vararg opts: PolygonRestOption
 ): LastQuoteForexDTO =
-    polygonClient.fetchResultWithOptions({ path("v1", "last_quote", "currencies", fromCurrency, toCurrency) }, *opts)
+    polygonClient.fetchResult({ path("v1", "last_quote", "currencies", fromCurrency, toCurrency) }, *opts)
 
 @Serializable
 data class LastQuoteForexDTO(

@@ -10,7 +10,7 @@ suspend fun PolygonCryptoClient.getHistoricTrades(
     params: HistoricCryptoTradesParameters,
     vararg opts: PolygonRestOption
 ): HistoricCryptoTradesDTO =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v1", "historic", "crypto", params.from, params.to, params.date)
 
         parameters["limit"] = params.limit.toString()

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketHolidaysBlocking] */
 suspend fun PolygonReferenceClient.getMarketHolidays(vararg opts: PolygonRestOption): List<MarketHolidayDTO> =
-    polygonClient.fetchResultWithOptions({
+    polygonClient.fetchResult({
         path("v1", "marketstatus", "upcoming")
     }, *opts)
 
