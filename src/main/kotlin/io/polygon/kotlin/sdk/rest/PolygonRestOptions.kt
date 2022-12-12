@@ -52,7 +52,8 @@ object PolygonRestOptions {
      * or IPv4-mapped IPv6 ("::ffff:192.0.2.1") form.
      *
      * @param edgeUserAgent The user agent that the edge user made the request from.
-     * This param is optional. If provided, it should be a string between 1 and 80 characters long. */
+     * This param is optional. If provided, it should be a string between 1 and 80 characters long.
+     */
     fun withEdgeHeaders(edgeID: String, edgeIPAddress: String, edgeUserAgent: String? = null): PolygonRestOption = {
         headers["X-Polygon-Edge-ID"] = edgeID
         headers["X-Polygon-Edge-IP-Address"] = edgeIPAddress
