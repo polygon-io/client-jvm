@@ -8,11 +8,9 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getSnapshotAllTickersBlocking] */
 suspend fun PolygonCryptoClient.getSnapshotAllTickers(vararg opts: PolygonRestOption): CryptoMultiTickerSnapshotDTO =
-    polygonClient.fetchResultWithOptions(
-        {
+    polygonClient.fetchResultWithOptions({
             path("v2", "snapshot", "locale", "global", "markets", "crypto", "tickers")
-        }, *opts
-    )
+        }, *opts)
 
 /** See [PolygonCryptoClient.getSnapshotSingleTickerBlocking] */
 suspend fun PolygonCryptoClient.getSnapshotSingleTicker(ticker: String, vararg opts: PolygonRestOption):
