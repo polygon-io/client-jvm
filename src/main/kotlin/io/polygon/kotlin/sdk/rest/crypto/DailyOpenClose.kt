@@ -2,12 +2,20 @@ package io.polygon.kotlin.sdk.rest.crypto
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getDailyOpenCloseBlocking] */
-suspend fun PolygonCryptoClient.getDailyOpenClose(params: CryptoDailyOpenCloseParameters): CryptoDailyOpenCloseDTO =
-    polygonClient.fetchResult { path("v1", "open-close", "crypto", params.from, params.to, params.date) }
+suspend fun PolygonCryptoClient.getDailyOpenClose(
+    params: CryptoDailyOpenCloseParameters,
+    vararg opts: PolygonRestOption
+): CryptoDailyOpenCloseDTO =
+    polygonClient.fetchResultWithOptions(
+        {
+            path("v1", "open-close", "crypto", params.from, params.to, params.date)
+        }, *opts
+    )
 
 @Builder
 data class CryptoDailyOpenCloseParameters(
