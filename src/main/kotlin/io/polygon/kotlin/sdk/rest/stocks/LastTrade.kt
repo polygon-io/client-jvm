@@ -1,12 +1,13 @@
 package io.polygon.kotlin.sdk.rest.stocks
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getLastTradeBlocking] */
-suspend fun PolygonStocksClient.getLastTrade(symbol: String): LastTradeResultDTO =
-    polygonClient.fetchResult { path("v1", "last", "stocks", symbol) }
+suspend fun PolygonStocksClient.getLastTrade(symbol: String, vararg opts: PolygonRestOption): LastTradeResultDTO =
+    polygonClient.fetchResultWithOptions({ path("v1", "last", "stocks", symbol) }, *opts)
 
 @Serializable
 data class LastTradeResultDTO(

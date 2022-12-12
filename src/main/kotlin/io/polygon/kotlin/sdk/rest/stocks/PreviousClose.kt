@@ -6,7 +6,11 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getPreviousCloseBlocking] */
 suspend fun PolygonStocksClient.getPreviousClose(symbol: String, unadjusted: Boolean = false): PreviousCloseDTO =
-    polygonClient.fetchResult { path("v2", "aggs", "ticker", symbol, "prev") }
+    polygonClient.fetchResult {
+        path("v2", "aggs", "ticker", symbol, "prev")
+
+        parameters["adjusted"] = (!unadjusted).toString()
+    }
 
 @Serializable
 data class PreviousCloseDTO(
