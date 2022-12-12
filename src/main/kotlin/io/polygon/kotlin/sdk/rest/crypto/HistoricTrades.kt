@@ -2,16 +2,20 @@ package io.polygon.kotlin.sdk.rest.crypto
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getHistoricTradesBlocking] */
-suspend fun PolygonCryptoClient.getHistoricTrades(params: HistoricCryptoTradesParameters): HistoricCryptoTradesDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonCryptoClient.getHistoricTrades(
+    params: HistoricCryptoTradesParameters,
+    vararg opts: PolygonRestOption
+): HistoricCryptoTradesDTO =
+    polygonClient.fetchResultWithOptions({
         path("v1", "historic", "crypto", params.from, params.to, params.date)
 
         parameters["limit"] = params.limit.toString()
         params.offset?.let { parameters["offset"] = it.toString() }
-    }
+    }, *opts)
 
 @Builder
 data class HistoricCryptoTradesParameters(
