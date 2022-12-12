@@ -40,4 +40,22 @@ object PolygonRestOptions {
     fun withTimeout(timeoutMillis: Long): PolygonRestOption = {
         timeout { requestTimeoutMillis = timeoutMillis }
     }
+
+    /**
+     * Sets edge headers for users with the launchpad product.
+     *
+     * @param edgeID The ID associated with the edge user making the request.
+     * This should be between 1 and 80 characters long.
+     *
+     * @param edgeIPAddress The IP address that the edge user made the request from.
+     * This should be a string in IPv4 dotted decimal ("192.0.2.1"), IPv6 ("2001:db8::68"),
+     * or IPv4-mapped IPv6 ("::ffff:192.0.2.1") form.
+     *
+     * @param edgeUserAgent The user agent that the edge user made the request from.
+     * This param is optional. If provided, it should be a string between 1 and 80 characters long. */
+    fun withEdgeHeaders(edgeID: String, edgeIPAddress: String, edgeUserAgent: String? = null): PolygonRestOption = {
+        headers["X-Polygon-Edge-ID"] = edgeID
+        headers["X-Polygon-Edge-IP-Address"] = edgeIPAddress
+        edgeUserAgent?.let { headers["X-Polygon-Edge-User-Agent"] = it }
+    }
 }
