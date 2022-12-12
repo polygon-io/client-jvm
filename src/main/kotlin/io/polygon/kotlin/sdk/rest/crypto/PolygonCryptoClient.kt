@@ -60,7 +60,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /**
      * Get historic trade ticks for a crypto pair.
      *
-     * API Doc: https://polygon.io/docs/#get_v1_historic_crypto__from___to___date__anchor
+     * API Doc: https://polygon.io/docs/crypto/deprecated/get_v1_historic_crypto__from___to___date
      */
     fun getHistoricTradesBlocking(
         params: HistoricCryptoTradesParameters,
