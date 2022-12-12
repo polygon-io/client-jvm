@@ -21,10 +21,20 @@ dependencies {
 ## Features
 Everything you'd expect from a client SDK plus...
 - Configurable HTTP client via [HttpClientProvider](src/main/kotlin/io/polygon/kotlin/sdk/HttpClientProvider.kt)
+- Configurable [REST request options](#rest-request-options)
 - Asynchronous APIs built on top of Kotlin co-routines
 - Idiomatic interoperability with Java
   - Synchronous and callback based APIs
   - Generated builder classes for API parameter data classes
+
+## REST Request Options
+
+For most use-cases, the default request options will do the trick, 
+but if you need some more flexibility on a per-request basis, 
+you can configure individual REST API requests with `PolygonRestOption`s.
+
+For more info on what you can configure with request options, see docs in 
+[PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt).
 
 ## Sample code
 See the sample module in this repo; There's a short [Kotlin sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/KotlinUsageSample.kt) 
