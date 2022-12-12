@@ -6,8 +6,11 @@ import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 
 /** See [PolygonRestClient.getGroupedDailyAggregatesBlocking] */
-suspend fun PolygonRestClient.getGroupedDailyAggregates(params: GroupedDailyParameters): AggregatesDTO =
-    fetchResult {
+suspend fun PolygonRestClient.getGroupedDailyAggregates(
+    params: GroupedDailyParameters,
+    vararg opts: PolygonRestOption
+): AggregatesDTO =
+    fetchResult({
         path(
             "v2",
             "aggs",
@@ -20,7 +23,7 @@ suspend fun PolygonRestClient.getGroupedDailyAggregates(params: GroupedDailyPara
         )
 
         parameters["unadjusted"] = params.unadjusted.toString()
-    }
+    }, *opts)
 
 @Builder
 data class GroupedDailyParameters(

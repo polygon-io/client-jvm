@@ -1,11 +1,12 @@
 package io.polygon.kotlin.sdk.rest.crypto
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getSupportedExchangesBlocking] */
-suspend fun PolygonCryptoClient.getSupportedExchanges(): List<CryptoExchangeDTO> =
-    polygonClient.fetchResult { path("v1", "meta", "crypto-exchanges") }
+suspend fun PolygonCryptoClient.getSupportedExchanges(vararg opts: PolygonRestOption): List<CryptoExchangeDTO> =
+    polygonClient.fetchResult({ path("v1", "meta", "crypto-exchanges") }, *opts)
 
 @Serializable
 data class CryptoExchangeDTO(

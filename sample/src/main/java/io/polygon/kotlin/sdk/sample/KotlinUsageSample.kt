@@ -2,12 +2,11 @@ package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.DefaultOkHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
-import io.polygon.kotlin.sdk.rest.AggregatesParameters
-import io.polygon.kotlin.sdk.rest.GroupedDailyParameters
-import io.polygon.kotlin.sdk.rest.PolygonRestClient
+import io.polygon.kotlin.sdk.rest.*
 import io.polygon.kotlin.sdk.rest.crypto.CryptoDailyOpenCloseParameters
 import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
@@ -67,8 +66,18 @@ suspend fun main() {
     deferred.await()
     println("Done getting markets asynchronously!")
 
-    println("\n\nWebsocket sample:")
+    println("Using options")
+    val groupedDaily = polygonClient.getGroupedDailyAggregates(
+        GroupedDailyParameters("us", "stocks", "2022-12-08"),
+        PolygonRestOptions.withTimeout(10_000), // Custom timeout for this request
+        PolygonRestOptions.withQueryParam("additional-param", "additional-value"), // Additional query parameter
+        PolygonRestOptions.withHeader("X-Custom-Header", "custom-value"), // Custom header for this request
+        { this.expectSuccess = true }, // Example of an arbitrary option that doesn't use a helper function
+    )
 
+    println("Got ${groupedDaily.results.size} results from grouped daily")
+
+    println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
 }
 

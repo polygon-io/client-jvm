@@ -1,11 +1,16 @@
 package io.polygon.kotlin.sdk.rest.forex
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getLastQuoteBlocking] */
-suspend fun PolygonForexClient.getLastQuote(fromCurrency: String, toCurrency: String): LastQuoteForexDTO =
-    polygonClient.fetchResult { path("v1", "last_quote", "currencies", fromCurrency, toCurrency) }
+suspend fun PolygonForexClient.getLastQuote(
+    fromCurrency: String,
+    toCurrency: String,
+    vararg opts: PolygonRestOption
+): LastQuoteForexDTO =
+    polygonClient.fetchResult({ path("v1", "last_quote", "currencies", fromCurrency, toCurrency) }, *opts)
 
 @Serializable
 data class LastQuoteForexDTO(

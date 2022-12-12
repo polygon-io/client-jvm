@@ -1,11 +1,15 @@
 package io.polygon.kotlin.sdk.rest.crypto
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getLastTradeBlocking] */
-suspend fun PolygonCryptoClient.getLastTrade(from: String, to: String): CryptoLastTradeDTO =
-    polygonClient.fetchResult { path("v1", "last", "crypto", from, to) }
+suspend fun PolygonCryptoClient.getLastTrade(
+    from: String,
+    to: String,
+    vararg opts: PolygonRestOption
+): CryptoLastTradeDTO = polygonClient.fetchResult({ path("v1", "last", "crypto", from, to) }, *opts)
 
 @Serializable
 data class CryptoLastTradeDTO(

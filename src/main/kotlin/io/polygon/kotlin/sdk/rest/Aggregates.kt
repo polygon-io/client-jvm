@@ -7,8 +7,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonRestClient.getAggregatesBlocking] */
-suspend fun PolygonRestClient.getAggregates(params: AggregatesParameters): AggregatesDTO =
-    fetchResult {
+suspend fun PolygonRestClient.getAggregates(
+    params: AggregatesParameters,
+    vararg opts: PolygonRestOption
+): AggregatesDTO =
+    fetchResult({
         path(
             "v2",
             "aggs",
@@ -23,7 +26,7 @@ suspend fun PolygonRestClient.getAggregates(params: AggregatesParameters): Aggre
 
         parameters["unadjusted"] = params.unadjusted.toString()
         parameters["limit"] = params.limit.toString()
-    }
+    }, *opts)
 
 @Builder
 data class AggregatesParameters(

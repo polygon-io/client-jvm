@@ -1,13 +1,14 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedLocalesBlocking] */
-suspend fun PolygonReferenceClient.getSupportedLocales(): LocalesDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getSupportedLocales(vararg opts: PolygonRestOption): LocalesDTO =
+    polygonClient.fetchResult({
         path("v2", "reference", "locales")
-    }
+    }, *opts)
 
 @Serializable
 data class LocalesDTO(

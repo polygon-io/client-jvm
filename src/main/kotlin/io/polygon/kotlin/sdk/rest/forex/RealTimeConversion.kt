@@ -3,16 +3,17 @@ package io.polygon.kotlin.sdk.rest.forex
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getRealTimeConversionBlocking] */
-suspend fun PolygonForexClient.getRealTimeConversion(params: RealTimeConversionParameters): RealTimeConversionDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonForexClient.getRealTimeConversion(params: RealTimeConversionParameters, vararg opts: PolygonRestOption): RealTimeConversionDTO =
+    polygonClient.fetchResult({
         path("v1", "conversion", params.fromCurrency, params.toCurrency)
 
         parameters["amount"] = params.amount.toString()
         parameters["precision"] = params.precision.toString()
-    }
+    }, *opts)
 
 @Builder
 data class RealTimeConversionParameters(

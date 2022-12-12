@@ -2,17 +2,21 @@ package io.polygon.kotlin.sdk.rest.reference
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockFinancialsBlocking] */
-suspend fun PolygonReferenceClient.getStockFinancials(params: StockFinancialsParameters): StockFinancialsResultsDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getStockFinancials(
+    params: StockFinancialsParameters,
+    vararg opts: PolygonRestOption
+): StockFinancialsResultsDTO =
+    polygonClient.fetchResult({
         path("v2", "reference", "financials", params.symbol)
 
         params.limit?.let { parameters["limit"] = it.toString() }
         params.type?.let { parameters["type"] = it }
         params.sort?.let { parameters["sort"] = it }
-    }
+    }, *opts)
 
 @Builder
 data class StockFinancialsParameters(

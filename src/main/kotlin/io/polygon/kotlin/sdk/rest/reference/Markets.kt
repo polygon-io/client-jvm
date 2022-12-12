@@ -1,14 +1,15 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedMarketsBlocking] */
-suspend fun PolygonReferenceClient.getSupportedMarkets(): MarketsDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getSupportedMarkets(vararg opts: PolygonRestOption): MarketsDTO =
+    polygonClient.fetchResult({
         path("v2", "reference", "markets")
-    }
+    }, *opts)
 
 @Serializable
 data class MarketsDTO(

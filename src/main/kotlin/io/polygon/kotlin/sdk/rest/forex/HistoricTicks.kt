@@ -2,17 +2,21 @@ package io.polygon.kotlin.sdk.rest.forex
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getHistoricTicksBlocking] */
-suspend fun PolygonForexClient.getHistoricTicks(params: HistoricTicksParameters): HistoricTicksDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonForexClient.getHistoricTicks(
+    params: HistoricTicksParameters,
+    vararg opts: PolygonRestOption
+): HistoricTicksDTO =
+    polygonClient.fetchResult({
         path("v1", "historic", "forex", params.fromCurrency, params.toCurrency, params.date)
 
         params.offset?.let { parameters["offset"] = it.toString() }
         parameters["limit"] = params.limit.toString()
-    }
+    }, *opts)
 
 @Builder
 data class HistoricTicksParameters(

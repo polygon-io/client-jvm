@@ -1,13 +1,14 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketStatusBlocking] */
-suspend fun PolygonReferenceClient.getMarketStatus(): MarketStatusDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getMarketStatus(vararg opts: PolygonRestOption): MarketStatusDTO =
+    polygonClient.fetchResult({
         path("v1", "marketstatus", "now")
-    }
+    }, *opts)
 
 @Serializable
 data class MarketStatusDTO(

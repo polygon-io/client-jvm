@@ -1,25 +1,68 @@
 package io.polygon.kotlin.sdk.rest.crypto
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getSnapshotAllTickersBlocking] */
-suspend fun PolygonCryptoClient.getSnapshotAllTickers(): CryptoMultiTickerSnapshotDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "global", "markets", "crypto", "tickers") }
+suspend fun PolygonCryptoClient.getSnapshotAllTickers(vararg opts: PolygonRestOption): CryptoMultiTickerSnapshotDTO =
+    polygonClient.fetchResult({
+            path("v2", "snapshot", "locale", "global", "markets", "crypto", "tickers")
+        }, *opts)
 
 /** See [PolygonCryptoClient.getSnapshotSingleTickerBlocking] */
-suspend fun PolygonCryptoClient.getSnapshotSingleTicker(ticker: String): CryptoSingleTickerSnapshotDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "global", "markets", "crypto", "tickers", ticker) }
+suspend fun PolygonCryptoClient.getSnapshotSingleTicker(ticker: String, vararg opts: PolygonRestOption):
+        CryptoSingleTickerSnapshotDTO =
+    polygonClient.fetchResult({
+        path(
+            "v2",
+            "snapshot",
+            "locale",
+            "global",
+            "markets",
+            "crypto",
+            "tickers",
+            ticker
+        )
+    }, *opts)
 
 /** See [PolygonCryptoClient.getSnapshotGainersOrLosersBlocking] */
-suspend fun PolygonCryptoClient.getSnapshotGainersOrLosers(direction: GainersOrLosersDirection): CryptoMultiTickerSnapshotDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "global", "markets", "crypto", direction.queryParamValue) }
+suspend fun PolygonCryptoClient.getSnapshotGainersOrLosers(
+    direction: GainersOrLosersDirection,
+    vararg opts: PolygonRestOption
+): CryptoMultiTickerSnapshotDTO =
+    polygonClient.fetchResult({
+        path(
+            "v2",
+            "snapshot",
+            "locale",
+            "global",
+            "markets",
+            "crypto",
+            direction.queryParamValue
+        )
+    }, *opts)
 
 /** See [PolygonCryptoClient.getL2SnapshotSingleTickerBlocking] */
-suspend fun PolygonCryptoClient.getL2SnapshotSingleTicker(ticker: String): CryptoTickerL2SnapshotResponseDTO =
-    polygonClient.fetchResult { path("v2", "snapshot", "locale", "global", "markets", "crypto", "tickers", ticker, "book") }
+suspend fun PolygonCryptoClient.getL2SnapshotSingleTicker(
+    ticker: String,
+    vararg opts: PolygonRestOption
+): CryptoTickerL2SnapshotResponseDTO =
+    polygonClient.fetchResult({
+        path(
+            "v2",
+            "snapshot",
+            "locale",
+            "global",
+            "markets",
+            "crypto",
+            "tickers",
+            ticker,
+            "book"
+        )
+    }, *opts)
 
 @Serializable
 data class CryptoMultiTickerSnapshotDTO(

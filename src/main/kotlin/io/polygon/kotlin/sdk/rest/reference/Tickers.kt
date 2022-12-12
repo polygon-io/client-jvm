@@ -3,14 +3,16 @@ package io.polygon.kotlin.sdk.rest.reference
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedTickersBlocking] */
 suspend fun PolygonReferenceClient.getSupportedTickers(
-    params: SupportedTickersParameters
+    params: SupportedTickersParameters,
+    vararg opts: PolygonRestOption
 ): TickersDTO =
-    polygonClient.fetchResult {
+    polygonClient.fetchResult({
         path("v3", "reference", "tickers")
 
         params.ticker?.let { parameters["ticker"] = it }
@@ -31,9 +33,9 @@ suspend fun PolygonReferenceClient.getSupportedTickers(
         } else {
             "asc"
         }
-        params.sortBy?.let { parameters["sort"] = it.toString() }
+        params.sortBy?.let { parameters["sort"] = it }
         params.limit?.let { parameters["limit"] = it.toString() }
-    }
+    }, *opts)
 
 @Builder
 data class SupportedTickersParameters(

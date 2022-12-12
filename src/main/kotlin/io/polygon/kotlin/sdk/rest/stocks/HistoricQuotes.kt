@@ -3,19 +3,23 @@ package io.polygon.kotlin.sdk.rest.stocks
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getHistoricQuotesBlocking] */
-suspend fun PolygonStocksClient.getHistoricQuotes(params: HistoricQuotesParameters): HistoricQuotesDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonStocksClient.getHistoricQuotes(
+    params: HistoricQuotesParameters,
+    vararg opts: PolygonRestOption
+): HistoricQuotesDTO =
+    polygonClient.fetchResult({
         path("v2", "ticks", "stocks", "nbbo", params.ticker, params.date)
 
         parameters["limit"] = params.limit.toString()
         params.timestamp?.let { parameters["timestamp"] = it.toString() }
         params.timestampLimit?.let { parameters["timestampLimit"] = it.toString() }
         params.reverse?.let { parameters["reverse"] = it.toString() }
-    }
+    }, *opts)
 
 @Builder
 data class HistoricQuotesParameters(

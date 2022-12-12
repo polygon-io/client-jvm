@@ -1,11 +1,12 @@
 package io.polygon.kotlin.sdk.rest.stocks
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getSupportedExchangesBlocking] */
-suspend fun PolygonStocksClient.getSupportedExchanges(): List<ExchangeDTO> =
-    polygonClient.fetchResult { path("v1", "meta", "exchanges") }
+suspend fun PolygonStocksClient.getSupportedExchanges(vararg opts: PolygonRestOption): List<ExchangeDTO> =
+    polygonClient.fetchResult({ path("v1", "meta", "exchanges") }, *opts)
 
 @Serializable
 data class ExchangeDTO(

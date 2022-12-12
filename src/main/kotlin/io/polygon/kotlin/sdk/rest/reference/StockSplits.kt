@@ -1,14 +1,15 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockSplitsBlocking] */
-suspend fun PolygonReferenceClient.getStockSplits(symbol: String): StockSplitsDTO =
-    polygonClient.fetchResult {
+suspend fun PolygonReferenceClient.getStockSplits(symbol: String, vararg opts: PolygonRestOption): StockSplitsDTO =
+    polygonClient.fetchResult({
         path("v2", "reference", "splits", symbol)
-    }
+    }, *opts)
 
 @Serializable
 data class StockSplitsDTO(

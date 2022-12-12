@@ -1,12 +1,15 @@
 package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getTickerDetailsBlocking] */
-suspend fun PolygonReferenceClient.getTickerDetails(symbol: String): TickerDetailsDTO =
-    polygonClient.fetchResult { path("v1", "meta", "symbols", symbol, "company") }
+suspend fun PolygonReferenceClient.getTickerDetails(symbol: String, vararg opts: PolygonRestOption): TickerDetailsDTO =
+    polygonClient.fetchResult({
+        path("v1", "meta", "symbols", symbol, "company")
+    }, *opts)
 
 @Serializable
 data class TickerDetailsDTO(
