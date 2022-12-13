@@ -54,6 +54,7 @@ object PolygonRestOptions {
      * @param edgeUserAgent The user agent that the edge user made the request from.
      * This param is optional. If provided, it should be a string between 1 and 80 characters long.
      */
+    @JvmStatic
     fun withEdgeHeaders(edgeID: String, edgeIPAddress: String, edgeUserAgent: String? = null): PolygonRestOption = {
         headers["X-Polygon-Edge-ID"] = edgeID
         headers["X-Polygon-Edge-IP-Address"] = edgeIPAddress
