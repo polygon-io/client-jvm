@@ -38,12 +38,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_types
      */
 
-    @Deprecated("use getSupportedTickerTypesBlocking with params arg", ReplaceWith("getSupportedTickerTypesBlocking(params, *opts)"))
+    @Deprecated("use getTickerTypesBlocking", ReplaceWith("getTickerTypesBlocking(params, *opts)"))
     fun getSupportedTickerTypesBlocking(vararg opts: PolygonRestOption): TickerTypesDTO =
         runBlocking { getSupportedTickerTypes(*opts) }
 
     /** See [getSupportedTickerTypesBlocking] */
-    @Deprecated("use getSupportedTickerTypes with params arg", ReplaceWith("getSupportedTickerTypes(params, callback, *opts)"))
+    @Deprecated("use getTickerTypes", ReplaceWith("getTickerTypes(params, callback, *opts)"))
     fun getSupportedTickerTypes(callback: PolygonRestApiCallback<TickerTypesDTO>, vararg opts: PolygonRestOption) {
         coroutineToRestCallback(callback, { getSupportedTickerTypes(*opts) })
     }
@@ -53,12 +53,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v3_reference_tickers_types
      */
-    fun getSupportedTickerTypesBlocking(params: TickerTypeParameters, vararg opts: PolygonRestOption): TickerTypesResponse =
-        runBlocking { getSupportedTickerTypes(params, *opts )}
+    fun getTickerTypesBlocking(params: TickerTypeParameters, vararg opts: PolygonRestOption): TickerTypesResponse =
+        runBlocking { getTickerTypes(params, *opts )}
 
-    fun getSupportedTickerTypes(params: TickerTypeParameters, callback: PolygonRestApiCallback<TickerTypesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, { getSupportedTickerTypes(params, *opts) })
+    fun getTickerTypes(params: TickerTypeParameters, callback: PolygonRestApiCallback<TickerTypesResponse>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, { getTickerTypes(params, *opts) })
     }
+
     /**
      * Gets the details of the symbol company/entity.
      * These are important details which offer an overview of the entity.

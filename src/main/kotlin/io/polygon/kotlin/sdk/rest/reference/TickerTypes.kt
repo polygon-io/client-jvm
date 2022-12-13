@@ -8,11 +8,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedTickerTypesBlocking] */
-@Deprecated("use getSupportedTickerTypes with params arg", ReplaceWith("getSupportedTickerTypes(params, *opts)"))
+@Deprecated("use getTickerTypes", ReplaceWith("getTickerTypes(params, *opts)"))
 suspend fun PolygonReferenceClient.getSupportedTickerTypes(vararg opts: PolygonRestOption): TickerTypesDTO =
     polygonClient.fetchResult({ path("v2", "reference", "types") }, *opts)
 
-suspend fun PolygonReferenceClient.getSupportedTickerTypes(params: TickerTypeParameters, vararg opts: PolygonRestOption): TickerTypesResponse =
+/** See [PolygonReferenceClient.getTickerTypesBlocking]*/
+suspend fun PolygonReferenceClient.getTickerTypes(params: TickerTypeParameters, vararg opts: PolygonRestOption): TickerTypesResponse =
     polygonClient.fetchResult({
         path("v3", "reference", "tickers", "types")
 
@@ -20,13 +21,13 @@ suspend fun PolygonReferenceClient.getSupportedTickerTypes(params: TickerTypePar
         params.locale?.let{ parameters["locale"]=it }
     }, *opts)
 
-@Serializable @Deprecated("used in deprecated getSupportTickerType()")
+@Serializable @Deprecated("used in deprecated getSupportedTickerType()")
 data class TickerTypesDTO(
     val status: String? = null,
     val results: TickerTypeResultsDTO? = null
 )
 
-@Serializable @Deprecated("used in deprecated getSupportTickerType()")
+@Serializable @Deprecated("used in deprecated getSupportedTickerType()")
 data class TickerTypeResultsDTO(
     @SerialName("types") val tickerTypes: Map<String, String> = emptyMap(),
     val indexTypes: Map<String, String> = emptyMap()
