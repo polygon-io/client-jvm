@@ -1,9 +1,11 @@
 package io.polygon.kotlin.sdk.rest.reference
 
+import io.ktor.http.*
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
+import io.polygon.kotlin.sdk.rest.RequestIterator
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -30,6 +32,22 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     ) {
         coroutineToRestCallback(callback, { getSupportedTickers(params, *opts) })
     }
+
+    /**
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getSupportedTickers] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
+     */
+    @SafeVarargs
+    fun listSupportedTickers(
+        params: SupportedTickersParameters,
+        vararg opts: PolygonRestOption
+    ): RequestIterator<TickerDTO> =
+        RequestIterator(
+            { getSupportedTickersBlocking(params, *opts) },
+            polygonClient.requestIteratorFetch<TickersDTO>()
+        )
 
     /**
      * Gets all of Polygon's currently supported ticker types
