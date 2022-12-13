@@ -37,11 +37,6 @@ you can configure individual REST API requests with `PolygonRestOption`s.
 For more info on what you can configure with request options, see docs in 
 [PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt).
 
-<<<<<<< Updated upstream
-=======
-In particular if you're an enterprise Launchpad user, see the helper function 
-`withEdgeHeaders` in [PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt). 
-
 ## Pagination
 
 The Polygon REST API supports pagination for APIs that return a list of results.
@@ -74,7 +69,6 @@ This is because we usually won't know how many total results to expect.
 In general, an iterator will make `num_total_results / page_size` requests to the Polygon API.
 Where `page_size` is determined by the `limit` request parameter (discussed above).
 
->>>>>>> Stashed changes
 ## Sample code
 See the sample module in this repo; There's a short [Kotlin sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/KotlinUsageSample.kt) 
 and [Java sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/JavaUsageSample.java)
