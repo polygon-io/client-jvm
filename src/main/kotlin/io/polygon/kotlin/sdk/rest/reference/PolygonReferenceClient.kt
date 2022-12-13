@@ -32,6 +32,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     }
 
     /**
+     * @deprecated use new getSupportTickerTypes with params arg
      * Gets all of Polygon's currently supported ticker types
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_types
