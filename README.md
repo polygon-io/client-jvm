@@ -37,6 +37,9 @@ you can configure individual REST API requests with `PolygonRestOption`s.
 For more info on what you can configure with request options, see docs in 
 [PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt).
 
+In particular if you're an enterprise Launchpad user, see the helper function 
+`withEdgeHeaders` in [PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt).
+
 ## Pagination
 
 The Polygon REST API supports pagination for APIs that return a list of results.
