@@ -36,6 +36,9 @@ you can configure individual REST API requests with `PolygonRestOption`s.
 For more info on what you can configure with request options, see docs in 
 [PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt).
 
+In particular if you're an enterprise Launchpad user, see the helper function 
+`withEdgeHeaders` in [PolygonRequestOptions.kt](src/main/kotlin/io/polygon/kotlin/sdk/rest/PolygonRestOptions.kt). 
+
 ## Sample code
 See the sample module in this repo; There's a short [Kotlin sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/KotlinUsageSample.kt) 
 and [Java sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/JavaUsageSample.java)
