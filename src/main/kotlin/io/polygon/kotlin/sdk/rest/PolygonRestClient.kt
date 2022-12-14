@@ -90,6 +90,34 @@ constructor(
     ) =
         coroutineToRestCallback(callback, { getGroupedDailyAggregates(params, *opts) })
 
+    /**
+     *  Get trades for an equity/options/crypto ticker within a range
+     *  Note that options symbols are prepended with "O:" and crypto with "X:"
+     *
+     * API Docs:
+     *     https://polygon.io/docs/stocks/get_v3_trades__stockticker
+     *     https://polygon.io/docs/options/get_v3_trades__optionsticker
+     *     https://polygon.io/docs/crypto/get_v3_trades__cryptoticker
+     */
+
+    fun getTradesBlocking(
+        params: TradesParameters,
+        vararg opts: PolygonRestOption): TradesResponse =
+        runBlocking { getTrades(params, *opts)}
+
+    fun getTrades(params: TradesParameters, callback: PolygonRestApiCallback<TradesResponse>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, {getTrades(params, *opts)})
+    }
+
+    @SafeVarargs
+    fun getTradesIterator(
+        params: TradesParameters,
+        vararg opts: PolygonRestOption
+    ): RequestIterator<TradeResult> =
+        RequestIterator(
+            { getTradesBlocking(params, *opts) },
+            requestIteratorFetch<TradesResponse>()
+        )
 
     private val baseUrlBuilder: URLBuilder
         get() = httpClientProvider.getDefaultRestURLBuilder().apply {
