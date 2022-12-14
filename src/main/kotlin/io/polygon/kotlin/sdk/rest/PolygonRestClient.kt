@@ -109,8 +109,11 @@ constructor(
         coroutineToRestCallback(callback, {getTrades(params, *opts)})
     }
 
+    /**
+     * listTrades is an iterator wrapper for getTrades
+     */
     @SafeVarargs
-    fun getTradesIterator(
+    fun listTrades(
         params: TradesParameters,
         vararg opts: PolygonRestOption
     ): RequestIterator<TradeResult> =
