@@ -23,8 +23,7 @@ suspend fun PolygonRestClient.getTrades(
         params.timestampGT?.let { parameters["timestamp.gt"] = it.toString() }
         params.timestampGTE?.let { parameters["timestamp.gte"] = it.toString() }
         params.sort?.let{ parameters["sort"] = it }
-
-        params.limit.let { parameters["limit"] = it.toString() }
+        params.limit?.let { parameters["limit"] = it.toString() }
     }, *opts)
 
 @Builder
@@ -62,9 +61,9 @@ data class TradesParameters(
 
     /**
      * Limit the number of results returned, default is 10 and max is 50000.
+     * The API will default this to 10
      */
-    @DefaultValue("10")
-    val limit: Int = 10,
+    val limit: Int? = null,
 
     /**
      * Field used for ordering. See docs for valid fields
@@ -90,7 +89,5 @@ data class TradeResult(
     val participantTimestamp: Long? = null,
     val price: Double? = null,
     val sipTimestamp: Long? = null,
-
-    // TODO what type should this be? Need Double for crypto size, but lib uses Long in other places for equities
     val size: Double? = null,
 )
