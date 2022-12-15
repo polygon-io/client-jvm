@@ -62,6 +62,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/crypto/deprecated/get_v1_historic_crypto__from___to___date
      */
+    @Deprecated("use listTrades or getTradesBlocking in PolygonRestClient", ReplaceWith("listTrades(params, *opts)"))
     fun getHistoricTradesBlocking(
         params: HistoricCryptoTradesParameters,
         vararg opts: PolygonRestOption
@@ -69,6 +70,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getHistoricTrades(params, *opts) }
 
     /** See [getHistoricTradesBlocking] */
+    @Deprecated("use listTrades or getTrades in PolygonRestClient", ReplaceWith("listTrades(params, *opts)"))
     fun getHistoricTrades(
         params: HistoricCryptoTradesParameters,
         callback: PolygonRestApiCallback<HistoricCryptoTradesDTO>,
