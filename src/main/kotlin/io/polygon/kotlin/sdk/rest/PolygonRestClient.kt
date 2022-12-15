@@ -122,6 +122,36 @@ constructor(
             requestIteratorFetch<TradesResponse>()
         )
 
+    /**
+     *  Get quotes for an equity/forex ticker within a range
+     *  Note that fx symbols are prepended with "C:" e.g. "C:EUR-USD"
+     *
+     * API Docs:
+     *     https://polygon.io/docs/stocks/get_v3_quotes__stockticker
+     *     https://polygon.io/docs/forex/get_v3_quotes__fxticker
+     */
+    fun getQuotesBlocking(
+        params: QuotesParameters,
+        vararg opts: PolygonRestOption): QuotesResponse =
+        runBlocking { getQuotes(params, *opts)}
+
+    fun getQuotes(params: QuotesParameters, callback: PolygonRestApiCallback<QuotesResponse>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, {getQuotes(params, *opts)})
+    }
+
+    /**
+     * listQuotes is an iterator wrapper for getQuotes
+     */
+    @SafeVarargs
+    fun listQuotes(
+        params: QuotesParameters,
+        vararg opts: PolygonRestOption
+    ): RequestIterator<QuoteResult> =
+        RequestIterator(
+            { getQuotesBlocking(params, *opts) },
+            requestIteratorFetch<QuotesResponse>()
+        )
+
     private val baseUrlBuilder: URLBuilder
         get() = httpClientProvider.getDefaultRestURLBuilder().apply {
             host = polygonApiDomain

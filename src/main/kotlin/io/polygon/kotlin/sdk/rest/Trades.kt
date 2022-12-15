@@ -82,7 +82,6 @@ data class TradesResponse(
 
 @Serializable
 data class TradeResult(
-    val placeHolder: String? = null,
     val conditions: List<Int>? = null,
     val correction: Int? = null,
     val exchange: Int? = null,
