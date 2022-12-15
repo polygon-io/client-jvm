@@ -58,6 +58,8 @@ public class JavaUsageSample {
 
         System.out.println("Got " + groupedDaily.getResults().size() + " results from grouped daily");
 
+        JavaIteratorSample.IteratorSample(client);
+
         System.out.println("Websocket sample:");
         websocketSample(polygonKey);
     }

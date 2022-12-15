@@ -112,4 +112,10 @@ constructor(
         }.body()
     }
 
+    /**
+     * Helper function for creating request iterators
+     */
+    internal inline fun <reified T> requestIteratorFetch(vararg opts: PolygonRestOption): (String) -> T =
+        { url -> runBlocking { fetchResult({ takeFrom(url) }, *opts) } }
+
 }

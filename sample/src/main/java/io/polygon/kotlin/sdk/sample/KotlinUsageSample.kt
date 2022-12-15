@@ -32,6 +32,7 @@ val okHttpClientProvider: HttpClientProvider
         applicationInterceptors = listOf(object : okhttp3.Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 println("Intercepting application level")
+                println("request: ${chain.request().url}")
                 return chain.proceed(chain.request())
             }
         }),
@@ -76,6 +77,8 @@ suspend fun main() {
     )
 
     println("Got ${groupedDaily.results.size} results from grouped daily")
+
+    iteratorExample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)

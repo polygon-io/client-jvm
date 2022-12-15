@@ -3,6 +3,7 @@ package io.polygon.kotlin.sdk.rest.reference
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.Paginatable
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -145,10 +146,10 @@ data class SupportedTickersParameters(
 data class TickersDTO(
     val status: String? = null,
     val count: Int? = null,
-    @SerialName("next_url") val nextUrl: String? = null,
+    @SerialName("next_url") override val nextUrl: String? = null,
     @SerialName("request_id") val requestId: String? = null,
-    @SerialName("results") val results: List<TickerDTO>? = null
-)
+    @SerialName("results") override val results: List<TickerDTO>? = null
+) : Paginatable<TickerDTO>
 
 @Serializable
 data class TickerDTO(
