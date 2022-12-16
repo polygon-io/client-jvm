@@ -2,6 +2,7 @@ package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 suspend fun PolygonRestClient.getQuotes(
@@ -13,6 +14,13 @@ suspend fun PolygonRestClient.getQuotes(
         "quotes",
         params.ticker
     )
+    params.timestamp?.let { parameters["timestamp"] = it.toString() }
+    params.timestampLT?.let { parameters["timestamp.lt"] = it.toString() }
+    params.timestampLTE?.let { parameters["timestamp.lte"] = it.toString() }
+    params.timestampGT?.let { parameters["timestamp.gt"] = it.toString() }
+    params.timestampGTE?.let { parameters["timestamp.gte"] = it.toString() }
+    params.limit?.let { parameters["limit"] = it.toString() }
+    params.sort?.let{ parameters["sort"] = it }
 }, *opts)
 
 
@@ -64,16 +72,16 @@ data class QuotesParameters(
 @Serializable
 data class QuotesResponse(
     val status: String? = null,
-    val requestID: String? = null,
-    override val nextUrl: String? = null,
+    @SerialName("request_id") val requestID: String? = null,
+    @SerialName("next_url") override val nextUrl: String? = null,
     override val results: List<QuoteResult>? = null
 ) : Paginatable<QuoteResult>
 
 @Serializable
 data class QuoteResult(
-    val askExchange: Int? = null,
-    val askPrice: Double? = null,
-    val bidExchange: Int? = null,
-    val bidPrice: Double? = null,
-    val participantTimestamp: Long? = null,
+    @SerialName("ask_exchange") val askExchange: Int? = null,
+    @SerialName("ask_price") val askPrice: Double? = null,
+    @SerialName("bid_exchange") val bidExchange: Int? = null,
+    @SerialName("bid_price") val bidPrice: Double? = null,
+    @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
 )

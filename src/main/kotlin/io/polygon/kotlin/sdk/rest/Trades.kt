@@ -1,9 +1,7 @@
 package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
-import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
-import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,8 +20,8 @@ suspend fun PolygonRestClient.getTrades(
         params.timestampLTE?.let { parameters["timestamp.lte"] = it.toString() }
         params.timestampGT?.let { parameters["timestamp.gt"] = it.toString() }
         params.timestampGTE?.let { parameters["timestamp.gte"] = it.toString() }
-        params.sort?.let{ parameters["sort"] = it }
         params.limit?.let { parameters["limit"] = it.toString() }
+        params.sort?.let{ parameters["sort"] = it }
     }, *opts)
 
 @Builder
@@ -74,9 +72,9 @@ data class TradesParameters(
 @Serializable
 data class TradesResponse(
     val status: String? = null,
-    val requestID: String? = null,
-    override val nextUrl: String? = null,
-    override val results: List<TradeResult>? = null
+    @SerialName("request_id") val requestID: String? = null,
+    @SerialName("next_url") override val nextUrl: String? = null,
+    override val results: List<TradeResult> = emptyList()
 ) : Paginatable<TradeResult>
 
 
@@ -85,8 +83,8 @@ data class TradeResult(
     val conditions: List<Int>? = null,
     val correction: Int? = null,
     val exchange: Int? = null,
-    val participantTimestamp: Long? = null,
+    @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
     val price: Double? = null,
-    val sipTimestamp: Long? = null,
+    @SerialName("sip_timestamp") val sipTimestamp: Long? = null,
     val size: Double? = null,
 )

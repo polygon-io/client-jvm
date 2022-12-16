@@ -79,6 +79,8 @@ suspend fun main() {
     println("Got ${groupedDaily.results.size} results from grouped daily")
 
     iteratorExample(polygonClient)
+    tradesIteratorExample(polygonClient)
+    quotesIteratorExample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
@@ -343,4 +345,23 @@ fun cryptoGainersOrLosersSample(polygonClient: PolygonRestClient) {
 fun cryptoL2SnapshotSample(polygonClient: PolygonRestClient) {
     println("X:BTCUSD L2 data:")
     polygonClient.cryptoClient.getL2SnapshotSingleTickerBlocking("X:BTCUSD").pp()
+}
+
+fun getTradesSample(polygonClient: PolygonRestClient) {
+    println("F Trades:")
+    var params = TradesParameters(
+        ticker = "F",
+        limit = 2
+    )
+    polygonClient.getTradesBlocking(params).pp()
+}
+
+fun getQuotesSample(polygonClient: PolygonRestClient) {
+    println("F Quotes")
+    var params = QuotesParameters(
+        ticker = "F",
+        limit = 2
+    )
+    polygonClient.getQuotesBlocking(params).pp()
+
 }
