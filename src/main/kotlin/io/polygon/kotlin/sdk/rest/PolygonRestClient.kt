@@ -124,11 +124,13 @@ constructor(
 
     /**
      *  Get quotes for an equity/forex ticker within a range
-     *  Note that fx symbols are prepended with "C:" e.g. "C:EUR-USD"
+     *  Note that fx symbols are prepended with "C:" and options with "O:"
+     *  e.g. "C:EUR-USD" & "O:SPY241220P00720000"
      *
      * API Docs:
      *     https://polygon.io/docs/stocks/get_v3_quotes__stockticker
      *     https://polygon.io/docs/forex/get_v3_quotes__fxticker
+     *     https://polygon.io/docs/options/get_v3_quotes__optionsticker
      */
     fun getQuotesBlocking(
         params: QuotesParameters,
