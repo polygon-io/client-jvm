@@ -103,10 +103,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_markets
      */
+    @Deprecated("This API is no longer supported and will be sunset some time in the future")
     fun getSupportedMarketsBlocking(vararg opts: PolygonRestOption): MarketsDTO =
         runBlocking { getSupportedMarkets(*opts) }
 
     /** See [getSupportedMarketsBlocking] */
+    @Deprecated("This API is no longer supported and will be sunset some time in the future")
     fun getSupportedMarkets(callback: PolygonRestApiCallback<MarketsDTO>, vararg opts: PolygonRestOption) {
         coroutineToRestCallback(callback, { getSupportedMarkets(*opts) })
     }
@@ -116,10 +118,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_locales
      */
+    @Deprecated("This API is no longer supported and will be sunset some time in the future")
     fun getSupportedLocalesBlocking(vararg opts: PolygonRestOption): LocalesDTO =
         runBlocking { getSupportedLocales(*opts) }
 
     /** See [getSupportedLocalesBlocking] */
+    @Deprecated("This API is no longer supported and will be sunset some time in the future")
     fun getSupportedLocales(callback: PolygonRestApiCallback<LocalesDTO>, vararg opts: PolygonRestOption) {
         coroutineToRestCallback(callback, { getSupportedLocales(*opts) })
     }
