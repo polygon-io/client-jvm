@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getHistoricTradesBlocking] */
+@Deprecated("superseded by getTrades in PolygonRestClient")
 suspend fun PolygonStocksClient.getHistoricTrades(
     params: HistoricTradesParameters,
     vararg opts: PolygonRestOption
@@ -21,11 +22,11 @@ suspend fun PolygonStocksClient.getHistoricTrades(
         params.reverse?.let { parameters["reverse"] = it.toString() }
     }, *opts)
 
-@Builder
+@Builder @Deprecated("used in deprecated getHistoricTrades")
 data class HistoricTradesParameters(
     val ticker: String,
 
-    /** Date/Day of the historic ticks to retreive ( YYYY-MM-DD ) */
+    /** Date/Day of the historic ticks to retrieve ( YYYY-MM-DD ) */
     val date: String,
 
     /**
@@ -44,7 +45,7 @@ data class HistoricTradesParameters(
     @DefaultValue("10") val limit: Int = 10
 )
 
-@Serializable
+@Serializable @Deprecated("used in deprecated getHistoricTrades")
 data class HistoricTradesDTO(
     @SerialName("results_count") val resultsCount: Long? = null,
     @SerialName("db_latency") val dbLatency: Long? = null,
@@ -53,7 +54,7 @@ data class HistoricTradesDTO(
     val results: List<HistoricTradeDTO> = emptyList()
 )
 
-@Serializable
+@Serializable @Deprecated("used in deprecated getHistoricTrades")
 data class HistoricTradeDTO(
     @SerialName("T") val ticker: String? = null,
     @SerialName("t") val sipTimestampNanos: Long? = null,

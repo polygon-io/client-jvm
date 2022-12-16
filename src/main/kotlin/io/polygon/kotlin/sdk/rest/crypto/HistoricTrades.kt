@@ -6,6 +6,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getHistoricTradesBlocking] */
+@Deprecated("superseded by getTrades in PolygonRestClient")
 suspend fun PolygonCryptoClient.getHistoricTrades(
     params: HistoricCryptoTradesParameters,
     vararg opts: PolygonRestOption
@@ -17,7 +18,7 @@ suspend fun PolygonCryptoClient.getHistoricTrades(
         params.offset?.let { parameters["offset"] = it.toString() }
     }, *opts)
 
-@Builder
+@Builder @Deprecated("used in deprecated getHistoricTrades")
 data class HistoricCryptoTradesParameters(
     val from: String,
     val to: String,
@@ -35,7 +36,7 @@ data class HistoricCryptoTradesParameters(
     val limit: Int
 )
 
-@Serializable
+@Serializable @Deprecated("used in deprecated getHistoricTrades")
 data class HistoricCryptoTradesDTO(
     val status: String? = null,
     val day: String? = null,

@@ -31,10 +31,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v2_ticks_stocks_trades_ticker_date
      */
+    @Deprecated("use listTrades or getTradesBlocking in PolygonRestClient", ReplaceWith("listTrades(params, *opts)"))
     fun getHistoricTradesBlocking(params: HistoricTradesParameters, vararg opts: PolygonRestOption): HistoricTradesDTO =
         runBlocking { getHistoricTrades(params, *opts) }
 
     /** See [getHistoricTradesBlocking] */
+    @Deprecated("use listTrades or getTrades in PolygonRestClient", ReplaceWith("listTrades(params, *opts)"))
     fun getHistoricTrades(
         params: HistoricTradesParameters,
         callback: PolygonRestApiCallback<HistoricTradesDTO>,
