@@ -54,7 +54,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getHistoricQuotes(params, *opts) }
 
     /** See [getHistoricQuotesBlocking] */
-    @Deprecated("superseded by listQuotes/getQuotes in PolygonRestClient",ReplaceWith("getQuotes(params, *ops)"))
+    @Deprecated("superseded by listQuotes/getQuotes in PolygonRestClient",ReplaceWith("getQuotes(params, callback, *ops)"))
     fun getHistoricQuotes(
         params: HistoricQuotesParameters,
         callback: PolygonRestApiCallback<HistoricQuotesDTO>,
