@@ -75,7 +75,7 @@ suspend fun main() {
     tradesIteratorExample(polygonClient)
     quotesIteratorExample(polygonClient)
 
-    dividendsSample(polygonClient)
+    splitsSample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
@@ -151,9 +151,11 @@ fun tickerNewsSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getTickerNewsBlocking(params).pp()
 }
 
-fun stockSplitsSample(polygonClient: PolygonRestClient) {
+fun splitsSample(polygonClient: PolygonRestClient) {
     println("Apple splits:")
-    polygonClient.referenceClient.getStockSplitsBlocking("AAPL").pp()
+    polygonClient.referenceClient
+        .getSplitsBlocking(SplitsParameters(ticker = ComparisonQueryFilterParameters.equal("AAPL")))
+        .pp()
 }
 
 

@@ -9,6 +9,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/** See [PolygonReferenceClient.getDividendsBlocking] */
 @SafeVarargs
 suspend fun PolygonReferenceClient.getDividends(
     params: DividendsParameters,

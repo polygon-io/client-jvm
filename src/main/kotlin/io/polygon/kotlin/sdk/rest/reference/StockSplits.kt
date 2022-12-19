@@ -6,12 +6,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockSplitsBlocking] */
+@Deprecated("use getSplits or listSplits instead", ReplaceWith("getSplits(params, *opts)"))
 suspend fun PolygonReferenceClient.getStockSplits(symbol: String, vararg opts: PolygonRestOption): StockSplitsDTO =
     polygonClient.fetchResult({
         path("v2", "reference", "splits", symbol)
     }, *opts)
 
 @Serializable
+@Deprecated("used in deprecated getStocksSplits")
 data class StockSplitsDTO(
     val status: String? = null,
     val count: Int? = null,
@@ -19,6 +21,7 @@ data class StockSplitsDTO(
 )
 
 @Serializable
+@Deprecated("used in deprecated getStocksSplits")
 data class StockSplitDTO(
     val ticker: String? = null,
     @SerialName("exDate") val executionDate: String? = null,
