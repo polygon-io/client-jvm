@@ -12,10 +12,7 @@ import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
-import io.polygon.kotlin.sdk.rest.reference.DividendsParameters
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters
-import io.polygon.kotlin.sdk.rest.reference.TickerNewsParameters
-import io.polygon.kotlin.sdk.rest.reference.getSupportedMarkets
+import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
