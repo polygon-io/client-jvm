@@ -1,6 +1,5 @@
 package io.polygon.kotlin.sdk.rest.reference
 
-import io.ktor.http.*
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
@@ -69,10 +68,15 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v1_meta_symbols_symbol_company
      */
+    @Deprecated(
+        "supserseded by getTickerDetailsV3Blocking and will be replaced in a future verison",
+        ReplaceWith("getTickerDetailsV3Blocking(symbol, params, *opts)")
+    )
     fun getTickerDetailsBlocking(symbol: String, vararg opts: PolygonRestOption): TickerDetailsDTO =
         runBlocking { getTickerDetails(symbol, *opts) }
 
     /** See [getTickerDetailsBlocking] */
+    @Deprecated("supserseded by getTickerDetailsV3 and will be replaced in a future verison", ReplaceWith("getTickerDetailsV3(symbol, params, *opts)"))
     fun getTickerDetails(
         symbol: String,
         callback: PolygonRestApiCallback<TickerDetailsDTO>,
@@ -80,6 +84,30 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     ) {
         coroutineToRestCallback(callback, { getTickerDetails(symbol, *opts) })
     }
+
+    /**
+     * Get a single ticker supported by Polygon.io.
+     * This response will have detailed information about the ticker and the company behind it.
+     *
+     * Note: will be renamed getTickerDetailsBlocking in a future version.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v3_reference_tickers__ticker
+     */
+    fun getTickerDetailsV3Blocking(
+        ticker: String,
+        params: TickerDetailsParameters,
+        vararg opts: PolygonRestOption
+    ): TickerDetailsResponse =
+        runBlocking { getTickerDetailsV3(ticker, params, *opts) }
+
+    /** See [getTickerDetailsV3Blocking] */
+    fun getTickerDetailsV3(
+        ticker: String,
+        params: TickerDetailsParameters,
+        callback: PolygonRestApiCallback<TickerDetailsResponse>,
+        vararg opts: PolygonRestOption,
+    ) =
+        coroutineToRestCallback(callback, { getTickerDetailsV3(ticker, params, *opts) })
 
     /**
      * Get news articles for a given ticker
