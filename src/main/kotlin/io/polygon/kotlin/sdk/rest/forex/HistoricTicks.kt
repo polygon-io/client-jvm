@@ -7,6 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getHistoricTicksBlocking] */
+@Deprecated("superseded by getQuotes in PolygonRestClient")
 suspend fun PolygonForexClient.getHistoricTicks(
     params: HistoricTicksParameters,
     vararg opts: PolygonRestOption
@@ -19,6 +20,7 @@ suspend fun PolygonForexClient.getHistoricTicks(
     }, *opts)
 
 @Builder
+@Deprecated("used in deprecated getHistoricTicks")
 data class HistoricTicksParameters(
     val fromCurrency: String,
     val toCurrency: String,
@@ -38,6 +40,7 @@ data class HistoricTicksParameters(
 )
 
 @Serializable
+@Deprecated("used in deprecated getHistoricTicks")
 data class HistoricTicksDTO(
     val status: String? = null,
     val day: String? = null,
@@ -47,6 +50,7 @@ data class HistoricTicksDTO(
 )
 
 @Serializable
+@Deprecated("used in deprecated getHistoricTicks")
 data class ForexTickDTO(
     @SerialName("a") val askPrice: Double? = null,
     @SerialName("b") val bidPrice: Double? = null,
