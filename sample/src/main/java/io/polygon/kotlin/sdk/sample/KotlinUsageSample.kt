@@ -135,9 +135,9 @@ fun supportedTickersSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getSupportedTickersBlocking(params).pp()
 }
 
-fun supportedTickerTypes(polygonClient: PolygonRestClient) {
-    println("Supported Ticker Types: ")
-    polygonClient.referenceClient.getSupportedTickerTypesBlocking().pp()
+fun tickerTypesSample(polygonClient: PolygonRestClient) {
+    println("Ticker Types: ")
+    polygonClient.referenceClient.getTickerTypesBlocking(TickerTypesParameters()).pp()
 }
 
 fun supportedLocalesSample(polygonClient: PolygonRestClient) {
