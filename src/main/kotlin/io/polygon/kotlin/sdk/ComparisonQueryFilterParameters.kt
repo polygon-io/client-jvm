@@ -47,7 +47,7 @@ data class ComparisonQueryFilterParameters<T>(
 }
 
 /**
- * A builder class better Java interop with [ComparisonQueryFilterParameters].
+ * A builder class for better Java interop with [ComparisonQueryFilterParameters].
  *
  * Note that this builder class is handwritten instead of generated using a `@Builder` annotation because
  * the annotation doesn't support generating builders for classes with generic type parameters.

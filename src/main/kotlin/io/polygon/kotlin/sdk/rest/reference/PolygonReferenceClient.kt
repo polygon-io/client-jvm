@@ -164,10 +164,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v3_reference_dividends
      */
+    @SafeVarargs
     fun getDividendsBlocking(params: DividendsParameters, vararg opts: PolygonRestOption): DividendsResponse =
         runBlocking { getDividends(params, *opts) }
 
     /** See [getDividendsBlocking] */
+    @SafeVarargs
     fun getDividends(
         params: DividendsParameters,
         callback: PolygonRestApiCallback<DividendsResponse>,
@@ -181,6 +183,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      * See [getDividendsBlocking] if you instead need to get exactly one page of results.
      * See section "Pagination" in the README for more details on iterators.
      */
+    @SafeVarargs
     fun listDividends(params: DividendsParameters, vararg opts: PolygonRestOption): RequestIterator<Dividend> =
         RequestIterator(
             { getDividendsBlocking(params, *opts) },
