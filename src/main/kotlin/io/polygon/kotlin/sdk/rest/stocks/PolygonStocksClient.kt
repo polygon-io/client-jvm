@@ -96,16 +96,29 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_last_quote_stocks_symbol
      */
+    @Deprecated("superseded by getLastQuoteBlockingV2", ReplaceWith("getLastQuoteBlockingV2(ticker, *opts)"))
     fun getLastQuoteBlocking(symbol: String, vararg opts: PolygonRestOption): LastQuoteResultDTO =
         runBlocking { getLastQuote(symbol, *opts) }
 
     /** See [getLastQuoteBlocking] */
+    @Deprecated("superseded by getLastQuoteV2", ReplaceWith("getLastQuoteV2(ticker, callback, *opts)"))
     fun getLastQuote(
         symbol: String,
         callback: PolygonRestApiCallback<LastQuoteResultDTO>,
         vararg opts: PolygonRestOption
     ) =
         coroutineToRestCallback(callback, { getLastQuote(symbol, *opts) })
+
+    /**
+     * Get the most recent NBBO (Quote) tick for a given stock.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v2_last_nbbo__stocksticker
+     */
+    fun getLastQuoteBlockingV2(ticker: String, vararg opts: PolygonRestOption): LastQuoteResultV2 =
+        runBlocking { getLastQuoteV2(ticker, *opts) }
+
+    fun getLastQuoteV2(ticker: String, callback: PolygonRestApiCallback<LastQuoteResultV2>, vararg opts: PolygonRestOption) =
+        coroutineToRestCallback(callback, { getLastQuoteV2(ticker, *opts)} )
 
     /**
      * Get the open, close and afterhours prices of a symbol on a certain date.

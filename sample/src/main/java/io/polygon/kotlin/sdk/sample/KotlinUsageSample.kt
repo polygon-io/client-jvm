@@ -213,8 +213,8 @@ fun lastTradeSample(polygonClient: PolygonRestClient) {
 }
 
 fun lastQuoteSample(polygonClient: PolygonRestClient) {
-    println("RDFN last quote: ")
-    polygonClient.stocksClient.getLastQuoteBlocking("RDFN").pp()
+    println("F last quote: ")
+    polygonClient.stocksClient.getLastQuoteBlockingV2("F").pp()
 }
 
 fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
