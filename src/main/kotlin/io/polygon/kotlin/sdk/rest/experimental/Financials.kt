@@ -9,7 +9,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** See [PolygonReferenceClient.getFinancialsBlocking] */
+/** See [PolygonExperimentalClient.getFinancialsBlocking] */
 @ExperimentalAPI
 suspend fun PolygonExperimentalClient.getFinancials(params: FinancialsParameters, vararg opts: PolygonRestOption): FinancialsResponse =
     polygonClient.fetchResult({
