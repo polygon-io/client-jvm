@@ -75,10 +75,10 @@ suspend fun main() {
     tradesIteratorExample(polygonClient)
     quotesIteratorExample(polygonClient)
 
-    conditionsSample(polygonClient)
+    splitsSample(polygonClient)
 
-//    println("\n\nWebsocket sample:")
-//    websocketSample(polygonKey)
+    println("\n\nWebsocket sample:")
+    websocketSample(polygonKey)
 }
 
 suspend fun websocketSample(polygonKey: String) {
