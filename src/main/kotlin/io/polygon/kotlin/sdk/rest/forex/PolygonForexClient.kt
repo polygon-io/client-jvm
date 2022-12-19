@@ -22,10 +22,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/forex/deprecated/get_v1_historic_forex__from___to___date
      */
+    @Deprecated("superseded by getQuotesBlocking in PolygonRestClient", ReplaceWith("getQuotesBlocking(params, *opts)"))
     fun getHistoricTicksBlocking(params: HistoricTicksParameters, vararg opts: PolygonRestOption): HistoricTicksDTO =
         runBlocking { getHistoricTicks(params, *opts) }
 
     /** See [getHistoricTicksBlocking] */
+    @Deprecated("superseded by getQuotes in PolygonRestClient", ReplaceWith("getQuotes(params, callback, *opts)"))
     fun getHistoricTicks(
         params: HistoricTicksParameters,
         callback: PolygonRestApiCallback<HistoricTicksDTO>,

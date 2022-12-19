@@ -49,10 +49,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v2_ticks_stocks_nbbo_ticker_date
      */
+    @Deprecated("superseded by listQuotes/getQuotesBlocking in PolygonRestClient",ReplaceWith("getQuotesBlocking(params, *ops)"))
     fun getHistoricQuotesBlocking(params: HistoricQuotesParameters, vararg opts: PolygonRestOption): HistoricQuotesDTO =
         runBlocking { getHistoricQuotes(params, *opts) }
 
     /** See [getHistoricQuotesBlocking] */
+    @Deprecated("superseded by listQuotes/getQuotes in PolygonRestClient",ReplaceWith("getQuotes(params, callback, *ops)"))
     fun getHistoricQuotes(
         params: HistoricQuotesParameters,
         callback: PolygonRestApiCallback<HistoricQuotesDTO>,
@@ -65,16 +67,31 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_last_stocks_symbol
      */
+    @Deprecated("superseded by getLastTradeV2 and will be replaced in a future version", ReplaceWith("getLastTradeV2(ticker, *opts)"))
     fun getLastTradeBlocking(symbol: String, vararg opts: PolygonRestOption): LastTradeResultDTO =
         runBlocking { getLastTrade(symbol, *opts) }
 
     /** See [getLastTradeBlocking] */
+    @Deprecated("replaced by getLastTradeV2", ReplaceWith("getLastTradeV2(ticker, callback, *opts)"))
     fun getLastTrade(
         symbol: String,
         callback: PolygonRestApiCallback<LastTradeResultDTO>,
         vararg opts: PolygonRestOption
     ) =
         coroutineToRestCallback(callback, { getLastTrade(symbol, *opts) })
+
+
+    /**
+     * Get the most recent trade for a given ticker.
+     * Note: will be renamed getLastTradeBlocking in a future version
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v2_last_trade__stocksticker
+     */
+    fun getLastTradeBlockingV2(ticker: String, vararg opts: PolygonRestOption): LastTradeResultV2 =
+        runBlocking { getLastTradeV2(ticker, *opts) }
+
+    fun getLastTradeV2(ticker: String, callback: PolygonRestApiCallback<LastTradeResultV2>, vararg opts: PolygonRestOption) =
+        coroutineToRestCallback(callback, { getLastTradeV2(ticker, *opts)} )
 
     /**
      * Get the last quote tick for a given stock.

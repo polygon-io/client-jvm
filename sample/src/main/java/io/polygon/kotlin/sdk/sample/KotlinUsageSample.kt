@@ -159,9 +159,11 @@ fun tickerNewsSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getTickerNewsBlocking(params).pp()
 }
 
-fun stockSplitsSample(polygonClient: PolygonRestClient) {
+fun splitsSample(polygonClient: PolygonRestClient) {
     println("Apple splits:")
-    polygonClient.referenceClient.getStockSplitsBlocking("AAPL").pp()
+    polygonClient.referenceClient
+        .getSplitsBlocking(SplitsParameters(ticker = ComparisonQueryFilterParameters.equal("AAPL")))
+        .pp()
 }
 
 
@@ -218,8 +220,8 @@ fun historicQuotesSample(polygonClient: PolygonRestClient) {
 }
 
 fun lastTradeSample(polygonClient: PolygonRestClient) {
-    println("RDFN last trade: ")
-    polygonClient.stocksClient.getLastTradeBlocking("RDFN").pp()
+    println("Last F Trade")
+    polygonClient.stocksClient.getLastTradeBlockingV2("F").pp()
 }
 
 fun lastQuoteSample(polygonClient: PolygonRestClient) {

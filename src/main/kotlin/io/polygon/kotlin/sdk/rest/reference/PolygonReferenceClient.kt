@@ -130,16 +130,48 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_splits_symbol
      */
+    @Deprecated("use getSplitsBlocking or listSplits instead", ReplaceWith("getSplitsBlocking(params, *opts)"))
     fun getStockSplitsBlocking(symbol: String, vararg opts: PolygonRestOption): StockSplitsDTO =
         runBlocking { getStockSplits(symbol, *opts) }
 
     /** See [getStockSplitsBlocking] */
+    @Deprecated("use getSplits or listSplits instead", ReplaceWith("getSplits(params, callback, *opts)"))
     fun getStockSplits(
         symbol: String,
         callback: PolygonRestApiCallback<StockSplitsDTO>,
         vararg opts: PolygonRestOption
     ) =
         coroutineToRestCallback(callback, { getStockSplits(symbol, *opts) })
+
+    /**
+     * Get a list of historical stock splits,
+     * including the ticker symbol, the execution date, and the factors of the split ratio.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v3_reference_splits
+     */
+    fun getSplitsBlocking(params: SplitsParameters, vararg opts: PolygonRestOption): SplitsResponse =
+        runBlocking { getSplits(params, *opts) }
+
+    /** See [getSplitsBlocking] */
+    fun getSplits(
+        params: SplitsParameters,
+        callback: PolygonRestApiCallback<SplitsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getSplits(params, *opts) })
+
+    /**
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getSplitsBlocking] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
+     */
+    @SafeVarargs
+    fun listSplits(params: SplitsParameters, vararg opts: PolygonRestOption): RequestIterator<Split> =
+        RequestIterator(
+            { getSplitsBlocking(params, *opts) },
+            polygonClient.requestIteratorFetch(*opts)
+        )
 
     /**
      * Gets the historical dividends for a symbol
