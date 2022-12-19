@@ -268,4 +268,22 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /** See [getMarketHolidaysBlocking] */
     fun getMarketHolidays(callback: PolygonRestApiCallback<List<MarketHolidayDTO>>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getMarketHolidays(*opts) })
+
+    /**
+     * List all exchanges that Polygon.io knows about.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v3_reference_exchanges
+     */
+    @SafeVarargs
+    fun getExchangesBlocking(params: ExchangesParameters, vararg opts: PolygonRestOption): ExchangesResponse =
+        runBlocking { getExchanges(params, *opts) }
+
+    /** See [getExchangesBlocking] */
+    @SafeVarargs
+    fun getExchanges(
+        params: ExchangesParameters,
+        callback: PolygonRestApiCallback<ExchangesResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getExchangesBlocking(params, *opts) })
 }
