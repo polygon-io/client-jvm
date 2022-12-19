@@ -224,9 +224,9 @@ fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
     polygonClient.stocksClient.getDailyOpenCloseBlocking("RDFN", "2020-02-19", true).pp()
 }
 
-fun conditionsMappingSample(polygonClient: PolygonRestClient) {
-    println("Condition mapping:")
-    polygonClient.stocksClient.getConditionMappingsBlocking(ConditionMappingTickerType.TRADES).pp()
+fun conditionsSample(polygonClient: PolygonRestClient) {
+    println("Conditions:")
+    polygonClient.referenceClient.getConditionsBlocking(ConditionsParameters()).pp()
 }
 
 fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
