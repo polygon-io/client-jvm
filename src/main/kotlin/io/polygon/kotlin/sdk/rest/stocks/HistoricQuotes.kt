@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getHistoricQuotesBlocking] */
+@Deprecated("superseded by getQuotes in PolygonRestCLient")
 suspend fun PolygonStocksClient.getHistoricQuotes(
     params: HistoricQuotesParameters,
     vararg opts: PolygonRestOption
@@ -22,6 +23,7 @@ suspend fun PolygonStocksClient.getHistoricQuotes(
     }, *opts)
 
 @Builder
+@Deprecated("used in deprecated getHistoricQuotes")
 data class HistoricQuotesParameters(
     val ticker: String,
 
@@ -45,6 +47,7 @@ data class HistoricQuotesParameters(
 )
 
 @Serializable
+@Deprecated("used in deprecated getHistoricQuotes")
 data class HistoricQuotesDTO(
     @SerialName("results_count") val resultsCount: Long? = null,
     @SerialName("db_latency") val dbLatency: Long? = null,
@@ -54,6 +57,7 @@ data class HistoricQuotesDTO(
 )
 
 @Serializable
+@Deprecated("used in deprecated getHistoricQuotes")
 data class HistoricQuoteDTO(
     @SerialName("T") val ticker: String? = null,
     @SerialName("t") val sipTimestampNanos: Long? = null,
