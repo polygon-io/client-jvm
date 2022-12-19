@@ -8,6 +8,8 @@ import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.crypto.PolygonCryptoClient
+import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
+import io.polygon.kotlin.sdk.rest.experimental.PolygonExperimentalClient
 import io.polygon.kotlin.sdk.rest.forex.PolygonForexClient
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
@@ -47,6 +49,13 @@ constructor(
      * A [PolygonCryptoClient] that can be used to access Polygon crypto APIs
      */
     val cryptoClient by lazy { PolygonCryptoClient(this) }
+
+    /**
+     * A [PolygonExperimentalClient] that can be used to access vX Polygon APIs
+     * @see PolygonExperimentalClient
+     */
+    @ExperimentalAPI
+    val experimentalClient by lazy { PolygonExperimentalClient(this) }
 
     /**
      * Get aggregates for a date range, in custom time window sizes.

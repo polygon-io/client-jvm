@@ -2,10 +2,7 @@ package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
-import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
-import io.polygon.kotlin.sdk.rest.PolygonRestClient
-import io.polygon.kotlin.sdk.rest.PolygonRestOption
-import io.polygon.kotlin.sdk.rest.RequestIterator
+import io.polygon.kotlin.sdk.rest.*
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -199,6 +196,10 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_financials_symbol
      */
+    @Deprecated(
+        "This API is deprecated and will be sunset some time in the future. " +
+                "It will be replaced by the experimental financials API (see PolygonExerimentalClient.getFinancialsBlocking)"
+    )
     fun getStockFinancialsBlocking(
         params: StockFinancialsParameters,
         vararg opts: PolygonRestOption
@@ -206,6 +207,10 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getStockFinancials(params, *opts) }
 
     /** See [getStockFinancialsBlocking] */
+    @Deprecated(
+        "This API is deprecated and will be sunset some time in the future. " +
+                "It will be replaced by the experimental financials API (see PolygonExerimentalClient.getFinancials)"
+    )
     fun getStockFinancials(
         params: StockFinancialsParameters,
         callback: PolygonRestApiCallback<StockFinancialsResultsDTO>,
