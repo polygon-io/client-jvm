@@ -54,13 +54,33 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_types
      */
+    @Deprecated("use getTickerTypesBlocking instead")
     fun getSupportedTickerTypesBlocking(vararg opts: PolygonRestOption): TickerTypesDTO =
         runBlocking { getSupportedTickerTypes(*opts) }
 
     /** See [getSupportedTickerTypesBlocking] */
+    @Deprecated("use getTickerTypes instead")
     fun getSupportedTickerTypes(callback: PolygonRestApiCallback<TickerTypesDTO>, vararg opts: PolygonRestOption) {
         coroutineToRestCallback(callback, { getSupportedTickerTypes(*opts) })
     }
+
+    /**
+     * List all ticker types that Polygon.io has.
+     *
+     * API Docs: https://polygon.io/docs/stocks/get_v3_reference_tickers_types
+     */
+    @SafeVarargs
+    fun getTickerTypesBlocking(params: TickerTypesParameters, vararg opts: PolygonRestOption): TickerTypesResponse =
+        runBlocking { getTickerTypes(params, *opts) }
+
+    /** See [getTickerTypesBlocking] */
+    @SafeVarargs
+    fun getTickerTypes(
+        params: TickerTypesParameters,
+        callback: PolygonRestApiCallback<TickerTypesResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTickerTypes(params, *opts) })
 
     /**
      * Gets the details of the symbol company/entity.
