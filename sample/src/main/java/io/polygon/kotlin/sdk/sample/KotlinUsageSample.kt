@@ -1,9 +1,8 @@
 package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.*
-import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
+import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.DefaultOkHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.*
@@ -11,14 +10,8 @@ import io.polygon.kotlin.sdk.rest.crypto.CryptoDailyOpenCloseParameters
 import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
-import io.polygon.kotlin.sdk.rest.reference.StockFinancialsParameters
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters
-import io.polygon.kotlin.sdk.rest.reference.TickerNewsParameters
-import io.polygon.kotlin.sdk.rest.reference.getSupportedMarkets
-import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
-import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
-import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
-import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
+import io.polygon.kotlin.sdk.rest.reference.*
+import io.polygon.kotlin.sdk.rest.stocks.*
 import io.polygon.kotlin.sdk.websocket.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -36,7 +29,7 @@ val okHttpClientProvider: HttpClientProvider
                 return chain.proceed(chain.request())
             }
         }),
-        networkInterceptors = listOf(object : Interceptor{
+        networkInterceptors = listOf(object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 println("Intercepting network level")
                 return chain.proceed(chain.request())
@@ -81,6 +74,8 @@ suspend fun main() {
     iteratorExample(polygonClient)
     tradesIteratorExample(polygonClient)
     quotesIteratorExample(polygonClient)
+
+    dividendsSample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
@@ -162,9 +157,22 @@ fun stockSplitsSample(polygonClient: PolygonRestClient) {
 }
 
 
-fun stockDividendsSample(polygonClient: PolygonRestClient) {
+fun dividendsSample(polygonClient: PolygonRestClient) {
     println("GE dividends:")
-    polygonClient.referenceClient.getStockDividendsBlocking("GE").pp()
+    polygonClient.referenceClient.getDividendsBlocking(
+        DividendsParameters(
+            ticker = ComparisonQueryFilterParameters.equal("GE"),
+            limit = 1,
+        )
+    ).pp()
+
+    println("dividends w/ cash amounts between $1 and $10")
+    polygonClient.referenceClient.getDividendsBlocking(
+        DividendsParameters(
+            cashAmount = ComparisonQueryFilterParameters(greaterThanOrEqual = 1.0, lessThanOrEqual = 10.0),
+            limit = 1,
+        )
+    ).pp()
 }
 
 fun stockFinancialsSample(polygonClient: PolygonRestClient) {
@@ -189,12 +197,14 @@ fun supportedExchangesSample(polygonClient: PolygonRestClient) {
 
 fun historicTradesSample(polygonClient: PolygonRestClient) {
     println("RDFN historic trades: ")
-    polygonClient.stocksClient.getHistoricTradesBlocking(HistoricTradesParameters(ticker = "RDFN", date = "2020-02-26")).pp()
+    polygonClient.stocksClient.getHistoricTradesBlocking(HistoricTradesParameters(ticker = "RDFN", date = "2020-02-26"))
+        .pp()
 }
 
 fun historicQuotesSample(polygonClient: PolygonRestClient) {
     println("RDFN historic quotes: ")
-    polygonClient.stocksClient.getHistoricQuotesBlocking(HistoricQuotesParameters(ticker = "RDFN", date = "2020-02-26")).pp()
+    polygonClient.stocksClient.getHistoricQuotesBlocking(HistoricQuotesParameters(ticker = "RDFN", date = "2020-02-26"))
+        .pp()
 }
 
 fun lastTradeSample(polygonClient: PolygonRestClient) {
