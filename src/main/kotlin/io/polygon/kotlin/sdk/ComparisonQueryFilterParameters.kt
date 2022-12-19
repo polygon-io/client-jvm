@@ -7,6 +7,7 @@ import io.ktor.http.*
  * Learn more about them in this blog post:
  * https://polygon.io/blog/api-pagination-patterns/
  *
+ * In many cases, you may just want to query for a particular value instead of an inequality (ie `ticker=GE`);
  * For a shortcut to query where the field is exactly a given value, see [ComparisonQueryFilterParameters.equal]
  */
 data class ComparisonQueryFilterParameters<T>(
