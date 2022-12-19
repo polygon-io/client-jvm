@@ -268,4 +268,34 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     /** See [getMarketHolidaysBlocking] */
     fun getMarketHolidays(callback: PolygonRestApiCallback<List<MarketHolidayDTO>>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getMarketHolidays(*opts) })
+
+    /**
+     * List all conditions that Polygon.io uses.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v3_reference_conditions
+     */
+    fun getConditionsBlocking(params: ConditionsParameters, vararg opts: PolygonRestOption): ConditionsResponse =
+        runBlocking { getConditions(params, *opts) }
+
+    /** See [PolygonReferenceClient.getConditionsBlocking] */
+    @SafeVarargs
+    fun getConditions(
+        params: ConditionsParameters,
+        callback: PolygonRestApiCallback<ConditionsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getConditions(params, *opts) })
+
+    /**
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getConditionsBlocking] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
+     */
+    @SafeVarargs
+    fun listConditions(params: ConditionsParameters, vararg opts: PolygonRestOption): RequestIterator<Condition> =
+        RequestIterator(
+            { getConditionsBlocking(params, *opts) },
+            polygonClient.requestIteratorFetch(*opts)
+        )
 }

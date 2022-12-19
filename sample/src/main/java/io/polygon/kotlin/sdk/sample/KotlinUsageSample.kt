@@ -75,10 +75,10 @@ suspend fun main() {
     tradesIteratorExample(polygonClient)
     quotesIteratorExample(polygonClient)
 
-    splitsSample(polygonClient)
+    conditionsSample(polygonClient)
 
-    println("\n\nWebsocket sample:")
-    websocketSample(polygonKey)
+//    println("\n\nWebsocket sample:")
+//    websocketSample(polygonKey)
 }
 
 suspend fun websocketSample(polygonKey: String) {
@@ -224,9 +224,9 @@ fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
     polygonClient.stocksClient.getDailyOpenCloseBlocking("RDFN", "2020-02-19", true).pp()
 }
 
-fun conditionsMappingSample(polygonClient: PolygonRestClient) {
-    println("Condition mapping:")
-    polygonClient.stocksClient.getConditionMappingsBlocking(ConditionMappingTickerType.TRADES).pp()
+fun conditionsSample(polygonClient: PolygonRestClient) {
+    println("Conditions:")
+    polygonClient.referenceClient.getConditionsBlocking(ConditionsParameters()).pp()
 }
 
 fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
