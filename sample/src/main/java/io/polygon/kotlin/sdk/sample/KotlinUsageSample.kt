@@ -375,3 +375,8 @@ fun getQuotesSample(polygonClient: PolygonRestClient) {
     polygonClient.getQuotesBlocking(params).pp()
 
 }
+
+fun getLastTradeV2Sample(polygonClient: PolygonRestClient) {
+    println("Last F Trade")
+    polygonClient.stocksClient.getLastTradeBlockingV2("F").pp()
+}
