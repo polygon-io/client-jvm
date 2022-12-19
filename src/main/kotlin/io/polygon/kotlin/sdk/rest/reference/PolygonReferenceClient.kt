@@ -114,9 +114,11 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_reference_news
      */
+    @SafeVarargs
     fun getTickerNewsBlockingV2(params: TickerNewsParametersV2, vararg opts: PolygonRestOption): TickerNewsResponse =
         runBlocking { getTickerNewsV2(params, *opts) }
 
+    @SafeVarargs
     fun getTickerNewsV2(
         params: TickerNewsParametersV2,
         callback: PolygonRestApiCallback<TickerNewsResponse>,

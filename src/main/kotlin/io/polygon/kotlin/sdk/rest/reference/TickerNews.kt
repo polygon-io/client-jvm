@@ -7,13 +7,13 @@ import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.applyComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.rest.Paginatable
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
-import jdk.dynalink.linker.ConversionComparator.Comparison
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
  *
  */
+@SafeVarargs
 suspend fun PolygonReferenceClient.getTickerNewsV2(params: TickerNewsParametersV2, vararg opts: PolygonRestOption): TickerNewsResponse =
     polygonClient.fetchResult({
         path("v2", "reference", "news")
