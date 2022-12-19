@@ -192,9 +192,9 @@ fun marketHolidaysSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getMarketHolidaysBlocking().pp()
 }
 
-fun supportedExchangesSample(polygonClient: PolygonRestClient) {
+fun exchangesSample(polygonClient: PolygonRestClient) {
     println("Supported stock exchanges: ")
-    polygonClient.stocksClient.getSupportedExchangesBlocking().pp()
+    polygonClient.referenceClient.getExchangesBlocking(ExchangesParameters(assetClass = "stocks")).pp()
 }
 
 fun historicTradesSample(polygonClient: PolygonRestClient) {
@@ -309,11 +309,6 @@ fun forexSnapshotSample(polygonClient: PolygonRestClient) {
 fun forexGainersOrLosersSample(polygonClient: PolygonRestClient) {
     println("Forex gainers:")
     polygonClient.forexClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
-}
-
-fun cryptoExchangesSample(polygonClient: PolygonRestClient) {
-    println("Crypto exchanges")
-    polygonClient.cryptoClient.getSupportedExchangesBlocking().pp()
 }
 
 fun cryptoLastTradeSample(polygonClient: PolygonRestClient) {
