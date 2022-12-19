@@ -86,10 +86,18 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v1_meta_symbols_symbol_news
      */
+    @Deprecated(
+        "superseded by getTickerNewsBlockingV2 and listTickerNewsV2",
+        ReplaceWith("getTickerNewsBlockingV2(params, *opts)")
+    )
     fun getTickerNewsBlocking(params: TickerNewsParameters, vararg opts: PolygonRestOption): List<TickerNewsDTO> =
         runBlocking { getTickerNews(params, *opts) }
 
     /** See [getTickerNewsBlocking] */
+    @Deprecated(
+        "superseded by getTickerNewsV2 and listTickerNewsV2",
+        ReplaceWith("getTickerNewsV2(params, *opts)")
+    )
     fun getTickerNews(
         params: TickerNewsParameters,
         callback: PolygonRestApiCallback<List<TickerNewsDTO>>,
@@ -97,6 +105,39 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     ) {
         coroutineToRestCallback(callback, { getTickerNews(params, *opts) })
     }
+
+    /**
+     * Get the most recent news articles relating to a stock ticker symbol,
+     * including a summary of the article and a link to the original source.
+     *
+     * Note: This will be renamed to getTickerNewsBlocking in a future release
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v2_reference_news
+     */
+    @SafeVarargs
+    fun getTickerNewsBlockingV2(params: TickerNewsParametersV2, vararg opts: PolygonRestOption): TickerNewsResponse =
+        runBlocking { getTickerNewsV2(params, *opts) }
+
+    @SafeVarargs
+    fun getTickerNewsV2(
+        params: TickerNewsParametersV2,
+        callback: PolygonRestApiCallback<TickerNewsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTickerNewsV2(params, *opts) })
+
+    /**
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getTickerNewsBlockingV2] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
+     */
+    @SafeVarargs
+    fun listTickerNewsV2(params: TickerNewsParametersV2, vararg opts: PolygonRestOption): RequestIterator<TickerNews> =
+        RequestIterator(
+            { getTickerNewsBlockingV2(params, *opts) },
+            polygonClient.requestIteratorFetch(*opts)
+        )
 
     /**
      * Gets all of Polygon's currently supported markets.

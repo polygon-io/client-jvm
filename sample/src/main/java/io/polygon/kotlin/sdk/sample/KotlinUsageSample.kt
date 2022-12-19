@@ -147,8 +147,8 @@ fun supportedLocalesSample(polygonClient: PolygonRestClient) {
 
 fun tickerNewsSample(polygonClient: PolygonRestClient) {
     println("Redfin news:")
-    val params = TickerNewsParameters(symbol = "RDFN", resultsPerPage = 2)
-    polygonClient.referenceClient.getTickerNewsBlocking(params).pp()
+    val params = TickerNewsParametersV2(ticker = ComparisonQueryFilterParameters.equal("RDFN"), limit = 2)
+    polygonClient.referenceClient.getTickerNewsBlockingV2(params).pp()
 }
 
 fun splitsSample(polygonClient: PolygonRestClient) {
