@@ -145,16 +145,47 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_dividends_symbol
      */
+    @Deprecated("use getDividendsBlocking or listDividends", ReplaceWith("getDividendsBlocking(params, *opts)"))
     fun getStockDividendsBlocking(symbol: String, vararg opts: PolygonRestOption): StockDividendsDTO =
         runBlocking { getStockDividends(symbol, *opts) }
 
     /** See [getStockDividendsBlocking] */
+    @Deprecated("use getDividends or listDividends", ReplaceWith("getDividends(params, callback, *opts)"))
     fun getStockDividends(
         symbol: String,
         callback: PolygonRestApiCallback<StockDividendsDTO>,
         vararg opts: PolygonRestOption
     ) =
         coroutineToRestCallback(callback, { getStockDividends(symbol, *opts) })
+
+    /**
+     * Get a list of historical cash dividends,
+     * including the ticker symbol, declaration date, ex-dividend date, record date, pay date, frequency, and amount.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v3_reference_dividends
+     */
+    fun getDividendsBlocking(params: DividendsParameters, vararg opts: PolygonRestOption): DividendsResponse =
+        runBlocking { getDividends(params, *opts) }
+
+    /** See [getDividendsBlocking] */
+    fun getDividends(
+        params: DividendsParameters,
+        callback: PolygonRestApiCallback<DividendsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getDividends(params, *opts) })
+
+    /**
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getDividendsBlocking] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
+     */
+    fun listDividends(params: DividendsParameters, vararg opts: PolygonRestOption): RequestIterator<Dividend> =
+        RequestIterator(
+            { getDividendsBlocking(params, *opts) },
+            polygonClient.requestIteratorFetch(*opts)
+        )
 
     /**
      * Gets the historical financials for a symbol

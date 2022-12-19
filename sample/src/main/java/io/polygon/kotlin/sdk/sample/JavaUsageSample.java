@@ -1,9 +1,9 @@
 package io.polygon.kotlin.sdk.sample;
 
+import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters;
+import io.polygon.kotlin.sdk.ComparisonQueryFilterParametersBuilder;
 import io.polygon.kotlin.sdk.rest.*;
-import io.polygon.kotlin.sdk.rest.reference.MarketsDTO;
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParameters;
-import io.polygon.kotlin.sdk.rest.reference.SupportedTickersParametersBuilder;
+import io.polygon.kotlin.sdk.rest.reference.*;
 import io.polygon.kotlin.sdk.websocket.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -118,6 +118,25 @@ public class JavaUsageSample {
     public static void tickerDetailsSample(PolygonRestClient polygonRestClient) {
         System.out.println("Redfin Ticker Details: ");
         System.out.println(polygonRestClient.getReferenceClient().getTickerDetailsBlocking("RDFN"));
+    }
+
+    public static void dividendsSample(PolygonRestClient polygonRestClient) {
+        System.out.println("GE dividends:");
+        DividendsParameters geParams = new DividendsParametersBuilder()
+                .ticker(ComparisonQueryFilterParameters.equal("GE"))
+                .limit(1)
+                .build();
+        System.out.println(polygonRestClient.getReferenceClient().getDividendsBlocking(geParams));
+
+        System.out.println("Dividends with cash amounts between $1 and $10");
+        DividendsParameters cashAmountFilterParams = new DividendsParametersBuilder()
+                .cashAmount(new ComparisonQueryFilterParametersBuilder<Double>()
+                        .greaterThanOrEqual(1.0)
+                        .lessThanOrEqual(10.0)
+                        .build())
+                .limit(1)
+                .build();
+        System.out.println(polygonRestClient.getReferenceClient().getDividendsBlocking(cashAmountFilterParams));
     }
 
 }

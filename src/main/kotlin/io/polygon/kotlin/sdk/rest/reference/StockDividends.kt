@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockDividendsBlocking] */
+@Deprecated("use getDividends or listDividends", ReplaceWith("getDividends(params, *opts)"))
 suspend fun PolygonReferenceClient.getStockDividends(
     symbol: String,
     vararg opts: PolygonRestOption
@@ -15,6 +16,7 @@ suspend fun PolygonReferenceClient.getStockDividends(
     }, *opts)
 
 @Serializable
+@Deprecated("used in deprecated getStockDividends")
 data class StockDividendsDTO(
     val status: String? = null,
     val count: Int? = null,
@@ -22,6 +24,7 @@ data class StockDividendsDTO(
 )
 
 @Serializable
+@Deprecated("used in deprecated getStockDividends")
 data class StockDividendDTO(
     val symbol: String? = null,
     val type: String? = null,
