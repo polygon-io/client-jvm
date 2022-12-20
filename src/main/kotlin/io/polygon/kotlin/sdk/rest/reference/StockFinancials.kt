@@ -6,6 +6,10 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockFinancialsBlocking] */
+@Deprecated(
+    "This API is deprecated and will be sunset some time in the future. " +
+            "It will be replaced by the experimental financials API (see PolygonExerimentalClient.getFinancials)"
+)
 suspend fun PolygonReferenceClient.getStockFinancials(
     params: StockFinancialsParameters,
     vararg opts: PolygonRestOption
@@ -19,6 +23,7 @@ suspend fun PolygonReferenceClient.getStockFinancials(
     }, *opts)
 
 @Builder
+@Deprecated("used in deprecated getStockFinancials")
 data class StockFinancialsParameters(
     val symbol: String,
     val limit: Int? = null,
@@ -27,6 +32,7 @@ data class StockFinancialsParameters(
 )
 
 @Serializable
+@Deprecated("used in deprecated getStockFinancials")
 data class StockFinancialsResultsDTO(
     val status: String? = null,
     val count: Int? = null,
@@ -34,6 +40,7 @@ data class StockFinancialsResultsDTO(
 )
 
 @Serializable
+@Deprecated("used in deprecated getStockFinancials")
 data class StockFinancialsDTO(
     val ticker: String? = null,
     val period: String? = null,
