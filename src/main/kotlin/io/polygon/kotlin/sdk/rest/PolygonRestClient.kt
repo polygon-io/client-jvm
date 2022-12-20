@@ -117,16 +117,11 @@ constructor(
 
     fun getTradesBlocking(
         params: TradesParameters,
-        vararg opts: PolygonRestOption
-    ): TradesResponse =
-        runBlocking { getTrades(params, *opts) }
+        vararg opts: PolygonRestOption): TradesResponse =
+        runBlocking { getTrades(params, *opts)}
 
-    fun getTrades(
-        params: TradesParameters,
-        callback: PolygonRestApiCallback<TradesResponse>,
-        vararg opts: PolygonRestOption
-    ) {
-        coroutineToRestCallback(callback, { getTrades(params, *opts) })
+    fun getTrades(params: TradesParameters, callback: PolygonRestApiCallback<TradesResponse>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, {getTrades(params, *opts)})
     }
 
     /**
@@ -154,16 +149,11 @@ constructor(
      */
     fun getQuotesBlocking(
         params: QuotesParameters,
-        vararg opts: PolygonRestOption
-    ): QuotesResponse =
-        runBlocking { getQuotes(params, *opts) }
+        vararg opts: PolygonRestOption): QuotesResponse =
+        runBlocking { getQuotes(params, *opts)}
 
-    fun getQuotes(
-        params: QuotesParameters,
-        callback: PolygonRestApiCallback<QuotesResponse>,
-        vararg opts: PolygonRestOption
-    ) {
-        coroutineToRestCallback(callback, { getQuotes(params, *opts) })
+    fun getQuotes(params: QuotesParameters, callback: PolygonRestApiCallback<QuotesResponse>, vararg opts: PolygonRestOption) {
+        coroutineToRestCallback(callback, {getQuotes(params, *opts)})
     }
 
     /**
