@@ -8,7 +8,10 @@ import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getExchangesBlocking] */
 @SafeVarargs
-suspend fun PolygonReferenceClient.getExchanges(params: ExchangesParameters, vararg opts: PolygonRestOption): ExchangesResponse =
+suspend fun PolygonReferenceClient.getExchanges(
+    params: ExchangesParameters,
+    vararg opts: PolygonRestOption
+): ExchangesResponse =
     polygonClient.fetchResult({
         path("v3", "reference", "exchanges")
 
@@ -33,6 +36,7 @@ data class ExchangesParameters(
 @Serializable
 data class ExchangesResponse(
     val status: String? = null,
+    val count: Int? = null,
     @SerialName("request_id") val requestId: String? = null,
     val results: List<Exchange>? = null,
 )
