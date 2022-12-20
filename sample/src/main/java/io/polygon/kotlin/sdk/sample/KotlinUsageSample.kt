@@ -2,7 +2,7 @@ package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.ktor.client.plugins.*
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.DefaultOkHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.*
@@ -13,7 +13,6 @@ import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
-import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
 import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters

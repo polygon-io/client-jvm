@@ -1,7 +1,7 @@
 package io.polygon.kotlin.sdk.sample;
 
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters;
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParametersBuilder;
+import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParameters;
+import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParametersBuilder;
 import io.polygon.kotlin.sdk.rest.*;
 import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters;
 import io.polygon.kotlin.sdk.rest.experimental.FinancialsParametersBuilder;
