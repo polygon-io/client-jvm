@@ -24,24 +24,18 @@ fun iteratorExample(polygonClient: PolygonRestClient) {
 
 fun tradesIteratorExample(polygonClient: PolygonRestClient) {
     println("Running trade iterator:")
-    val params = TradesParameters(
-        ticker = "F",
-        limit = 1
-    )
+    val params = TradesParameters(limit = 1)
 
-    polygonClient.listTrades(params).asSequence()
+    polygonClient.listTrades("F", params).asSequence()
         .take(2)
         .forEachIndexed { index, tradeRes -> println("${index}: ${tradeRes.price}") }
 }
 
 fun quotesIteratorExample(polygonClient: PolygonRestClient) {
     println("Running quote iterator:")
-    val params = QuotesParameters(
-        ticker = "F",
-        limit = 1
-    )
+    val params = QuotesParameters(limit = 1)
 
-    polygonClient.listQuotes(params).asSequence()
+    polygonClient.listQuotes("F", params).asSequence()
         .take(2)
         .forEachIndexed { index, quoteRes -> println("${index}: (${quoteRes.participantTimestamp}) | ${quoteRes.bidPrice} / ${quoteRes.askPrice}") }
 }

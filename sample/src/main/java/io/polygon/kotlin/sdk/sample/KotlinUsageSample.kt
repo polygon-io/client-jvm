@@ -368,19 +368,13 @@ fun cryptoL2SnapshotSample(polygonClient: PolygonRestClient) {
 
 fun getTradesSample(polygonClient: PolygonRestClient) {
     println("F Trades:")
-    var params = TradesParameters(
-        ticker = "F",
-        limit = 2
-    )
-    polygonClient.getTradesBlocking(params).pp()
+    val params = TradesParameters(limit = 2)
+    polygonClient.getTradesBlocking("F", params).pp()
 }
 
 fun getQuotesSample(polygonClient: PolygonRestClient) {
     println("F Quotes")
-    var params = QuotesParameters(
-        ticker = "F",
-        limit = 2
-    )
-    polygonClient.getQuotesBlocking(params).pp()
+    val params = QuotesParameters(limit = 2)
+    polygonClient.getQuotesBlocking("F", params).pp()
 
 }
