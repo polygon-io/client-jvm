@@ -111,11 +111,16 @@ constructor(
 
     fun getTradesBlocking(
         params: TradesParameters,
-        vararg opts: PolygonRestOption): TradesResponse =
-        runBlocking { getTrades(params, *opts)}
+        vararg opts: PolygonRestOption
+    ): TradesResponse =
+        runBlocking { getTrades(params, *opts) }
 
-    fun getTrades(params: TradesParameters, callback: PolygonRestApiCallback<TradesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, {getTrades(params, *opts)})
+    fun getTrades(
+        params: TradesParameters,
+        callback: PolygonRestApiCallback<TradesResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getTrades(params, *opts) })
     }
 
     /**
@@ -143,12 +148,108 @@ constructor(
      */
     fun getQuotesBlocking(
         params: QuotesParameters,
-        vararg opts: PolygonRestOption): QuotesResponse =
-        runBlocking { getQuotes(params, *opts)}
+        vararg opts: PolygonRestOption
+    ): QuotesResponse =
+        runBlocking { getQuotes(params, *opts) }
 
-    fun getQuotes(params: QuotesParameters, callback: PolygonRestApiCallback<QuotesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, {getQuotes(params, *opts)})
+    fun getQuotes(
+        params: QuotesParameters,
+        callback: PolygonRestApiCallback<QuotesResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getQuotes(params, *opts) })
     }
+
+    /**
+     * Get the simple moving average (SMA) for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_sma__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorSMABlocking(
+        ticker: String,
+        params: SMAParameters,
+        vararg opts: PolygonRestOption
+    ): TechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorSMA(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorSMA(
+        ticker: String,
+        params: SMAParameters,
+        callback: PolygonRestApiCallback<TechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorSMA(ticker, params, *opts) })
+
+    /**
+     * Get the exponential moving average (EMA) for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_ema__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorEMABlocking(
+        ticker: String,
+        params: EMAParameters,
+        vararg opts: PolygonRestOption
+    ): TechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorEMA(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorEMA(
+        ticker: String,
+        params: EMAParameters,
+        callback: PolygonRestApiCallback<TechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorEMA(ticker, params, *opts) })
+
+
+    /**
+     * Get moving average convergence/divergence (MACD) data for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_macd__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorMACDBlocking(
+        ticker: String,
+        params: MACDParameters,
+        vararg opts: PolygonRestOption
+    ): MACDTechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorMACD(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorMACD(
+        ticker: String,
+        params: MACDParameters,
+        callback: PolygonRestApiCallback<MACDTechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorMACD(ticker, params, *opts) })
+
+
+    /**
+     * Get the relative strength index (RSI) for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_rsi__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorRSIBlocking(
+        ticker: String,
+        params: RSIParameters,
+        vararg opts: PolygonRestOption
+    ): TechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorRSI(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorRSI(
+        ticker: String,
+        params: RSIParameters,
+        callback: PolygonRestApiCallback<TechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorRSI(ticker, params, *opts) })
+
 
     /**
      * listQuotes is an iterator wrapper for getQuotes

@@ -13,7 +13,6 @@ import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
-import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
 import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
@@ -378,4 +377,18 @@ fun getQuotesSample(polygonClient: PolygonRestClient) {
     )
     polygonClient.getQuotesBlocking(params).pp()
 
+}
+
+fun technicalIndicatorsSample(polygonClient: PolygonRestClient) {
+    println("F SMA:")
+    polygonClient.getTechnicalIndicatorSMABlocking("F", SMAParameters()).pp()
+
+    println("F EMA:")
+    polygonClient.getTechnicalIndicatorEMABlocking("F", EMAParameters()).pp()
+
+    println("F MACD:")
+    polygonClient.getTechnicalIndicatorMACDBlocking("F", MACDParameters()).pp()
+
+    println("F RSI:")
+    polygonClient.getTechnicalIndicatorRSIBlocking("F", RSIParameters()).pp()
 }
