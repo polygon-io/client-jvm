@@ -11,7 +11,9 @@ import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
-import io.polygon.kotlin.sdk.rest.stocks.*
+import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
+import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
+import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
 import io.polygon.kotlin.sdk.websocket.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -75,7 +77,7 @@ suspend fun main() {
     tradesIteratorExample(polygonClient)
     quotesIteratorExample(polygonClient)
 
-    splitsSample(polygonClient)
+    technicalIndicatorsSample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
@@ -376,4 +378,18 @@ fun getQuotesSample(polygonClient: PolygonRestClient) {
     )
     polygonClient.getQuotesBlocking(params).pp()
 
+}
+
+fun technicalIndicatorsSample(polygonClient: PolygonRestClient) {
+    println("F SMA:")
+    polygonClient.getTechnicalIndicatorSMABlocking("F", SMAParameters()).pp()
+
+    println("F EMA:")
+    polygonClient.getTechnicalIndicatorEMABlocking("F", EMAParameters()).pp()
+
+    println("F MACD:")
+    polygonClient.getTechnicalIndicatorMACDBlocking("F", MACDParameters()).pp()
+
+    println("F RSI:")
+    polygonClient.getTechnicalIndicatorRSIBlocking("F", RSIParameters()).pp()
 }
