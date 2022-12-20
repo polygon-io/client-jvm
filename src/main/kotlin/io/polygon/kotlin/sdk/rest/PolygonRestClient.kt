@@ -181,6 +181,8 @@ constructor(
         return withHttpClient { httpClient ->
             httpClient.get(url) {
                 options.forEach { this.it() }
+
+                // Set after options are applied to be sure it doesn't get over-written.
                 headers["User-Agent"] = Version.userAgent
             }
         }.body()
