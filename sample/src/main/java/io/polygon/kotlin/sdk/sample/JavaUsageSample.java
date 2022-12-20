@@ -3,6 +3,8 @@ package io.polygon.kotlin.sdk.sample;
 import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters;
 import io.polygon.kotlin.sdk.ComparisonQueryFilterParametersBuilder;
 import io.polygon.kotlin.sdk.rest.*;
+import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters;
+import io.polygon.kotlin.sdk.rest.experimental.FinancialsParametersBuilder;
 import io.polygon.kotlin.sdk.rest.reference.*;
 import io.polygon.kotlin.sdk.websocket.*;
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +61,8 @@ public class JavaUsageSample {
         System.out.println("Got " + groupedDaily.getResults().size() + " results from grouped daily");
 
         JavaIteratorSample.IteratorSample(client);
+
+        financialsSample(client);
 
         System.out.println("Websocket sample:");
         websocketSample(polygonKey);
@@ -137,6 +141,12 @@ public class JavaUsageSample {
                 .limit(1)
                 .build();
         System.out.println(polygonRestClient.getReferenceClient().getDividendsBlocking(cashAmountFilterParams));
+    }
+
+    public static void financialsSample(PolygonRestClient polygonRestClient) {
+        System.out.println("RDFN Financials");
+        FinancialsParameters params = new FinancialsParametersBuilder().ticker("RDFN").build();
+        System.out.println(polygonRestClient.getExperimentalClient().getFinancialsBlocking(params));
     }
 
 }

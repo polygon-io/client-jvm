@@ -8,6 +8,8 @@ import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.*
 import io.polygon.kotlin.sdk.rest.crypto.CryptoDailyOpenCloseParameters
 import io.polygon.kotlin.sdk.rest.crypto.HistoricCryptoTradesParameters
+import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
+import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
@@ -77,7 +79,7 @@ suspend fun main() {
     tradesIteratorExample(polygonClient)
     quotesIteratorExample(polygonClient)
 
-    technicalIndicatorsSample(polygonClient)
+    financialsSample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
@@ -179,9 +181,11 @@ fun dividendsSample(polygonClient: PolygonRestClient) {
     ).pp()
 }
 
-fun stockFinancialsSample(polygonClient: PolygonRestClient) {
+fun financialsSample(polygonClient: PolygonRestClient) {
     println("RDFN financials")
-    polygonClient.referenceClient.getStockFinancialsBlocking(StockFinancialsParameters(symbol = "RDFN", limit = 1)).pp()
+
+    @OptIn(ExperimentalAPI::class)
+    polygonClient.experimentalClient.getFinancialsBlocking(FinancialsParameters(ticker = "RDFN")).pp()
 }
 
 fun marketStatusesSample(polygonClient: PolygonRestClient) {

@@ -47,6 +47,7 @@ allprojects {
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+        kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 
     val sourcesJar by creating(Jar::class) {
