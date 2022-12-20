@@ -7,6 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getDailyOpenCloseBlocking] */
+@SafeVarargs
 suspend fun PolygonCryptoClient.getDailyOpenClose(
     params: CryptoDailyOpenCloseParameters,
     vararg opts: PolygonRestOption

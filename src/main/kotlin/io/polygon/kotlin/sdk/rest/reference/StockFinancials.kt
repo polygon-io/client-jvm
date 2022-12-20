@@ -6,6 +6,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockFinancialsBlocking] */
+@SafeVarargs
 @Deprecated(
     "This API is deprecated and will be sunset some time in the future. " +
             "It will be replaced by the experimental financials API (see PolygonExerimentalClient.getFinancials)"

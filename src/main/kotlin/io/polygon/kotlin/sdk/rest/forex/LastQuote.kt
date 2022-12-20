@@ -5,6 +5,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getLastQuoteBlocking] */
+@SafeVarargs
 suspend fun PolygonForexClient.getLastQuote(
     fromCurrency: String,
     toCurrency: String,

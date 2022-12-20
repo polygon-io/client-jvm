@@ -5,6 +5,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getDailyOpenCloseBlocking] */
+@SafeVarargs
 suspend fun PolygonStocksClient.getDailyOpenClose(
     symbol: String,
     date: String,

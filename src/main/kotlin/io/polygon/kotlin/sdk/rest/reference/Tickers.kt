@@ -9,6 +9,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedTickersBlocking] */
+@SafeVarargs
 suspend fun PolygonReferenceClient.getSupportedTickers(
     params: SupportedTickersParameters,
     vararg opts: PolygonRestOption

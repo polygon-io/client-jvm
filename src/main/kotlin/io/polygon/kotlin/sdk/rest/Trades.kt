@@ -2,10 +2,15 @@ package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.applyComparisonQueryFilterParameters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/** See [PolygonRestClient.getTradesBlocking] */
+@SafeVarargs
 suspend fun PolygonRestClient.getTrades(
+    ticker: String,
     params: TradesParameters,
     vararg opts: PolygonRestOption
 ): TradesResponse =
@@ -13,49 +18,28 @@ suspend fun PolygonRestClient.getTrades(
         path(
             "v3",
             "trades",
-            params.ticker,
+            ticker,
         )
-        params.timestamp?.let { parameters["timestamp"] = it.toString() }
-        params.timestampLT?.let { parameters["timestamp.lt"] = it.toString() }
-        params.timestampLTE?.let { parameters["timestamp.lte"] = it.toString() }
-        params.timestampGT?.let { parameters["timestamp.gt"] = it.toString() }
-        params.timestampGTE?.let { parameters["timestamp.gte"] = it.toString() }
+
+        applyComparisonQueryFilterParameters("timestamp", params.timestamp)
+        params.order?.let { parameters["order"] = it }
         params.limit?.let { parameters["limit"] = it.toString() }
-        params.sort?.let{ parameters["sort"] = it }
+        params.sort?.let { parameters["sort"] = it }
     }, *opts)
 
 @Builder
 data class TradesParameters(
-    /**
-     * The ticker symbol to get trades for.
-     */
-    val ticker: String,
 
     /**
-     *  Query by trade using nanosecond Unix epoch time.
-     *  Use timestampLT/LTE/GT/GTE for additional filtering
+     *  Query by trade timestamp. Either a date with the format YYYY-MM-DD or a nanosecond timestamp.
      */
-    val timestamp: Long? = null,
+    val timestamp: ComparisonQueryFilterParameters<String>? = null,
 
     /**
-     * Return results where this field is less than the value.
+     * Order results based on the sort field.
+     * Can be "asc" or "desc"
      */
-    val timestampLT: Long? = null,
-
-    /**
-     * Return results where this field is less than or equal to the value.
-     */
-    val timestampLTE: Long? = null,
-
-    /**
-     * Return results where this field is greater than the value.
-     */
-    val timestampGT: Long? = null,
-
-    /**
-     * Return results where this field is greater than or equal to the value.
-     */
-    val timestampGTE: Long? = null,
+    val order: String? = null,
 
     /**
      * Limit the number of results returned, default is 10 and max is 50000.
@@ -74,12 +58,12 @@ data class TradesResponse(
     val status: String? = null,
     @SerialName("request_id") val requestID: String? = null,
     @SerialName("next_url") override val nextUrl: String? = null,
-    override val results: List<TradeResult> = emptyList()
-) : Paginatable<TradeResult>
+    override val results: List<Trade> = emptyList()
+) : Paginatable<Trade>
 
 
 @Serializable
-data class TradeResult(
+data class Trade(
     val conditions: List<Int>? = null,
     val correction: Int? = null,
     val exchange: Int? = null,

@@ -4,6 +4,7 @@ import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
 
 /** See [PolygonStocksClient.getConditionMappingsBlocking] */
+@SafeVarargs
 @Deprecated("use getConditions in PolygonReferenceClient instead")
 suspend fun PolygonStocksClient.getConditionMappings(
     type: ConditionMappingTickerType,

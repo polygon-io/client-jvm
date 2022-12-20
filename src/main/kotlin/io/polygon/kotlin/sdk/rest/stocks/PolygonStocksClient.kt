@@ -4,10 +4,13 @@ import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
+import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import kotlinx.coroutines.runBlocking
 
 /**
- * Client for Polygon.io's "Stocks / Equities" RESTful APIs
+ * Client for Polygon.io's "Stocks / Equities" pricing data RESTful APIs
+ * For common pricing APIs shared across asset classes, see [PolygonRestClient].
+ * For reference data, see [PolygonReferenceClient].
  *
  * You should access this client through [PolygonRestClient]
  */
@@ -19,10 +22,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_meta_exchanges
      */
+    @SafeVarargs
     fun getSupportedExchangesBlocking(vararg opts: PolygonRestOption): List<ExchangeDTO> =
         runBlocking { getSupportedExchanges(*opts) }
 
     /** See [getSupportedExchangesBlocking] */
+    @SafeVarargs
     fun getSupportedExchanges(callback: PolygonRestApiCallback<List<ExchangeDTO>>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getSupportedExchanges(*opts) })
 
@@ -31,11 +36,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v2_ticks_stocks_trades_ticker_date
      */
+    @SafeVarargs
     @Deprecated("use listTrades or getTradesBlocking in PolygonRestClient", ReplaceWith("listTrades(params, *opts)"))
     fun getHistoricTradesBlocking(params: HistoricTradesParameters, vararg opts: PolygonRestOption): HistoricTradesDTO =
         runBlocking { getHistoricTrades(params, *opts) }
 
     /** See [getHistoricTradesBlocking] */
+    @SafeVarargs
     @Deprecated("use listTrades or getTrades in PolygonRestClient", ReplaceWith("listTrades(params, *opts)"))
     fun getHistoricTrades(
         params: HistoricTradesParameters,
@@ -49,11 +56,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v2_ticks_stocks_nbbo_ticker_date
      */
+    @SafeVarargs
     @Deprecated("superseded by listQuotes/getQuotesBlocking in PolygonRestClient",ReplaceWith("getQuotesBlocking(params, *ops)"))
     fun getHistoricQuotesBlocking(params: HistoricQuotesParameters, vararg opts: PolygonRestOption): HistoricQuotesDTO =
         runBlocking { getHistoricQuotes(params, *opts) }
 
     /** See [getHistoricQuotesBlocking] */
+    @SafeVarargs
     @Deprecated("superseded by listQuotes/getQuotes in PolygonRestClient",ReplaceWith("getQuotes(params, callback, *ops)"))
     fun getHistoricQuotes(
         params: HistoricQuotesParameters,
@@ -67,11 +76,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_last_stocks_symbol
      */
+    @SafeVarargs
     @Deprecated("superseded by getLastTradeV2 and will be replaced in a future version", ReplaceWith("getLastTradeV2(ticker, *opts)"))
     fun getLastTradeBlocking(symbol: String, vararg opts: PolygonRestOption): LastTradeResultDTO =
         runBlocking { getLastTrade(symbol, *opts) }
 
     /** See [getLastTradeBlocking] */
+    @SafeVarargs
     @Deprecated("replaced by getLastTradeV2", ReplaceWith("getLastTradeV2(ticker, callback, *opts)"))
     fun getLastTrade(
         symbol: String,
@@ -87,9 +98,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_last_trade__stocksticker
      */
+    @SafeVarargs
     fun getLastTradeBlockingV2(ticker: String, vararg opts: PolygonRestOption): LastTradeResultV2 =
         runBlocking { getLastTradeV2(ticker, *opts) }
 
+    /** See [getLastTradeBlockingV2] */
+    @SafeVarargs
     fun getLastTradeV2(ticker: String, callback: PolygonRestApiCallback<LastTradeResultV2>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getLastTradeV2(ticker, *opts)} )
 
@@ -98,11 +112,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_last_quote_stocks_symbol
      */
+    @SafeVarargs
     @Deprecated("superseded by getLastQuoteBlockingV2", ReplaceWith("getLastQuoteBlockingV2(ticker, *opts)"))
     fun getLastQuoteBlocking(symbol: String, vararg opts: PolygonRestOption): LastQuoteResultDTO =
         runBlocking { getLastQuote(symbol, *opts) }
 
     /** See [getLastQuoteBlocking] */
+    @SafeVarargs
     @Deprecated("superseded by getLastQuoteV2", ReplaceWith("getLastQuoteV2(ticker, callback, *opts)"))
     fun getLastQuote(
         symbol: String,
@@ -116,9 +132,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_last_nbbo__stocksticker
      */
+    @SafeVarargs
     fun getLastQuoteBlockingV2(ticker: String, vararg opts: PolygonRestOption): LastQuoteResultV2 =
         runBlocking { getLastQuoteV2(ticker, *opts) }
 
+    /** See [getLastQuoteBlockingV2] */
+    @SafeVarargs
     fun getLastQuoteV2(ticker: String, callback: PolygonRestApiCallback<LastQuoteResultV2>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getLastQuoteV2(ticker, *opts)} )
 
@@ -128,6 +147,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v1_open-close__stocksticker___date
      */
+    @SafeVarargs
     fun getDailyOpenCloseBlocking(
         symbol: String,
         date: String,
@@ -137,6 +157,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getDailyOpenClose(symbol, date, unadjusted, *opts) }
 
     /** See [getDailyOpenCloseBlocking] */
+    @SafeVarargs
     fun getDailyOpenClose(
         symbol: String,
         date: String,
@@ -151,6 +172,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_meta_conditions_ticktype
      */
+    @SafeVarargs
     @Deprecated("use getConditions in PolygonReferenceClient instead")
     fun getConditionMappingsBlocking(
         tickType: ConditionMappingTickerType,
@@ -159,6 +181,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getConditionMappings(tickType, *opts) }
 
     /** See [getConditionMappingsBlocking] */
+    @SafeVarargs
     @Deprecated("use getConditions in PolygonReferenceClient instead")
     fun getConditionMappings(
         tickType: ConditionMappingTickerType,
@@ -174,10 +197,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_snapshot_locale_us_markets_stocks_tickers
      */
+    @SafeVarargs
     fun getSnapshotAllTickersBlocking(vararg opts: PolygonRestOption): SnapshotAllTickersDTO =
         runBlocking { getSnapshotAllTickers(*opts) }
 
     /** See [getSnapshotAllTickersBlocking] */
+    @SafeVarargs
     fun getSnapshotAllTickers(callback: PolygonRestApiCallback<SnapshotAllTickersDTO>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getSnapshotAllTickers(*opts) })
 
@@ -186,10 +211,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_snapshot_locale_us_markets_stocks_tickers__stocksticker
      */
+    @SafeVarargs
     fun getSnapshotBlocking(symbol: String, vararg opts: PolygonRestOption): SnapshotSingleTickerDTO =
         runBlocking { getSnapshot(symbol, *opts) }
 
     /** See [getSnapshotBlocking] */
+    @SafeVarargs
     fun getSnapshot(
         symbol: String,
         callback: PolygonRestApiCallback<SnapshotSingleTickerDTO>,
@@ -202,6 +229,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_snapshot_locale_us_markets_stocks__direction
      */
+    @SafeVarargs
     fun getSnapshotGainersOrLosersBlocking(
         direction: GainersOrLosersDirection,
         vararg opts: PolygonRestOption
@@ -209,6 +237,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getSnapshotGainersOrLosers(direction, *opts) }
 
     /** See [getSnapshotGainersOrLosersBlocking] */
+    @SafeVarargs
     fun getSnapshotGainersOrLosers(
         direction: GainersOrLosersDirection,
         callback: PolygonRestApiCallback<SnapshotGainersOrLosersDTO>,
@@ -223,6 +252,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__prev
      */
+    @SafeVarargs
     fun getPreviousCloseBlocking(
         symbol: String,
         unadjusted: Boolean,
@@ -231,6 +261,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getPreviousClose(symbol, unadjusted, *opts) }
 
     /** See [getPreviousCloseBlocking] */
+    @SafeVarargs
     fun getPreviousClose(
         symbol: String,
         unadjusted: Boolean,

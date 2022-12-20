@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedMarketsBlocking] */
+@SafeVarargs
 @Deprecated("This API is no longer supported and will be sunset some time in the future")
 suspend fun PolygonReferenceClient.getSupportedMarkets(vararg opts: PolygonRestOption): MarketsDTO =
     polygonClient.fetchResult({

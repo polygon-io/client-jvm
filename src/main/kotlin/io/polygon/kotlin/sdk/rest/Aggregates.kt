@@ -7,6 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonRestClient.getAggregatesBlocking] */
+@SafeVarargs
 suspend fun PolygonRestClient.getAggregates(
     params: AggregatesParameters,
     vararg opts: PolygonRestOption

@@ -4,11 +4,14 @@ import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
+import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import kotlinx.coroutines.runBlocking
 
 /**
- * Client for Polygon.io's "Forex / Currencies" RESTful APIs
+ * Client for Polygon.io's forex pricing data RESTful APIs
+ * For common pricing APIs shared across asset classes, see [PolygonRestClient].
+ * For reference data, see [PolygonReferenceClient].
  *
  * You should access this client through [PolygonRestClient]
  */
@@ -22,11 +25,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/forex/deprecated/get_v1_historic_forex__from___to___date
      */
+    @SafeVarargs
     @Deprecated("superseded by getQuotesBlocking in PolygonRestClient", ReplaceWith("getQuotesBlocking(params, *opts)"))
     fun getHistoricTicksBlocking(params: HistoricTicksParameters, vararg opts: PolygonRestOption): HistoricTicksDTO =
         runBlocking { getHistoricTicks(params, *opts) }
 
     /** See [getHistoricTicksBlocking] */
+    @SafeVarargs
     @Deprecated("superseded by getQuotes in PolygonRestClient", ReplaceWith("getQuotes(params, callback, *opts)"))
     fun getHistoricTicks(
         params: HistoricTicksParameters,
@@ -40,12 +45,14 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/forex/get_v1_conversion__from___to
      */
+    @SafeVarargs
     fun getRealTimeConversionBlocking(
         params: RealTimeConversionParameters,
         vararg opts: PolygonRestOption
     ): RealTimeConversionDTO = runBlocking { getRealTimeConversion(params, *opts) }
 
     /** See [getRealTimeConversionBlocking] */
+    @SafeVarargs
     fun getRealTimeConversion(
         params: RealTimeConversionParameters,
         callback: PolygonRestApiCallback<RealTimeConversionDTO>,
@@ -57,6 +64,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/forex/get_v1_last_quote_currencies__from___to
      */
+    @SafeVarargs
     fun getLastQuoteBlocking(
         fromCurrency: String,
         toCurrency: String,
@@ -64,6 +72,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     ): LastQuoteForexDTO = runBlocking { getLastQuote(fromCurrency, toCurrency, *opts) }
 
     /** See [getLastQuoteBlocking] */
+    @SafeVarargs
     fun getLastQuote(
         fromCurrency: String,
         toCurrency: String,
@@ -78,10 +87,12 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/forex/get_v2_snapshot_locale_global_markets_forex_tickers
      */
+    @SafeVarargs
     fun getSnapshotAllTickersBlocking(vararg opts: PolygonRestOption): SnapshotForexTickersDTO =
         runBlocking { getSnapshotAllTickers(*opts) }
 
     /** See [getSnapshotAllTickersBlocking] */
+    @SafeVarargs
     fun getSnapshotAllTickers(
         callback: PolygonRestApiCallback<SnapshotForexTickersDTO>,
         vararg opts: PolygonRestOption
@@ -92,12 +103,14 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/forex/get_v2_snapshot_locale_global_markets_forex__direction
      */
+    @SafeVarargs
     fun getSnapshotGainersOrLosersBlocking(
         direction: GainersOrLosersDirection,
         vararg opts: PolygonRestOption
     ): SnapshotForexTickersDTO = runBlocking { getSnapshotGainersOrLosers(direction, *opts) }
 
     /** See [getSnapshotGainersOrLosersBlocking] */
+    @SafeVarargs
     fun getSnapshotGainersOrLosers(
         direction: GainersOrLosersDirection,
         callback: PolygonRestApiCallback<SnapshotForexTickersDTO>,

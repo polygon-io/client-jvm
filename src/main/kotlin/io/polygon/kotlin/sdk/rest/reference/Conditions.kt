@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getConditionsBlocking] */
+@SafeVarargs
 suspend fun PolygonReferenceClient.getConditions(
     params: ConditionsParameters,
     vararg opts: PolygonRestOption

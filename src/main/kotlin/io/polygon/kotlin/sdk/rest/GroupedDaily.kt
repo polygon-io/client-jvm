@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 
 /** See [PolygonRestClient.getGroupedDailyAggregatesBlocking] */
+@SafeVarargs
 suspend fun PolygonRestClient.getGroupedDailyAggregates(
     params: GroupedDailyParameters,
     vararg opts: PolygonRestOption

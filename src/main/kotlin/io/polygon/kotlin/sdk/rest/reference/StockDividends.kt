@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockDividendsBlocking] */
+@SafeVarargs
 @Deprecated("use getDividends or listDividends", ReplaceWith("getDividends(params, *opts)"))
 suspend fun PolygonReferenceClient.getStockDividends(
     symbol: String,

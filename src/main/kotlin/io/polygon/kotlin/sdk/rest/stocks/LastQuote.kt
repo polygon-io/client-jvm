@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getLastQuoteBlocking] */
+@SafeVarargs
 @Deprecated("superseded by getLastQuoteV2 and will be replaced in a future verison")
 suspend fun PolygonStocksClient.getLastQuote(symbol: String, vararg opts: PolygonRestOption): LastQuoteResultDTO =
     polygonClient.fetchResult({ path("v1", "last_quote", "stocks", symbol) }, *opts)

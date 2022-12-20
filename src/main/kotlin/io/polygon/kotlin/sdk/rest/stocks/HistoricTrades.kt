@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getHistoricTradesBlocking] */
+@SafeVarargs
 @Deprecated("superseded by getTrades in PolygonRestClient")
 suspend fun PolygonStocksClient.getHistoricTrades(
     params: HistoricTradesParameters,

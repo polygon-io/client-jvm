@@ -2,23 +2,25 @@ package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.applyComparisonQueryFilterParameters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/** See [PolygonRestClient.getQuotesBlocking] */
 suspend fun PolygonRestClient.getQuotes(
+    ticker: String,
     params: QuotesParameters,
     vararg opts: PolygonRestOption
 ): QuotesResponse = fetchResult({
     path(
         "v3",
         "quotes",
-        params.ticker
+        ticker
     )
-    params.timestamp?.let { parameters["timestamp"] = it.toString() }
-    params.timestampLT?.let { parameters["timestamp.lt"] = it.toString() }
-    params.timestampLTE?.let { parameters["timestamp.lte"] = it.toString() }
-    params.timestampGT?.let { parameters["timestamp.gt"] = it.toString() }
-    params.timestampGTE?.let { parameters["timestamp.gte"] = it.toString() }
+
+    applyComparisonQueryFilterParameters("timestamp", params.timestamp)
+    params.order?.let { parameters["order"] = it }
     params.limit?.let { parameters["limit"] = it.toString() }
     params.sort?.let{ parameters["sort"] = it }
 }, *opts)
@@ -26,36 +28,17 @@ suspend fun PolygonRestClient.getQuotes(
 
 @Builder
 data class QuotesParameters(
-    /**
-     * The ticker symbol to get quotes for.
-     */
-    val ticker: String,
 
     /**
-     *  Query by query using nanosecond Unix epoch time.
-     *  Use timestampLT/LTE/GT/GTE for additional filtering
+     *  Query by timestamp. Either a date with the format YYYY-MM-DD or a nanosecond timestamp.
      */
-    val timestamp: Long? = null,
+    val timestamp: ComparisonQueryFilterParameters<String>? = null,
 
     /**
-     * Return results where this field is less than the value.
+     * Order results based on the sort field.
+     * Can be "asc" or "desc"
      */
-    val timestampLT: Long? = null,
-
-    /**
-     * Return results where this field is less than or equal to the value.
-     */
-    val timestampLTE: Long? = null,
-
-    /**
-     * Return results where this field is greater than the value.
-     */
-    val timestampGT: Long? = null,
-
-    /**
-     * Return results where this field is greater than or equal to the value.
-     */
-    val timestampGTE: Long? = null,
+    val order: String? = null,
 
     /**
      * Limit the number of results returned, default is 10 and max is 50000.
@@ -64,7 +47,7 @@ data class QuotesParameters(
     val limit: Int? = null,
 
     /**
-     * Field used for ordering. See docs for valid fields
+     * Field used for ordering. See API docs for valid fields
      */
     val sort: String? = null
 )
@@ -74,11 +57,11 @@ data class QuotesResponse(
     val status: String? = null,
     @SerialName("request_id") val requestID: String? = null,
     @SerialName("next_url") override val nextUrl: String? = null,
-    override val results: List<QuoteResult>? = null
-) : Paginatable<QuoteResult>
+    override val results: List<Quote>? = null
+) : Paginatable<Quote>
 
 @Serializable
-data class QuoteResult(
+data class Quote(
     @SerialName("ask_exchange") val askExchange: Int? = null,
     @SerialName("ask_price") val askPrice: Double? = null,
     @SerialName("bid_exchange") val bidExchange: Int? = null,

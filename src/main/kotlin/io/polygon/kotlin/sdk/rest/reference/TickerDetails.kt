@@ -7,6 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getTickerDetailsV3Blocking] */
+@SafeVarargs
 suspend fun PolygonReferenceClient.getTickerDetailsV3(ticker: String, params: TickerDetailsParameters, vararg opts: PolygonRestOption): TickerDetailsResponse =
     polygonClient.fetchResult({
         path("v3", "reference", "tickers", ticker)

@@ -10,6 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonExperimentalClient.getFinancialsBlocking] */
+@SafeVarargs
 @ExperimentalAPI
 suspend fun PolygonExperimentalClient.getFinancials(params: FinancialsParameters, vararg opts: PolygonRestOption): FinancialsResponse =
     polygonClient.fetchResult({

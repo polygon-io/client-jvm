@@ -68,10 +68,12 @@ constructor(
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__range__multiplier___timespan___from___to
      */
+    @SafeVarargs
     fun getAggregatesBlocking(params: AggregatesParameters, vararg opts: PolygonRestOption): AggregatesDTO =
         runBlocking { getAggregates(params, *opts) }
 
     /** See [getAggregatesBlocking] */
+    @SafeVarargs
     fun getAggregates(
         params: AggregatesParameters,
         callback: PolygonRestApiCallback<AggregatesDTO>,
@@ -85,6 +87,7 @@ constructor(
      *
      * API Doc: https://polygon.io/docs/stocks/get_v2_aggs_grouped_locale_us_market_stocks__date
      */
+    @SafeVarargs
     fun getGroupedDailyAggregatesBlocking(
         params: GroupedDailyParameters,
         vararg opts: PolygonRestOption
@@ -92,6 +95,7 @@ constructor(
         runBlocking { getGroupedDailyAggregates(params, *opts) }
 
     /** See [getGroupedDailyAggregatesBlocking] */
+    @SafeVarargs
     fun getGroupedDailyAggregates(
         params: GroupedDailyParameters,
         callback: PolygonRestApiCallback<AggregatesDTO>,
@@ -108,14 +112,22 @@ constructor(
      *     https://polygon.io/docs/options/get_v3_trades__optionsticker
      *     https://polygon.io/docs/crypto/get_v3_trades__cryptoticker
      */
-
+    @SafeVarargs
     fun getTradesBlocking(
+        ticker: String,
         params: TradesParameters,
-        vararg opts: PolygonRestOption): TradesResponse =
-        runBlocking { getTrades(params, *opts)}
+        vararg opts: PolygonRestOption
+    ): TradesResponse =
+        runBlocking { getTrades(ticker, params, *opts) }
 
-    fun getTrades(params: TradesParameters, callback: PolygonRestApiCallback<TradesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, {getTrades(params, *opts)})
+    @SafeVarargs
+    fun getTrades(
+        ticker: String,
+        params: TradesParameters,
+        callback: PolygonRestApiCallback<TradesResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getTrades(ticker, params, *opts) })
     }
 
     /**
@@ -123,11 +135,12 @@ constructor(
      */
     @SafeVarargs
     fun listTrades(
+        ticker: String,
         params: TradesParameters,
         vararg opts: PolygonRestOption
-    ): RequestIterator<TradeResult> =
+    ): RequestIterator<Trade> =
         RequestIterator(
-            { getTradesBlocking(params, *opts) },
+            { getTradesBlocking(ticker, params, *opts) },
             requestIteratorFetch<TradesResponse>()
         )
 
@@ -141,27 +154,39 @@ constructor(
      *     https://polygon.io/docs/forex/get_v3_quotes__fxticker
      *     https://polygon.io/docs/options/get_v3_quotes__optionsticker
      */
+    @SafeVarargs
     fun getQuotesBlocking(
+        ticker: String,
         params: QuotesParameters,
-        vararg opts: PolygonRestOption): QuotesResponse =
-        runBlocking { getQuotes(params, *opts)}
+        vararg opts: PolygonRestOption
+    ): QuotesResponse =
+        runBlocking { getQuotes(ticker, params, *opts) }
 
-    fun getQuotes(params: QuotesParameters, callback: PolygonRestApiCallback<QuotesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, {getQuotes(params, *opts)})
+    @SafeVarargs
+    fun getQuotes(
+        ticker: String,
+        params: QuotesParameters,
+        callback: PolygonRestApiCallback<QuotesResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getQuotes(ticker, params, *opts) })
     }
 
     /**
-     * listQuotes is an iterator wrapper for getQuotes
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getQuotesBlocking] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
      */
     @SafeVarargs
     fun listQuotes(
+        ticker: String,
         params: QuotesParameters,
         vararg opts: PolygonRestOption
-    ): RequestIterator<QuoteResult> =
-        RequestIterator(
-            { getQuotesBlocking(params, *opts) },
-            requestIteratorFetch<QuotesResponse>()
-        )
+    ): RequestIterator<Quote> = RequestIterator(
+        { getQuotesBlocking(ticker, params, *opts) },
+        requestIteratorFetch<QuotesResponse>()
+    )
 
     private val baseUrlBuilder: URLBuilder
         get() = httpClientProvider.getDefaultRestURLBuilder().apply {
