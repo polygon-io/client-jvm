@@ -11,6 +11,7 @@ import io.polygon.kotlin.sdk.rest.crypto.PolygonCryptoClient
 import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.PolygonExperimentalClient
 import io.polygon.kotlin.sdk.rest.forex.PolygonForexClient
+import io.polygon.kotlin.sdk.rest.options.PolygonOptionsClient
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
 import kotlinx.coroutines.runBlocking
@@ -39,6 +40,11 @@ constructor(
      * A [PolygonStocksClient] that can be used to access Polygon stocks/equities APIs
      */
     val stocksClient by lazy { PolygonStocksClient(this) }
+
+    /**
+     * A [PolygonOptionsClient] that can be used to access Polygon options pricing data APIs
+     */
+    val optionsClient by lazy { PolygonOptionsClient(this) }
 
     /**
      * A [PolygonForexClient] that can be used to access Polygon forex/currencies APIs
@@ -111,11 +117,16 @@ constructor(
 
     fun getTradesBlocking(
         params: TradesParameters,
-        vararg opts: PolygonRestOption): TradesResponse =
-        runBlocking { getTrades(params, *opts)}
+        vararg opts: PolygonRestOption
+    ): TradesResponse =
+        runBlocking { getTrades(params, *opts) }
 
-    fun getTrades(params: TradesParameters, callback: PolygonRestApiCallback<TradesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, {getTrades(params, *opts)})
+    fun getTrades(
+        params: TradesParameters,
+        callback: PolygonRestApiCallback<TradesResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getTrades(params, *opts) })
     }
 
     /**
@@ -143,11 +154,16 @@ constructor(
      */
     fun getQuotesBlocking(
         params: QuotesParameters,
-        vararg opts: PolygonRestOption): QuotesResponse =
-        runBlocking { getQuotes(params, *opts)}
+        vararg opts: PolygonRestOption
+    ): QuotesResponse =
+        runBlocking { getQuotes(params, *opts) }
 
-    fun getQuotes(params: QuotesParameters, callback: PolygonRestApiCallback<QuotesResponse>, vararg opts: PolygonRestOption) {
-        coroutineToRestCallback(callback, {getQuotes(params, *opts)})
+    fun getQuotes(
+        params: QuotesParameters,
+        callback: PolygonRestApiCallback<QuotesResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getQuotes(params, *opts) })
     }
 
     /**

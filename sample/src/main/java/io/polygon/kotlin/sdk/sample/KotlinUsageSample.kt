@@ -13,7 +13,6 @@ import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
 import io.polygon.kotlin.sdk.rest.reference.*
-import io.polygon.kotlin.sdk.rest.stocks.ConditionMappingTickerType
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
 import io.polygon.kotlin.sdk.rest.stocks.HistoricTradesParameters
@@ -249,6 +248,11 @@ fun snapshotSingleTickerSample(polygonClient: PolygonRestClient) {
 fun snapshotGainersSample(polygonClient: PolygonRestClient) {
     println("Today's gainers:")
     polygonClient.stocksClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
+}
+
+fun optionsSnapshotSample(polygonClient: PolygonRestClient) {
+    println("O:AAPL230616C00150000 snapshot:")
+    polygonClient.optionsClient.getSnapshotBlocking("AAPL", "O:AAPL230616C00150000").pp()
 }
 
 fun previousCloseSample(polygonClient: PolygonRestClient) {
