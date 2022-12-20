@@ -40,7 +40,7 @@ data class ExchangesResponse(
 @Serializable
 data class Exchange(
     @SerialName("id") val id: Int = 0,
-    @SerialName("acryonm") val acryonm: String? = null,
+    @SerialName("acronym") val acronym: String? = null,
     @SerialName("asset_class") val assetClass: String = "",
     @SerialName("locale") val locale: String = "",
     @SerialName("mic") val mic: String? = null,
