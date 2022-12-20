@@ -11,6 +11,7 @@ import io.polygon.kotlin.sdk.rest.crypto.PolygonCryptoClient
 import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.PolygonExperimentalClient
 import io.polygon.kotlin.sdk.rest.forex.PolygonForexClient
+import io.polygon.kotlin.sdk.rest.options.PolygonOptionsClient
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
 import kotlinx.coroutines.runBlocking
@@ -39,6 +40,11 @@ constructor(
      * A [PolygonStocksClient] that can be used to access Polygon stocks/equities APIs
      */
     val stocksClient by lazy { PolygonStocksClient(this) }
+
+    /**
+     * A [PolygonOptionsClient] that can be used to access Polygon options pricing data APIs
+     */
+    val optionsClient by lazy { PolygonOptionsClient(this) }
 
     /**
      * A [PolygonForexClient] that can be used to access Polygon forex/currencies APIs

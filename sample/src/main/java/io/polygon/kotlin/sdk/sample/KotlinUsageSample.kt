@@ -250,6 +250,11 @@ fun snapshotGainersSample(polygonClient: PolygonRestClient) {
     polygonClient.stocksClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
 }
 
+fun optionsSnapshotSample(polygonClient: PolygonRestClient) {
+    println("O:AAPL230616C00150000 snapshot:")
+    polygonClient.optionsClient.getSnapshotBlocking("AAPL", "O:AAPL230616C00150000").pp()
+}
+
 fun previousCloseSample(polygonClient: PolygonRestClient) {
     println("RDFN Prev close:")
     polygonClient.stocksClient.getPreviousCloseBlocking("RDFN", true).pp()
