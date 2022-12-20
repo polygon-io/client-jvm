@@ -153,6 +153,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      *
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_meta_conditions_ticktype
      */
+    @Deprecated("use getConditions in PolygonReferenceClient instead")
     fun getConditionMappingsBlocking(
         tickType: ConditionMappingTickerType,
         vararg opts: PolygonRestOption
@@ -160,6 +161,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         runBlocking { getConditionMappings(tickType, *opts) }
 
     /** See [getConditionMappingsBlocking] */
+    @Deprecated("use getConditions in PolygonReferenceClient instead")
     fun getConditionMappings(
         tickType: ConditionMappingTickerType,
         callback: PolygonRestApiCallback<Map<String, String>>,

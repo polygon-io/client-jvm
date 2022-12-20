@@ -135,9 +135,9 @@ fun supportedTickersSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getSupportedTickersBlocking(params).pp()
 }
 
-fun supportedTickerTypes(polygonClient: PolygonRestClient) {
-    println("Supported Ticker Types: ")
-    polygonClient.referenceClient.getSupportedTickerTypesBlocking().pp()
+fun tickerTypesSample(polygonClient: PolygonRestClient) {
+    println("Ticker Types: ")
+    polygonClient.referenceClient.getTickerTypesBlocking(TickerTypesParameters()).pp()
 }
 
 fun supportedLocalesSample(polygonClient: PolygonRestClient) {
@@ -147,8 +147,8 @@ fun supportedLocalesSample(polygonClient: PolygonRestClient) {
 
 fun tickerNewsSample(polygonClient: PolygonRestClient) {
     println("Redfin news:")
-    val params = TickerNewsParameters(symbol = "RDFN", resultsPerPage = 2)
-    polygonClient.referenceClient.getTickerNewsBlocking(params).pp()
+    val params = TickerNewsParametersV2(ticker = ComparisonQueryFilterParameters.equal("RDFN"), limit = 2)
+    polygonClient.referenceClient.getTickerNewsBlockingV2(params).pp()
 }
 
 fun splitsSample(polygonClient: PolygonRestClient) {
@@ -224,9 +224,9 @@ fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
     polygonClient.stocksClient.getDailyOpenCloseBlocking("RDFN", "2020-02-19", true).pp()
 }
 
-fun conditionsMappingSample(polygonClient: PolygonRestClient) {
-    println("Condition mapping:")
-    polygonClient.stocksClient.getConditionMappingsBlocking(ConditionMappingTickerType.TRADES).pp()
+fun conditionsSample(polygonClient: PolygonRestClient) {
+    println("Conditions:")
+    polygonClient.referenceClient.getConditionsBlocking(ConditionsParameters()).pp()
 }
 
 fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
