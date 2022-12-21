@@ -7,6 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getHistoricTicksBlocking] */
+@SafeVarargs
 @Deprecated("superseded by getQuotes in PolygonRestClient")
 suspend fun PolygonForexClient.getHistoricTicks(
     params: HistoricTicksParameters,

@@ -5,6 +5,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketHolidaysBlocking] */
+@SafeVarargs
 suspend fun PolygonReferenceClient.getMarketHolidays(vararg opts: PolygonRestOption): List<MarketHolidayDTO> =
     polygonClient.fetchResult({
         path("v1", "marketstatus", "upcoming")

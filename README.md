@@ -30,6 +30,8 @@ Everything you'd expect from a client SDK plus...
 
 ## REST Request Options
 
+_Added in v4.1.0_
+
 For most use-cases, the default request options will do the trick, 
 but if you need some more flexibility on a per-request basis, 
 you can configure individual REST API requests with `PolygonRestOption`s.

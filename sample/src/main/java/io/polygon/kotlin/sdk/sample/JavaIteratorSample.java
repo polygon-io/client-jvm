@@ -28,11 +28,10 @@ public class JavaIteratorSample {
     public static void TradesIteratorSample(PolygonRestClient client) {
         System.out.println("Running trade iterator");
         TradesParameters params = new TradesParametersBuilder()
-                .ticker("F")
                 .limit(1)
                 .build();
 
-        client.listTrades(params)
+        client.listTrades("F", params)
                 .asStream() // Convert to a Java stream for ease of use.
                 .limit(2)
                 .forEach((trade -> System.out.println(trade.getPrice())));
@@ -41,11 +40,10 @@ public class JavaIteratorSample {
     public static void QuotesIteratorSample(PolygonRestClient client) {
         System.out.println("Running Quote iterator");
         QuotesParameters params = new QuotesParametersBuilder()
-                .ticker("F")
                 .limit(1)
                 .build();
 
-        client.listQuotes(params)
+        client.listQuotes("F", params)
                 .asStream() // Convert to a Java stream for ease of use.
                 .limit(2)
                 .forEach((Quote -> System.out.println(Quote.getAskPrice())));

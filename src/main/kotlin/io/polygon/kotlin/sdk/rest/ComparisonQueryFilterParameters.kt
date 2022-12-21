@@ -1,4 +1,4 @@
-package io.polygon.kotlin.sdk
+package io.polygon.kotlin.sdk.rest
 
 import io.ktor.http.*
 

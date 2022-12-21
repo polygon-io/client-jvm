@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getLastTradeBlocking] */
+@SafeVarargs
 @Deprecated("superseded by getLastTradeV2 and will be replaced in a future version")
 suspend fun PolygonStocksClient.getLastTrade(symbol: String, vararg opts: PolygonRestOption): LastTradeResultDTO =
     polygonClient.fetchResult({ path("v1", "last", "stocks", symbol) }, *opts)

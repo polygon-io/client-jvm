@@ -2,14 +2,15 @@ package io.polygon.kotlin.sdk.rest.experimental
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
-import io.polygon.kotlin.sdk.applyComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.rest.applyComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.rest.Paginatable
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonExperimentalClient.getFinancialsBlocking] */
+@SafeVarargs
 @ExperimentalAPI
 suspend fun PolygonExperimentalClient.getFinancials(params: FinancialsParameters, vararg opts: PolygonRestOption): FinancialsResponse =
     polygonClient.fetchResult({

@@ -6,6 +6,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getHistoricTradesBlocking] */
+@SafeVarargs
 @Deprecated("superseded by getTrades in PolygonRestClient")
 suspend fun PolygonCryptoClient.getHistoricTrades(
     params: HistoricCryptoTradesParameters,

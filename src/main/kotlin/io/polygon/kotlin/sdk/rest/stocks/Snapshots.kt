@@ -6,18 +6,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getSnapshotAllTickersBlocking] */
+@SafeVarargs
 suspend fun PolygonStocksClient.getSnapshotAllTickers(vararg opts: PolygonRestOption): SnapshotAllTickersDTO =
     polygonClient.fetchResult({
         path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers")
     }, *opts)
 
 /** See [PolygonStocksClient.getSnapshotBlocking] */
+@SafeVarargs
 suspend fun PolygonStocksClient.getSnapshot(symbol: String, vararg opts: PolygonRestOption): SnapshotSingleTickerDTO =
     polygonClient.fetchResult({
         path("v2", "snapshot", "locale", "us", "markets", "stocks", "tickers", symbol)
     }, *opts)
 
 /** See [PolygonStocksClient.getSnapshotGainersOrLosersBlocking] */
+@SafeVarargs
 suspend fun PolygonStocksClient.getSnapshotGainersOrLosers(
     direction: GainersOrLosersDirection,
     vararg opts: PolygonRestOption

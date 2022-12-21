@@ -3,8 +3,8 @@ package io.polygon.kotlin.sdk.rest.reference
 import com.thinkinglogic.builder.annotation.Builder
 import com.thinkinglogic.builder.annotation.DefaultValue
 import io.ktor.http.*
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
-import io.polygon.kotlin.sdk.applyComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.rest.applyComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.rest.Paginatable
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.SerialName

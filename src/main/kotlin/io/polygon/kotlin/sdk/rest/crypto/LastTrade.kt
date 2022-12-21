@@ -5,6 +5,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonCryptoClient.getLastTradeBlocking] */
+@SafeVarargs
 suspend fun PolygonCryptoClient.getLastTrade(
     from: String,
     to: String,

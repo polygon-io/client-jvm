@@ -5,6 +5,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getSupportedLocalesBlocking] */
+@SafeVarargs
 @Deprecated("This API is no longer supported and will be sunset some time in the future")
 suspend fun PolygonReferenceClient.getSupportedLocales(vararg opts: PolygonRestOption): LocalesDTO =
     polygonClient.fetchResult({

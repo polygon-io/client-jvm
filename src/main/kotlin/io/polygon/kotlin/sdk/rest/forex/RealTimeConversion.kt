@@ -7,6 +7,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonForexClient.getRealTimeConversionBlocking] */
+@SafeVarargs
 suspend fun PolygonForexClient.getRealTimeConversion(params: RealTimeConversionParameters, vararg opts: PolygonRestOption): RealTimeConversionDTO =
     polygonClient.fetchResult({
         path("v1", "conversion", params.fromCurrency, params.toCurrency)

@@ -2,7 +2,7 @@ package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.ktor.client.plugins.*
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
+import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.DefaultOkHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.*
@@ -377,20 +377,14 @@ fun cryptoL2SnapshotSample(polygonClient: PolygonRestClient) {
 
 fun getTradesSample(polygonClient: PolygonRestClient) {
     println("F Trades:")
-    var params = TradesParameters(
-        ticker = "F",
-        limit = 2
-    )
-    polygonClient.getTradesBlocking(params).pp()
+    val params = TradesParameters(limit = 2)
+    polygonClient.getTradesBlocking("F", params).pp()
 }
 
 fun getQuotesSample(polygonClient: PolygonRestClient) {
     println("F Quotes")
-    var params = QuotesParameters(
-        ticker = "F",
-        limit = 2
-    )
-    polygonClient.getQuotesBlocking(params).pp()
+    val params = QuotesParameters(limit = 2)
+    polygonClient.getQuotesBlocking("F", params).pp()
 
 }
 

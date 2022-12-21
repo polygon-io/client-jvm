@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getHistoricQuotesBlocking] */
+@SafeVarargs
 @Deprecated("superseded by getQuotes in PolygonRestCLient")
 suspend fun PolygonStocksClient.getHistoricQuotes(
     params: HistoricQuotesParameters,

@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getStockSplitsBlocking] */
+@SafeVarargs
 @Deprecated("use getSplits or listSplits instead", ReplaceWith("getSplits(params, *opts)"))
 suspend fun PolygonReferenceClient.getStockSplits(symbol: String, vararg opts: PolygonRestOption): StockSplitsDTO =
     polygonClient.fetchResult({

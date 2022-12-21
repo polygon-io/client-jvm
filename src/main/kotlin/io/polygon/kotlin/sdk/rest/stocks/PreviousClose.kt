@@ -6,6 +6,7 @@ import io.polygon.kotlin.sdk.rest.PolygonRestOption
 import kotlinx.serialization.Serializable
 
 /** See [PolygonStocksClient.getPreviousCloseBlocking] */
+@SafeVarargs
 suspend fun PolygonStocksClient.getPreviousClose(
     symbol: String,
     unadjusted: Boolean = false,
