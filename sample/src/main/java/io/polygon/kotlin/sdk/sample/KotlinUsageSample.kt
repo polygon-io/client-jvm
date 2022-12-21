@@ -139,6 +139,16 @@ fun supportedTickersSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getSupportedTickersBlocking(params).pp()
 }
 
+fun optionsContractsSample(polygonClient: PolygonRestClient) {
+    println("O:EVRI240119C00002500 contract details:")
+    polygonClient.referenceClient.getOptionsContractDetailsBlocking("O:EVRI240119C00002500", OptionsContractDetailsParameters()).pp()
+
+    println("AAPL contracts:")
+    polygonClient.referenceClient
+        .getOptionsContractsBlocking(OptionsContractsParameters(underlyingTicker = ComparisonQueryFilterParameters.equal("AAPL")))
+        .pp()
+}
+
 fun tickerTypesSample(polygonClient: PolygonRestClient) {
     println("Ticker Types: ")
     polygonClient.referenceClient.getTickerTypesBlocking(TickerTypesParameters()).pp()
