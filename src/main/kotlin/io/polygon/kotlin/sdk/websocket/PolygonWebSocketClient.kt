@@ -7,6 +7,7 @@ import io.ktor.http.*
 import io.ktor.websocket.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
+import io.polygon.kotlin.sdk.Version
 import io.polygon.kotlin.sdk.ext.PolygonCompletionCallback
 import io.polygon.kotlin.sdk.ext.coroutineToCompletionCallback
 import io.polygon.kotlin.sdk.websocket.PolygonWebSocketMessage.*
@@ -91,6 +92,8 @@ constructor(
             url.protocol = URLProtocol.WSS
             url.port = URLProtocol.WSS.defaultPort
             url.path(*cluster.pathComponents)
+
+            headers["User-Agent"] = Version.userAgent
         }
 
         activeConnection = WebSocketConnection(client, session)

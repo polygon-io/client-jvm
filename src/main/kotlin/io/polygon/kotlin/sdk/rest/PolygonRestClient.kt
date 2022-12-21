@@ -6,6 +6,7 @@ import io.ktor.client.request.get
 import io.ktor.http.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
+import io.polygon.kotlin.sdk.Version
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.crypto.PolygonCryptoClient
 import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
@@ -287,6 +288,9 @@ constructor(
         return withHttpClient { httpClient ->
             httpClient.get(url) {
                 options.forEach { this.it() }
+
+                // Set after options are applied to be sure it doesn't get over-written.
+                headers["User-Agent"] = Version.userAgent
             }
         }.body()
     }
