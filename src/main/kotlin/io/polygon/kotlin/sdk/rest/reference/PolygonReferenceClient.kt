@@ -48,6 +48,67 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         )
 
     /**
+     * Get an options contract
+     *
+     * API Doc: https://polygon.io/docs/options/get_v3_reference_options_contracts__options_ticker
+     */
+    @SafeVarargs
+    fun getOptionsContractDetailsBlocking(
+        contract: String,
+        params: OptionsContractDetailsParameters,
+        vararg opts: PolygonRestOption
+    ): OptionsContractDetailsResponse =
+        runBlocking { getOptionsContractDetails(contract, params, *opts) }
+
+    /** See [getOptionsContractDetailsBlocking] */
+    @SafeVarargs
+    fun getOptionsContractDetails(
+        contract: String,
+        params: OptionsContractDetailsParameters,
+        callback: PolygonRestApiCallback<OptionsContractDetailsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getOptionsContractDetails(contract, params, *opts) })
+
+    /**
+     * Query for historical options contracts. This provides both active and expired options contracts.
+     * This returns one page of results, to automatically paginate and iterate over all results, see [listOptionsContracts].
+     *
+     * API Doc: https://polygon.io/docs/options/get_v3_reference_options_contracts
+     */
+    @SafeVarargs
+    fun getOptionsContractsBlocking(
+        params: OptionsContractsParameters,
+        vararg opts: PolygonRestOption
+    ): OptionsContractsResponse =
+        runBlocking { getOptionsContracts(params, *opts) }
+
+    /** See [getOptionsContractsBlocking] */
+    @SafeVarargs
+    fun getOptionsContracts(
+        params: OptionsContractsParameters,
+        callback: PolygonRestApiCallback<OptionsContractsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getOptionsContracts(params, *opts) })
+
+    /**
+     * Get an iterator to iterate through all pages of results for the given parameters.
+     *
+     * See [getOptionsContractsBlocking] if you instead need to get exactly one page of results.
+     * See section "Pagination" in the README for more details on iterators.
+     */
+    @SafeVarargs
+    fun listOptionsContracts(
+        params: OptionsContractsParameters,
+        vararg opts: PolygonRestOption
+    ): RequestIterator<OptionsContract> =
+        RequestIterator(
+            { getOptionsContractsBlocking(params, *opts) },
+            polygonClient.requestIteratorFetch(*opts)
+        )
+
+    /**
      * Gets all of Polygon's currently supported ticker types
      *
      * API Doc: https://polygon.io/docs/#!/Reference/get_v2_reference_types
@@ -99,7 +160,10 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
 
     /** See [getTickerDetailsBlocking] */
     @SafeVarargs
-    @Deprecated("supserseded by getTickerDetailsV3 and will be replaced in a future verison", ReplaceWith("getTickerDetailsV3(symbol, params, *opts)"))
+    @Deprecated(
+        "supserseded by getTickerDetailsV3 and will be replaced in a future verison",
+        ReplaceWith("getTickerDetailsV3(symbol, params, *opts)")
+    )
     fun getTickerDetails(
         symbol: String,
         callback: PolygonRestApiCallback<TickerDetailsDTO>,
