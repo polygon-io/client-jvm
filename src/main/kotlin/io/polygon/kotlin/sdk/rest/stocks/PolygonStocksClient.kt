@@ -23,11 +23,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      * API Doc: https://polygon.io/docs/#!/Stocks--Equities/get_v1_meta_exchanges
      */
     @SafeVarargs
+    @Deprecated("use getExchanges in PolygonReferenceClient instead")
     fun getSupportedExchangesBlocking(vararg opts: PolygonRestOption): List<ExchangeDTO> =
         runBlocking { getSupportedExchanges(*opts) }
 
     /** See [getSupportedExchangesBlocking] */
     @SafeVarargs
+    @Deprecated("use getExchanges in PolygonReferenceClient instead")
     fun getSupportedExchanges(callback: PolygonRestApiCallback<List<ExchangeDTO>>, vararg opts: PolygonRestOption) =
         coroutineToRestCallback(callback, { getSupportedExchanges(*opts) })
 

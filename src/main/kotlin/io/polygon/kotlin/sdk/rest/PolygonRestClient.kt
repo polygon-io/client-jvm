@@ -6,11 +6,13 @@ import io.ktor.client.request.get
 import io.ktor.http.*
 import io.polygon.kotlin.sdk.DefaultJvmHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
+import io.polygon.kotlin.sdk.Version
 import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.crypto.PolygonCryptoClient
 import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.PolygonExperimentalClient
 import io.polygon.kotlin.sdk.rest.forex.PolygonForexClient
+import io.polygon.kotlin.sdk.rest.options.PolygonOptionsClient
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
 import kotlinx.coroutines.runBlocking
@@ -39,6 +41,11 @@ constructor(
      * A [PolygonStocksClient] that can be used to access Polygon stocks/equities APIs
      */
     val stocksClient by lazy { PolygonStocksClient(this) }
+
+    /**
+     * A [PolygonOptionsClient] that can be used to access Polygon options pricing data APIs
+     */
+    val optionsClient by lazy { PolygonOptionsClient(this) }
 
     /**
      * A [PolygonForexClient] that can be used to access Polygon forex/currencies APIs
@@ -188,6 +195,96 @@ constructor(
         requestIteratorFetch<QuotesResponse>()
     )
 
+    /**
+     * Get the simple moving average (SMA) for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_sma__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorSMABlocking(
+        ticker: String,
+        params: SMAParameters,
+        vararg opts: PolygonRestOption
+    ): TechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorSMA(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorSMA(
+        ticker: String,
+        params: SMAParameters,
+        callback: PolygonRestApiCallback<TechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorSMA(ticker, params, *opts) })
+
+    /**
+     * Get the exponential moving average (EMA) for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_ema__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorEMABlocking(
+        ticker: String,
+        params: EMAParameters,
+        vararg opts: PolygonRestOption
+    ): TechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorEMA(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorEMA(
+        ticker: String,
+        params: EMAParameters,
+        callback: PolygonRestApiCallback<TechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorEMA(ticker, params, *opts) })
+
+
+    /**
+     * Get moving average convergence/divergence (MACD) data for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_macd__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorMACDBlocking(
+        ticker: String,
+        params: MACDParameters,
+        vararg opts: PolygonRestOption
+    ): MACDTechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorMACD(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorMACD(
+        ticker: String,
+        params: MACDParameters,
+        callback: PolygonRestApiCallback<MACDTechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorMACD(ticker, params, *opts) })
+
+
+    /**
+     * Get the relative strength index (RSI) for a ticker symbol over a given time range.
+     *
+     * API Doc: https://polygon.io/docs/stocks/get_v1_indicators_rsi__stockticker
+     */
+    @SafeVarargs
+    fun getTechnicalIndicatorRSIBlocking(
+        ticker: String,
+        params: RSIParameters,
+        vararg opts: PolygonRestOption
+    ): TechnicalIndicatorsResponse =
+        runBlocking { getTechnicalIndicatorRSI(ticker, params, *opts) }
+
+    @SafeVarargs
+    fun getTechnicalIndicatorRSI(
+        ticker: String,
+        params: RSIParameters,
+        callback: PolygonRestApiCallback<TechnicalIndicatorsResponse>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getTechnicalIndicatorRSI(ticker, params, *opts) })
+
     private val baseUrlBuilder: URLBuilder
         get() = httpClientProvider.getDefaultRestURLBuilder().apply {
             host = polygonApiDomain
@@ -205,6 +302,9 @@ constructor(
         return withHttpClient { httpClient ->
             httpClient.get(url) {
                 options.forEach { this.it() }
+
+                // Set after options are applied to be sure it doesn't get over-written.
+                headers["User-Agent"] = Version.userAgent
             }
         }.body()
     }

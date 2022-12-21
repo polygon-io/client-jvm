@@ -198,9 +198,9 @@ fun marketHolidaysSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient.getMarketHolidaysBlocking().pp()
 }
 
-fun supportedExchangesSample(polygonClient: PolygonRestClient) {
+fun exchangesSample(polygonClient: PolygonRestClient) {
     println("Supported stock exchanges: ")
-    polygonClient.stocksClient.getSupportedExchangesBlocking().pp()
+    polygonClient.referenceClient.getExchangesBlocking(ExchangesParameters(assetClass = "stocks")).pp()
 }
 
 fun historicTradesSample(polygonClient: PolygonRestClient) {
@@ -248,6 +248,11 @@ fun snapshotSingleTickerSample(polygonClient: PolygonRestClient) {
 fun snapshotGainersSample(polygonClient: PolygonRestClient) {
     println("Today's gainers:")
     polygonClient.stocksClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
+}
+
+fun optionsSnapshotSample(polygonClient: PolygonRestClient) {
+    println("O:AAPL230616C00150000 snapshot:")
+    polygonClient.optionsClient.getSnapshotBlocking("AAPL", "O:AAPL230616C00150000").pp()
 }
 
 fun previousCloseSample(polygonClient: PolygonRestClient) {
@@ -317,11 +322,6 @@ fun forexGainersOrLosersSample(polygonClient: PolygonRestClient) {
     polygonClient.forexClient.getSnapshotGainersOrLosersBlocking(GainersOrLosersDirection.GAINERS).pp()
 }
 
-fun cryptoExchangesSample(polygonClient: PolygonRestClient) {
-    println("Crypto exchanges")
-    polygonClient.cryptoClient.getSupportedExchangesBlocking().pp()
-}
-
 fun cryptoLastTradeSample(polygonClient: PolygonRestClient) {
     println("Last BTC/USD trade")
     polygonClient.cryptoClient.getLastTradeBlocking("BTC", "USD").pp()
@@ -376,4 +376,18 @@ fun getQuotesSample(polygonClient: PolygonRestClient) {
     val params = QuotesParameters(limit = 2)
     polygonClient.getQuotesBlocking("F", params).pp()
 
+}
+
+fun technicalIndicatorsSample(polygonClient: PolygonRestClient) {
+    println("F SMA:")
+    polygonClient.getTechnicalIndicatorSMABlocking("F", SMAParameters()).pp()
+
+    println("F EMA:")
+    polygonClient.getTechnicalIndicatorEMABlocking("F", EMAParameters()).pp()
+
+    println("F MACD:")
+    polygonClient.getTechnicalIndicatorMACDBlocking("F", MACDParameters()).pp()
+
+    println("F RSI:")
+    polygonClient.getTechnicalIndicatorRSIBlocking("F", RSIParameters()).pp()
 }

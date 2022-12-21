@@ -24,11 +24,13 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      * API Doc: https://polygon.io/docs/#get_v1_meta_crypto-exchanges_anchor
      */
     @SafeVarargs
+    @Deprecated("use getExchanges in PolygonReferenceClient instead")
     fun getSupportedExchangesBlocking(vararg opts: PolygonRestOption): List<CryptoExchangeDTO> =
         runBlocking { getSupportedExchanges(*opts) }
 
     /** See [getSupportedExchangesBlocking] */
     @SafeVarargs
+    @Deprecated("use getExchanges in PolygonReferenceClient instead")
     fun getSupportedExchanges(callback: PolygonRestApiCallback<List<CryptoExchangeDTO>>) =
         coroutineToRestCallback(callback, { getSupportedExchanges() })
 

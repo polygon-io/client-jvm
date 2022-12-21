@@ -15,6 +15,8 @@ object PolygonRestOptions {
 
     /**
      * Sets an arbitrary header on an out-going request.
+     *
+     * Note that setting `User-Agent` isn't supported, and will be disregarded at request-time.
      */
     @JvmStatic
     fun withHeader(header: String, value: String): PolygonRestOption = {
