@@ -2,8 +2,6 @@ package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
-import io.polygon.kotlin.sdk.ComparisonQueryFilterParameters
-import io.polygon.kotlin.sdk.applyComparisonQueryFilterParameters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
