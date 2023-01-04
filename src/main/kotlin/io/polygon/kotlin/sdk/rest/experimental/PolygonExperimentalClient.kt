@@ -48,7 +48,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun listFinancials(params: FinancialsParameters, vararg opts: PolygonRestOption): RequestIterator<Financials> =
         RequestIterator(
             { getFinancialsBlocking(params, *opts) },
-            polygonClient.requestIteratorFetch(*opts)
+            polygonClient.requestIteratorFetch<FinancialsResponse>(*opts)
         )
 
 }

@@ -105,7 +105,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     ): RequestIterator<OptionsContract> =
         RequestIterator(
             { getOptionsContractsBlocking(params, *opts) },
-            polygonClient.requestIteratorFetch(*opts)
+            polygonClient.requestIteratorFetch<OptionsContractsResponse>(*opts)
         )
 
     /**
@@ -255,7 +255,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun listTickerNewsV2(params: TickerNewsParametersV2, vararg opts: PolygonRestOption): RequestIterator<TickerNews> =
         RequestIterator(
             { getTickerNewsBlockingV2(params, *opts) },
-            polygonClient.requestIteratorFetch(*opts)
+            polygonClient.requestIteratorFetch<TickerNewsResponse>(*opts)
         )
 
     /**
@@ -341,7 +341,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun listSplits(params: SplitsParameters, vararg opts: PolygonRestOption): RequestIterator<Split> =
         RequestIterator(
             { getSplitsBlocking(params, *opts) },
-            polygonClient.requestIteratorFetch(*opts)
+            polygonClient.requestIteratorFetch<SplitsResponse>(*opts)
         )
 
     /**
@@ -393,7 +393,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun listDividends(params: DividendsParameters, vararg opts: PolygonRestOption): RequestIterator<Dividend> =
         RequestIterator(
             { getDividendsBlocking(params, *opts) },
-            polygonClient.requestIteratorFetch(*opts)
+            polygonClient.requestIteratorFetch<DividendsResponse>(*opts)
         )
 
     /**
@@ -481,7 +481,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun listConditions(params: ConditionsParameters, vararg opts: PolygonRestOption): RequestIterator<Condition> =
         RequestIterator(
             { getConditionsBlocking(params, *opts) },
-            polygonClient.requestIteratorFetch(*opts)
+            polygonClient.requestIteratorFetch<ConditionsResponse>(*opts)
         )
 
     /**
