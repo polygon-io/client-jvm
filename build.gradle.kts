@@ -69,6 +69,8 @@ publishing {
             groupId = "com.github.polygon-io"
             artifactId = "client-jvm"
             artifact(sourcesJar)
+
+            from(components["java"])
         }
     }
 }
