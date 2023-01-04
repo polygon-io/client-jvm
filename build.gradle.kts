@@ -18,7 +18,7 @@ plugins {
     kotlin("kapt") version "1.6.10"
 }
 
-group = "com.github.mmoghaddam385"
+group = "com.github.polygon-io"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
@@ -45,20 +45,30 @@ allprojects {
     }
 }
 
+val sourcesJar = tasks.create("sources", Jar::class) {
+    dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+    classifier = "sources"
+    from(sourceSets["main"].allSource)
+}
+
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 
-    val sourcesJar by creating(Jar::class) {
-        dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-        classifier = "sources"
-        from(sourceSets["main"].allSource)
-    }
-
     artifacts {
         add("archives", sourcesJar)
         add("archives", jar)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.polygon-io"
+            artifactId = "client-jvm"
+            artifact(sourcesJar)
+        }
     }
 }
