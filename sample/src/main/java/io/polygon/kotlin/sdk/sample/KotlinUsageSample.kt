@@ -2,7 +2,6 @@ package io.polygon.kotlin.sdk.sample
 
 import com.tylerthrailkill.helpers.prettyprint.pp
 import io.ktor.client.plugins.*
-import io.polygon.kotlin.sdk.rest.ComparisonQueryFilterParameters
 import io.polygon.kotlin.sdk.DefaultOkHttpClientProvider
 import io.polygon.kotlin.sdk.HttpClientProvider
 import io.polygon.kotlin.sdk.rest.*
@@ -12,6 +11,7 @@ import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
+import io.polygon.kotlin.sdk.rest.options.SnapshotChainParameters
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
 import io.polygon.kotlin.sdk.rest.stocks.HistoricQuotesParameters
@@ -141,12 +141,25 @@ fun supportedTickersSample(polygonClient: PolygonRestClient) {
 
 fun optionsContractsSample(polygonClient: PolygonRestClient) {
     println("O:EVRI240119C00002500 contract details:")
-    polygonClient.referenceClient.getOptionsContractDetailsBlocking("O:EVRI240119C00002500", OptionsContractDetailsParameters()).pp()
+    polygonClient.referenceClient.getOptionsContractDetailsBlocking(
+        "O:EVRI240119C00002500",
+        OptionsContractDetailsParameters()
+    ).pp()
 
     println("AAPL contracts:")
     polygonClient.referenceClient
-        .getOptionsContractsBlocking(OptionsContractsParameters(underlyingTicker = ComparisonQueryFilterParameters.equal("AAPL")))
+        .getOptionsContractsBlocking(
+            OptionsContractsParameters(
+                underlyingTicker = ComparisonQueryFilterParameters.equal(
+                    "AAPL"
+                )
+            )
+        )
         .pp()
+
+    println("list contracts: ")
+    polygonClient.referenceClient.listOptionsContracts(OptionsContractsParameters(limit = 5))
+        .asSequence().take(5).forEach { println("got an options contract: ${it.ticker}") }
 }
 
 fun tickerTypesSample(polygonClient: PolygonRestClient) {
@@ -163,6 +176,10 @@ fun tickerNewsSample(polygonClient: PolygonRestClient) {
     println("Redfin news:")
     val params = TickerNewsParametersV2(ticker = ComparisonQueryFilterParameters.equal("RDFN"), limit = 2)
     polygonClient.referenceClient.getTickerNewsBlockingV2(params).pp()
+
+    println("list news:")
+    polygonClient.referenceClient.listTickerNewsV2(params)
+        .asSequence().take(10).forEach { println("news article: ${it.articleUrl}") }
 }
 
 fun splitsSample(polygonClient: PolygonRestClient) {
@@ -170,6 +187,10 @@ fun splitsSample(polygonClient: PolygonRestClient) {
     polygonClient.referenceClient
         .getSplitsBlocking(SplitsParameters(ticker = ComparisonQueryFilterParameters.equal("AAPL")))
         .pp()
+
+    println("list recent splits:")
+    polygonClient.referenceClient.listSplits(SplitsParameters(limit = 5))
+        .asSequence().take(15).forEach { println("split from ${it.executionDate}") }
 }
 
 
@@ -189,13 +210,21 @@ fun dividendsSample(polygonClient: PolygonRestClient) {
             limit = 1,
         )
     ).pp()
+
+    println("15 most recent dividends")
+    polygonClient.referenceClient.listDividends(DividendsParameters(limit = 5))
+        .asSequence().take(15).forEach { println("got a dividend from ${it.exDividendDate}") }
 }
 
+@OptIn(ExperimentalAPI::class)
 fun financialsSample(polygonClient: PolygonRestClient) {
     println("RDFN financials")
 
-    @OptIn(ExperimentalAPI::class)
     polygonClient.experimentalClient.getFinancialsBlocking(FinancialsParameters(ticker = "RDFN")).pp()
+    polygonClient.experimentalClient.listFinancials(FinancialsParameters(limit = 5))
+        .asSequence()
+        .take(15)
+        .forEach { println("got financials from ${it.sourceFilingURL}") }
 }
 
 fun marketStatusesSample(polygonClient: PolygonRestClient) {
@@ -243,6 +272,8 @@ fun dailyOpenCloseSample(polygonClient: PolygonRestClient) {
 fun conditionsSample(polygonClient: PolygonRestClient) {
     println("Conditions:")
     polygonClient.referenceClient.getConditionsBlocking(ConditionsParameters()).pp()
+    polygonClient.referenceClient.listConditions(ConditionsParameters(limit = 5))
+        .asSequence().take(15).forEach { println("got condition #${it.id}") }
 }
 
 fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
@@ -263,6 +294,15 @@ fun snapshotGainersSample(polygonClient: PolygonRestClient) {
 fun optionsSnapshotSample(polygonClient: PolygonRestClient) {
     println("O:AAPL230616C00150000 snapshot:")
     polygonClient.optionsClient.getSnapshotBlocking("AAPL", "O:AAPL230616C00150000").pp()
+}
+
+fun optionsSnapshotChainSample(polygonClient: PolygonRestClient) {
+    print("RDFN options snapshots:")
+    polygonClient.optionsClient.getSnapshotChainBlocking("AAPL", SnapshotChainParameters()).pp()
+    polygonClient.optionsClient.listSnapshotChain("AA", SnapshotChainParameters(limit = 5))
+        .asSequence()
+        .take(15)
+        .forEach { println(it.details?.ticker ?: "UNKNOWN!") }
 }
 
 fun previousCloseSample(polygonClient: PolygonRestClient) {
