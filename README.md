@@ -117,6 +117,12 @@ PRs that aren't linked to an existing issue or discussed with us ahead of time w
 If you have more general feedback or want to discuss using this client with other users, 
 feel free to reach out on our Slack channel.
 
-### Note for Maintainers
+### Notes for Maintainers
 
 Before cutting a new release, be sure to update [Version](./src/main/kotlin/io/polygon/kotlin/sdk/Version.kt)!
+
+Inside the `.polygon` directory there are openapi specs for REST and websocket APIs.
+Keep these specs up to date with what the library currently supports. 
+We use these specs to automatically check if a new API or feature has been released that this client doesn't yet support.
+
+To manually update the specs to the latest version, run `./gradlew restSpec websocketSpec`
