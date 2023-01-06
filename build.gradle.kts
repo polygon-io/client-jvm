@@ -1,3 +1,6 @@
+import groovy.json.JsonOutput
+import java.net.URL
+
 buildscript {
     repositories {
         google()
@@ -55,6 +58,22 @@ tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
+
+    register("restSpec") {
+        group = "Gather Spec"
+        description = "Retrieve the most recent Polygon.io REST openapi spec"
+
+        val spec = JsonOutput.prettyPrint(URL("https://api.polygon.io/openapi").readText())
+        File(".polygon/rest.json").writeText(spec)
+    }
+
+    register("websocketSpec") {
+        group = "Gather Spec"
+        description = "Retrieve the most recent Polygon.io websocket spec"
+
+        val spec = JsonOutput.prettyPrint(URL("https://api.polygon.io/specs/websocket.json").readText())
+        File(".polygon/websocket.json").writeText(spec)
     }
 
     artifacts {
