@@ -101,7 +101,7 @@ data class FinancialsParameters(
     val order: String? = null,
 
     /**
-     * Limit the number of results returned, default is 1 and max is 100.
+     * Limit the number of results returned, default is 10 and max is 100.
      */
     val limit: Int? = null,
 

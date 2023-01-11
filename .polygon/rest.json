@@ -27016,12 +27016,12 @@
                         }
                     },
                     {
-                        "description": "Limit the number of results returned, default is 1 and max is 100.",
+                        "description": "Limit the number of results returned, default is 10 and max is 100.",
                         "in": "query",
                         "name": "limit",
                         "schema": {
-                            "default": 1,
-                            "example": 1,
+                            "default": 10,
+                            "example": 10,
                             "maximum": 100,
                             "minimum": 1,
                             "type": "integer"
@@ -27496,7 +27496,7 @@
                 },
                 "x-polygon-paginate": {
                     "limit": {
-                        "default": 1,
+                        "default": 10,
                         "max": 100
                     },
                     "sort": {
