@@ -56,7 +56,7 @@ data class TickerDetails(
     val name: String? = null,
     @SerialName("phone_number") val phoneNumber: String? = null,
     @SerialName("primary_exchange") val primaryExchange: String? = null,
-    @SerialName("share_class_shares_outstanding") val shareClassSharesOutstanding: Int? = null,
+    @SerialName("share_class_shares_outstanding") val shareClassSharesOutstanding: Long? = null,
     @SerialName("weighted_shares_outstanding") val weightedSharesOutstanding: Double? = null,
     @SerialName("sic_code") val sicCode: String? = null,
     @SerialName("sic_description") val sicDescription: String? = null,
