@@ -111,6 +111,20 @@
                     ]
                 }
             ]
+        },
+        "indices": {
+            "market": [
+                {
+                    "paths": [
+                        "/indices/AM"
+                    ]
+                },
+                {
+                    "paths": [
+                        "/indices/V"
+                    ]
+                }
+            ]
         }
     },
     "paths": {
