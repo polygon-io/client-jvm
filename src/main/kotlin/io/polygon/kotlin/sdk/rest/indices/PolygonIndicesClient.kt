@@ -60,4 +60,31 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         vararg opts: PolygonRestOption
     ) =
         coroutineToRestCallback(callback, { getPreviousClose(ticker, unadjusted, *opts) })
+
+    /**
+     * Get the open, close and afterhours prices of an index on a certain date.
+     * @param date The date to get the open, close and after hours prices for (YYYY-MM-DD)
+     *
+     * API Doc: https://polygon.io/docs/indices/get_v1_open-close__indicesticker___date
+     */
+    @SafeVarargs
+    fun getDailyOpenCloseBlocking(
+        ticker: String,
+        date: String,
+        unadjusted: Boolean,
+        vararg opts: PolygonRestOption
+    ): DailyOpenCloseDTO =
+        runBlocking { getDailyOpenClose(ticker, date, unadjusted, *opts) }
+
+    /** See [getDailyOpenCloseBlocking] */
+    @SafeVarargs
+    fun getDailyOpenClose(
+        ticker: String,
+        date: String,
+        unadjusted: Boolean,
+        callback: PolygonRestApiCallback<DailyOpenCloseDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getDailyOpenClose(ticker, date, unadjusted, *opts) })
+
 }
