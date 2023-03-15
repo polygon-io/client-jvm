@@ -4,7 +4,6 @@ import io.polygon.kotlin.sdk.ext.coroutineToRestCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestApiCallback
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
-import io.polygon.kotlin.sdk.rest.options.SnapshotResponse
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -15,9 +14,9 @@ import kotlinx.coroutines.runBlocking
  * This client should be accessed through [PolygonRestClient]
  */
 class PolygonIndicesClient
-internal constructor(internal val polygonClient: PolygonRestClient){
+internal constructor(internal val polygonClient: PolygonRestClient) {
 
-    /*
+    /**
      * Get a Snapshot of indices data for said tickers
      *
      * API Doc: https://polygon.io/docs/indices/get_v3_snapshot_indices
@@ -35,5 +34,30 @@ internal constructor(internal val polygonClient: PolygonRestClient){
         params: SnapshotIndicesParameters,
         callback: PolygonRestApiCallback<SnapshotIndicesDTO>,
         vararg opts: PolygonRestOption
-    ) = coroutineToRestCallback(callback, {getSnapshot(params, *opts)})
+    ) = coroutineToRestCallback(callback, { getSnapshot(params, *opts) })
+
+    /**
+     * Get the previous day close for the specified index
+     *
+     * @param unadjusted Set to true if the results should NOT be adjusted for splits.
+     *
+     * API Doc: https://polygon.io/docs/indices/get_v2_aggs_ticker__indicesticker__prev
+     */
+    @SafeVarargs
+    fun getPreviousCloseBlocking(
+        ticker: String,
+        unadjusted: Boolean,
+        vararg opts: PolygonRestOption
+    ): PreviousCloseDTO =
+        runBlocking { getPreviousClose(ticker, unadjusted, *opts) }
+
+    /** See [getPreviousCloseBlocking] */
+    @SafeVarargs
+    fun getPreviousClose(
+        ticker: String,
+        unadjusted: Boolean,
+        callback: PolygonRestApiCallback<PreviousCloseDTO>,
+        vararg opts: PolygonRestOption
+    ) =
+        coroutineToRestCallback(callback, { getPreviousClose(ticker, unadjusted, *opts) })
 }

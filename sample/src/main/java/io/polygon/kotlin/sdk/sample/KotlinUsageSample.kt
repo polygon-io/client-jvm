@@ -221,8 +221,10 @@ fun dividendsSample(polygonClient: PolygonRestClient) {
 
 fun indicesSample(polygonClient: PolygonRestClient) {
     println("Index Snapshots")
-
     polygonClient.indicesClient.getSnapshotBlocking(SnapshotIndicesParameters(tickers = listOf("I:SPX", "I:NDX"))).pp()
+
+    println("Index Prev Close")
+    polygonClient.indicesClient.getPreviousCloseBlocking("I:SPX", false).pp()
 }
 
 @OptIn(ExperimentalAPI::class)
@@ -329,6 +331,16 @@ fun aggregatesSample(polygonClient: PolygonRestClient) {
     )
 
     polygonClient.getAggregatesBlocking(params).pp()
+
+    println("I:SPX Aggs")
+    val idxParams = AggregatesParameters(
+        ticker = "I:SPX",
+        timespan = "day",
+        fromDate = "2023-03-10",
+        toDate = "2023-03-10",
+        limit = 120,
+    )
+    polygonClient.getAggregatesBlocking(idxParams).pp()
 }
 
 fun groupedDailiesSample(polygonClient: PolygonRestClient) {

@@ -15,7 +15,7 @@ suspend fun PolygonIndicesClient.getSnapshot(
     polygonClient.fetchResult({
         path("v3", "snapshot", "indices")
 
-        params.tickers.let{ parameters["ticker.any_of"]= it.joinToString(",") }
+        params.tickers.let { parameters["ticker.any_of"] = it.joinToString(",") }
     }, *opts)
 
 @Builder
