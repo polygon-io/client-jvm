@@ -161,4 +161,19 @@ sealed class PolygonWebSocketMessage {
             @SerialName("r") val receivedAtPolygonTimestamp: Long? = null
         ) : CryptoMessage()
     }
+
+    sealed class IndicesMessage : PolygonWebSocketMessage() {
+        /**
+         * Note: Indices use the "AM" event type for Aggregates and thus return a StocksMessage.Aggregate
+         * Type can be inferred via the "sym" field as Indices will be prefixed by "I:"
+         */
+
+        @Serializable
+        data class Value(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("val") val value: Double? = null,
+            @SerialName("T") val ticker: String? = null,
+            @SerialName("t") val exchangeTimestampMillis: Long? = null
+        ) : IndicesMessage()
+    }
 }

@@ -26,7 +26,8 @@ enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
     Stocks("stocks"),
     Forex("forex"),
     Crypto("crypto"),
-    Options("options")
+    Options("options"),
+    Indices("indices"),
 }
 
 /**
@@ -225,6 +226,7 @@ constructor(
                 "XA" -> serializer.decodeFromJsonElement(CryptoMessage.Aggregate.serializer(), frame)
                 "XS" -> serializer.decodeFromJsonElement(CryptoMessage.ConsolidatedQuote.serializer(), frame)
                 "XL2" -> serializer.decodeFromJsonElement(CryptoMessage.Level2Tick.serializer(), frame)
+                "V" -> serializer.decodeFromJsonElement(IndicesMessage.Value.serializer(), frame)
                 else -> RawMessage(frame.toString().toByteArray())
             }
             collector.add(message)
