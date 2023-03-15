@@ -11,6 +11,7 @@ import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
+import io.polygon.kotlin.sdk.rest.indices.SnapshotIndicesParameters
 import io.polygon.kotlin.sdk.rest.options.SnapshotChainParameters
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
@@ -80,6 +81,8 @@ suspend fun main() {
     quotesIteratorExample(polygonClient)
 
     financialsSample(polygonClient)
+
+    indicesSample(polygonClient)
 
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
@@ -214,6 +217,12 @@ fun dividendsSample(polygonClient: PolygonRestClient) {
     println("15 most recent dividends")
     polygonClient.referenceClient.listDividends(DividendsParameters(limit = 5))
         .asSequence().take(15).forEach { println("got a dividend from ${it.exDividendDate}") }
+}
+
+fun indicesSample(polygonClient: PolygonRestClient) {
+    println("Index Snapshots")
+
+    polygonClient.indicesClient.getSnapshotBlocking(SnapshotIndicesParameters(tickers = listOf("I:SPX", "I:NDX"))).pp()
 }
 
 @OptIn(ExperimentalAPI::class)
