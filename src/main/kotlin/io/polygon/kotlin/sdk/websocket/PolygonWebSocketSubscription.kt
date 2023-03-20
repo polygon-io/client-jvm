@@ -47,6 +47,11 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Level2Books : Crypto("XL2")
     }
 
+    sealed class Indices(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object Aggregates : Stocks("AM")
+        object Value : Indices("V")
+    }
+
     /**
      * Use this if there's a new channel that this SDK doesn't fully support yet
      */

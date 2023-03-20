@@ -38,6 +38,7 @@ data class AggregatesParameters(
      * Stocks: AAPL
      * Currencies: C:EURUSD
      * Crypto: X:BTCUSD
+     * Indices: I:SPX
      */
     val ticker: String,
 

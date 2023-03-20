@@ -11,6 +11,7 @@ import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.FinancialsParameters
 import io.polygon.kotlin.sdk.rest.forex.HistoricTicksParameters
 import io.polygon.kotlin.sdk.rest.forex.RealTimeConversionParameters
+import io.polygon.kotlin.sdk.rest.indices.SnapshotIndicesParameters
 import io.polygon.kotlin.sdk.rest.options.SnapshotChainParameters
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
@@ -81,6 +82,8 @@ suspend fun main() {
 
     financialsSample(polygonClient)
 
+    indicesSample(polygonClient)
+
     println("\n\nWebsocket sample:")
     websocketSample(polygonKey)
 }
@@ -118,6 +121,49 @@ suspend fun websocketSample(polygonKey: String) {
     val subscriptions = listOf(
         PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "ETH-USD"),
         PolygonWebSocketSubscription(PolygonWebSocketChannel.Crypto.Trades, "BTC-USD")
+    )
+
+    websocketClient.connect()
+    websocketClient.subscribe(subscriptions)
+    delay(5000)
+    websocketClient.unsubscribe(subscriptions)
+    websocketClient.disconnect()
+}
+
+suspend fun indicesWebsocketSample(polygonKey: String) {
+    val websocketClient = PolygonWebSocketClient(
+        polygonKey,
+        PolygonWebSocketCluster.Indices,
+        object : PolygonWebSocketListener {
+            override fun onAuthenticated(client: PolygonWebSocketClient) {
+                println("Connected!")
+            }
+
+            override fun onReceive(
+                client: PolygonWebSocketClient,
+                message: PolygonWebSocketMessage
+            ) {
+                when (message) {
+                    is PolygonWebSocketMessage.RawMessage -> println(String(message.data))
+                    else -> println("Receieved Message: $message")
+                }
+            }
+
+            override fun onDisconnect(client: PolygonWebSocketClient) {
+                println("Disconnected!")
+            }
+
+            override fun onError(client: PolygonWebSocketClient, error: Throwable) {
+                println("Error: ")
+                error.printStackTrace()
+            }
+
+        })
+
+    val subscriptions = listOf(
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Indices.Value, "I:NDX"),
+        // Likely you will need to increase the delay call below to see Indices.Aggregates messages
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Indices.Aggregates, "I:SPX")
     )
 
     websocketClient.connect()
@@ -214,6 +260,17 @@ fun dividendsSample(polygonClient: PolygonRestClient) {
     println("15 most recent dividends")
     polygonClient.referenceClient.listDividends(DividendsParameters(limit = 5))
         .asSequence().take(15).forEach { println("got a dividend from ${it.exDividendDate}") }
+}
+
+fun indicesSample(polygonClient: PolygonRestClient) {
+    println("Index Snapshots")
+    polygonClient.indicesClient.getSnapshotBlocking(SnapshotIndicesParameters(tickers = listOf("I:SPX", "I:NDX"))).pp()
+
+    println("Index Prev Close")
+    polygonClient.indicesClient.getPreviousCloseBlocking("I:SPX", false).pp()
+
+    println("Index Daily O/C")
+    polygonClient.indicesClient.getDailyOpenCloseBlocking("I:NDX", "2023-03-10").pp()
 }
 
 @OptIn(ExperimentalAPI::class)
@@ -320,6 +377,16 @@ fun aggregatesSample(polygonClient: PolygonRestClient) {
     )
 
     polygonClient.getAggregatesBlocking(params).pp()
+
+    println("I:SPX Aggs")
+    val idxParams = AggregatesParameters(
+        ticker = "I:SPX",
+        timespan = "day",
+        fromDate = "2023-03-10",
+        toDate = "2023-03-10",
+        limit = 120,
+    )
+    polygonClient.getAggregatesBlocking(idxParams).pp()
 }
 
 fun groupedDailiesSample(polygonClient: PolygonRestClient) {

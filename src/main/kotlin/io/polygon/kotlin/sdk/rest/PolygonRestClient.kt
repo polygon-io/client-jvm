@@ -12,6 +12,7 @@ import io.polygon.kotlin.sdk.rest.crypto.PolygonCryptoClient
 import io.polygon.kotlin.sdk.rest.experimental.ExperimentalAPI
 import io.polygon.kotlin.sdk.rest.experimental.PolygonExperimentalClient
 import io.polygon.kotlin.sdk.rest.forex.PolygonForexClient
+import io.polygon.kotlin.sdk.rest.indices.PolygonIndicesClient
 import io.polygon.kotlin.sdk.rest.options.PolygonOptionsClient
 import io.polygon.kotlin.sdk.rest.reference.PolygonReferenceClient
 import io.polygon.kotlin.sdk.rest.stocks.PolygonStocksClient
@@ -22,7 +23,7 @@ import kotlinx.coroutines.runBlocking
  *
  * @param apiKey the API key to use with all API requests
  * @param httpClientProvider (Optional) A provider for the ktor [HttpClient] to use; defaults to [DefaultJvmHttpClientProvider]
- * @param polygonApiDomain (Optional) The domain to hit for all API requests; defaults to Polygon's API domain "api.polyhon.io". Useful for overriding in a testing environment
+ * @param polygonApiDomain (Optional) The domain to hit for all API requests; defaults to Polygon's API domain "api.polygon.io". Useful for overriding in a testing environment
  */
 class PolygonRestClient
 @JvmOverloads
@@ -56,6 +57,11 @@ constructor(
      * A [PolygonCryptoClient] that can be used to access Polygon crypto APIs
      */
     val cryptoClient by lazy { PolygonCryptoClient(this) }
+
+    /**
+     * A [PolygonIndicesClient] that can be used to access Polygon indices APIs
+     */
+    val indicesClient by lazy { PolygonIndicesClient(this) }
 
     /**
      * A [PolygonExperimentalClient] that can be used to access vX Polygon APIs
