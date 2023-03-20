@@ -10,11 +10,9 @@ import kotlinx.serialization.Serializable
 suspend fun PolygonIndicesClient.getDailyOpenClose(
     ticker: String,
     date: String,
-    unadjusted: Boolean,
     vararg opts: PolygonRestOption
 ): DailyOpenCloseDTO = polygonClient.fetchResult({
     path("v1", "open-close", ticker, date)
-    parameters["unadjusted"] = unadjusted.toString()
 }, *opts)
 
 @Serializable

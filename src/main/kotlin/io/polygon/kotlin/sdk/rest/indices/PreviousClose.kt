@@ -24,6 +24,5 @@ data class PreviousCloseDTO(
     val ticker: String? = null,
     val queryCount: Long? = null,
     val resultsCount: Long? = null,
-    val adjusted: Boolean? = null,
     val results: List<AggregateDTO> = emptyList()
 )

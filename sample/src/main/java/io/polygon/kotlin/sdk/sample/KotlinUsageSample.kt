@@ -270,7 +270,7 @@ fun indicesSample(polygonClient: PolygonRestClient) {
     polygonClient.indicesClient.getPreviousCloseBlocking("I:SPX", false).pp()
 
     println("Index Daily O/C")
-    polygonClient.indicesClient.getDailyOpenCloseBlocking("I:NDX", "2023-03-10", true).pp()
+    polygonClient.indicesClient.getDailyOpenCloseBlocking("I:NDX", "2023-03-10").pp()
 }
 
 @OptIn(ExperimentalAPI::class)

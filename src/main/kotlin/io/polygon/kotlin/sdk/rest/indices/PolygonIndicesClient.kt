@@ -71,20 +71,18 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
     fun getDailyOpenCloseBlocking(
         ticker: String,
         date: String,
-        unadjusted: Boolean,
         vararg opts: PolygonRestOption
     ): DailyOpenCloseDTO =
-        runBlocking { getDailyOpenClose(ticker, date, unadjusted, *opts) }
+        runBlocking { getDailyOpenClose(ticker, date, *opts) }
 
     /** See [getDailyOpenCloseBlocking] */
     @SafeVarargs
     fun getDailyOpenClose(
         ticker: String,
         date: String,
-        unadjusted: Boolean,
         callback: PolygonRestApiCallback<DailyOpenCloseDTO>,
         vararg opts: PolygonRestOption
     ) =
-        coroutineToRestCallback(callback, { getDailyOpenClose(ticker, date, unadjusted, *opts) })
+        coroutineToRestCallback(callback, { getDailyOpenClose(ticker, date, *opts) })
 
 }
