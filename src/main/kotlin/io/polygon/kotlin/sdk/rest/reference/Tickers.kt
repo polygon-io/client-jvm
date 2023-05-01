@@ -83,8 +83,7 @@ data class SupportedTickersParameters(
     val market: String? = null,
 
     /**
-     * Specify the primary exchange of the asset in the ISO code format.
-     * Find more information about the ISO codes at the ISO org website.
+     * Specify the asset's primary exchange Market Identifier Code (MIC) according to ISO 10383.
      * Defaults to empty string which queries all exchanges.
      */
     val exchange: String? = null,
