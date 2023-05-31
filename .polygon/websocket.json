@@ -1994,100 +1994,100 @@
         },
         "/indices/AM": {
             "get": {
-            "summary": "Aggregates (Per Minute)",
-            "description": "Stream real-time minute aggregates for a given index.\n",
-            "parameters": [
-                {
-                    "name": "ticker",
-                    "in": "query",
-                    "description": "Specify an index ticker using \"I:\" prefix or use * to subscribe to all index tickers.\nYou can also use a comma separated list to subscribe to multiple index tickers.\nYou can retrieve available index tickers from our [Index Tickers API](https://polygon.io/docs/indices/get_v3_reference_tickers).\n",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "pattern": "/^([a-zA-Z]+)$/"
-                    },
-                    "example": "*"
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "The WebSocket message for a minute aggregate event.",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "allOf": [
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "ev": {
-                                                "description": "The event type."
-                                            },
-                                            "sym": {
-                                                "type": "string",
-                                                "description": "The symbol representing the given index."
-                                            },
-                                            "op": {
-                                                "type": "number",
-                                                "format": "double",
-                                                "description": "Today's official opening value."
-                                            },
-                                            "o": {
-                                                "type": "number",
-                                                "format": "double",
-                                                "description": "The opening index value for this aggregate window."
-                                            },
-                                            "c": {
-                                                "type": "number",
-                                                "format": "double",
-                                                "description": "The closing index value for this aggregate window."
-                                            },
-                                            "h": {
-                                                "type": "number",
-                                                "format": "double",
-                                                "description": "The highest index value for this aggregate window."
-                                            },
-                                            "l": {
-                                                "type": "number",
-                                                "format": "double",
-                                                "description": "The lowest index value for this aggregate window."
-                                            },
-                                            "s": {
-                                                "type": "integer",
-                                                "description": "The timestamp of the starting index for this aggregate window in Unix Milliseconds."
-                                            },
-                                            "e": {
-                                                "type": "integer",
-                                                "description": "The timestamp of the ending index for this aggregate window in Unix Milliseconds."
+                "summary": "Aggregates (Per Minute)",
+                "description": "Stream real-time minute aggregates for a given index ticker symbol.\n",
+                "parameters": [
+                    {
+                        "name": "ticker",
+                        "in": "query",
+                        "description": "Specify an index ticker using \"I:\" prefix or use * to subscribe to all index tickers.\nYou can also use a comma separated list to subscribe to multiple index tickers.\nYou can retrieve available index tickers from our [Index Tickers API](https://polygon.io/docs/indices/get_v3_reference_tickers).\n",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "/^(I:[a-zA-Z0-9]+)$/"
+                        },
+                        "example": "*"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The WebSocket message for a minute aggregate event.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "ev": {
+                                                    "description": "The event type."
+                                                },
+                                                "sym": {
+                                                    "type": "string",
+                                                    "description": "The symbol representing the given index."
+                                                },
+                                                "op": {
+                                                    "type": "number",
+                                                    "format": "double",
+                                                    "description": "Today's official opening value."
+                                                },
+                                                "o": {
+                                                    "type": "number",
+                                                    "format": "double",
+                                                    "description": "The opening index value for this aggregate window."
+                                                },
+                                                "c": {
+                                                    "type": "number",
+                                                    "format": "double",
+                                                    "description": "The closing index value for this aggregate window."
+                                                },
+                                                "h": {
+                                                    "type": "number",
+                                                    "format": "double",
+                                                    "description": "The highest index value for this aggregate window."
+                                                },
+                                                "l": {
+                                                    "type": "number",
+                                                    "format": "double",
+                                                    "description": "The lowest index value for this aggregate window."
+                                                },
+                                                "s": {
+                                                    "type": "integer",
+                                                    "description": "The timestamp of the starting index for this aggregate window in Unix Milliseconds."
+                                                },
+                                                "e": {
+                                                    "type": "integer",
+                                                    "description": "The timestamp of the ending index for this aggregate window in Unix Milliseconds."
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "ev": {
+                                                    "enum": [
+                                                        "AM"
+                                                    ],
+                                                    "description": "The event type."
+                                                }
                                             }
                                         }
-                                    },
-                                    {
-                                        "properties": {
-                                            "ev": {
-                                                "enum": [
-                                                    "AM"
-                                                ],
-                                                "description": "The event type."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "example": {
-                                "ev": "AM",
-                                "sym": "I:SPX",
-                                "op": 3985.67,
-                                "o": 3985.67,
-                                "c": 3985.67,
-                                "h": 3985.67,
-                                "l": 3985.67,
-                                "s": 1678220675805,
-                                "e": 1678220675805
+                                    ]
+                                },
+                                "example": {
+                                    "ev": "AM",
+                                    "sym": "I:SPX",
+                                    "op": 3985.67,
+                                    "o": 3985.67,
+                                    "c": 3985.67,
+                                    "h": 3985.67,
+                                    "l": 3985.67,
+                                    "s": 1678220675805,
+                                    "e": 1678220675805
+                                }
                             }
                         }
                     }
-                }
-            },
+                },
                 "x-polygon-entitlement-data-type": {
                     "name": "aggregates",
                     "description": "Aggregate data"
@@ -3552,6 +3552,131 @@
             "CryptoReceivedTimestamp": {
                 "type": "integer",
                 "description": "The timestamp that the tick was received by Polygon."
+            },
+            "IndicesBaseAggregateEvent": {
+                "type": "object",
+                "properties": {
+                    "ev": {
+                        "description": "The event type."
+                    },
+                    "sym": {
+                        "type": "string",
+                        "description": "The symbol representing the given index."
+                    },
+                    "op": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Today's official opening value."
+                    },
+                    "o": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "The opening index value for this aggregate window."
+                    },
+                    "c": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "The closing index value for this aggregate window."
+                    },
+                    "h": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "The highest index value for this aggregate window."
+                    },
+                    "l": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "The lowest index value for this aggregate window."
+                    },
+                    "s": {
+                        "type": "integer",
+                        "description": "The timestamp of the starting index for this aggregate window in Unix Milliseconds."
+                    },
+                    "e": {
+                        "type": "integer",
+                        "description": "The timestamp of the ending index for this aggregate window in Unix Milliseconds."
+                    }
+                }
+            },
+            "IndicesMinuteAggregateEvent": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "ev": {
+                                "description": "The event type."
+                            },
+                            "sym": {
+                                "type": "string",
+                                "description": "The symbol representing the given index."
+                            },
+                            "op": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Today's official opening value."
+                            },
+                            "o": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "The opening index value for this aggregate window."
+                            },
+                            "c": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "The closing index value for this aggregate window."
+                            },
+                            "h": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "The highest index value for this aggregate window."
+                            },
+                            "l": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "The lowest index value for this aggregate window."
+                            },
+                            "s": {
+                                "type": "integer",
+                                "description": "The timestamp of the starting index for this aggregate window in Unix Milliseconds."
+                            },
+                            "e": {
+                                "type": "integer",
+                                "description": "The timestamp of the ending index for this aggregate window in Unix Milliseconds."
+                            }
+                        }
+                    },
+                    {
+                        "properties": {
+                            "ev": {
+                                "enum": [
+                                    "AM"
+                                ],
+                                "description": "The event type."
+                            }
+                        }
+                    }
+                ]
+            },
+            "IndicesValueEvent": {
+                "type": "object",
+                "properties": {
+                    "ev": {
+                        "type": "string",
+                        "enum": [
+                            "V"
+                        ],
+                        "description": "The event type."
+                    },
+                    "val": {
+                        "description": "The value of the index."
+                    },
+                    "T": {
+                        "description": "The assigned ticker of the index."
+                    },
+                    "t": {
+                        "description": "The Timestamp in Unix MS."
+                    }
+                }
             }
         },
         "parameters": {
@@ -3609,6 +3734,28 @@
                     "pattern": "/^(?<from>([A-Z]*)-(?<to>[A-Z]{3}))$/"
                 },
                 "example": "*"
+            },
+            "IndicesIndexParam": {
+                "name": "ticker",
+                "in": "query",
+                "description": "Specify an index ticker using \"I:\" prefix or use * to subscribe to all index tickers.\nYou can also use a comma separated list to subscribe to multiple index tickers.\nYou can retrieve available index tickers from our [Index Tickers API](https://polygon.io/docs/indices/get_v3_reference_tickers).\n",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "pattern": "/^(I:[a-zA-Z0-9]+)$/"
+                },
+                "example": "*"
+            },
+            "IndicesIndexParamWithoutWildcard": {
+                "name": "ticker",
+                "in": "query",
+                "description": "Specify an index ticker using \"I:\" prefix or use * to subscribe to all index tickers.\nYou can also use a comma separated list to subscribe to multiple index tickers.\nYou can retrieve available index tickers from our [Index Tickers API](https://polygon.io/docs/indices/get_v3_reference_tickers).\n",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "pattern": "/^(I:[a-zA-Z0-9]+)$/"
+                },
+                "example": "I:SPX"
             }
         }
     }
