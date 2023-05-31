@@ -176,4 +176,18 @@ sealed class PolygonWebSocketMessage {
             @SerialName("t") val exchangeTimestampMillis: Long? = null
         ) : IndicesMessage()
     }
+
+    sealed class LaunchpadMessage : PolygonWebSocketMessage() {
+        /**
+         * Note: Launchpad use the "AM" event type for Aggregates and thus return a StocksMessage.Aggregate
+         */
+
+        @Serializable
+        data class LaunchpadValue(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("val") val value: Double? = null,
+            @SerialName("sym") val symbol: String? = null,
+            @SerialName("s") val timestampMillis: Long? = null
+        ) : LaunchpadMessage()
+    }
 }

@@ -52,6 +52,11 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Value : Indices("V")
     }
 
+    sealed class Launchpad(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object Aggregates : Stocks("AM")
+        object Value : Launchpad("LV")
+    }
+
     /**
      * Use this if there's a new channel that this SDK doesn't fully support yet
      */
