@@ -187,7 +187,7 @@ sealed class PolygonWebSocketMessage {
             @SerialName("ev") val eventType: String? = null,
             @SerialName("val") val value: Double? = null,
             @SerialName("sym") val symbol: String? = null,
-            @SerialName("s") val timestampMillis: Long? = null
+            @SerialName("t") val timestampMillis: Long? = null
         ) : LaunchpadMessage()
     }
 }
