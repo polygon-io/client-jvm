@@ -14677,6 +14677,11 @@
                                                                 "format": "double",
                                                                 "type": "number"
                                                             },
+                                                            "price": {
+                                                                "description": "The price of the most recent trade or bid price for this asset.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
                                                             "volume": {
                                                                 "description": "The trading volume for the asset for the day.",
                                                                 "format": "double",
@@ -26815,7 +26820,6 @@
                 "operationId": "Snapshots",
                 "parameters": [
                     {
-                        "example": "I:DJI",
                         "in": "query",
                         "name": "ticker",
                         "schema": {
@@ -26825,7 +26829,7 @@
                             "anyOf": {
                                 "description": "Comma separated list of tickers, up to a maximum of 250. If no tickers are passed then all results will be returned in a paginated manner.\n\nWarning: The maximum number of characters allowed in a URL are subject to your technology stack.\n",
                                 "enabled": true,
-                                "example": "NCLH,O:SPY250321C00380000"
+                                "example": "NCLH,O:SPY250321C00380000,C:EURUSD,X:BTCUSD,I:SPX"
                             },
                             "range": true,
                             "type": "string"
@@ -26840,7 +26844,8 @@
                                 "stocks",
                                 "options",
                                 "crypto",
-                                "fx"
+                                "fx",
+                                "indices"
                             ],
                             "type": "string"
                         }
@@ -26879,7 +26884,7 @@
                     },
                     {
                         "description": "Comma separated list of tickers, up to a maximum of 250. If no tickers are passed then all results will be returned in a paginated manner.\n\nWarning: The maximum number of characters allowed in a URL are subject to your technology stack.\n",
-                        "example": "NCLH,O:SPY250321C00380000",
+                        "example": "NCLH,O:SPY250321C00380000,C:EURUSD,X:BTCUSD,I:SPX",
                         "in": "query",
                         "name": "ticker.any_of",
                         "schema": {
@@ -26900,12 +26905,12 @@
                         }
                     },
                     {
-                        "description": "Limit the number of results returned, default is 250 and max is 250.",
+                        "description": "Limit the number of results returned, default is 10 and max is 250.",
                         "in": "query",
                         "name": "limit",
                         "schema": {
-                            "default": 250,
-                            "example": 250,
+                            "default": 10,
+                            "example": 10,
                             "maximum": 250,
                             "minimum": 1,
                             "type": "integer"
@@ -27053,624 +27058,340 @@
                                         },
                                         "results": {
                                             "items": {
-                                                "oneOf": [
-                                                    {
+                                                "properties": {
+                                                    "break_even_price": {
+                                                        "description": "The price of the underlying asset for the contract to break even. For a call, this value is (strike price + premium paid). For a put, this value is (strike price - premium paid).",
+                                                        "format": "double",
+                                                        "type": "number"
+                                                    },
+                                                    "details": {
+                                                        "description": "The details for this contract.",
                                                         "properties": {
-                                                            "break_even_price": {
-                                                                "description": "The price of the underlying asset for the contract to break even. For a call, this value is (strike price + premium paid). For a put, this value is (strike price - premium paid).",
-                                                                "format": "double",
+                                                            "contract_type": {
+                                                                "description": "The type of contract. Can be \"put\", \"call\", or in some rare cases, \"other\".",
+                                                                "enum": [
+                                                                    "put",
+                                                                    "call",
+                                                                    "other"
+                                                                ],
+                                                                "type": "string"
+                                                            },
+                                                            "exercise_style": {
+                                                                "description": "The exercise style of this contract. See <a rel=\"nofollow\" target=\"_blank\" href=\"https://en.wikipedia.org/wiki/Option_style\">this link</a> for more details on exercise styles.",
+                                                                "enum": [
+                                                                    "american",
+                                                                    "european",
+                                                                    "bermudan"
+                                                                ],
+                                                                "type": "string"
+                                                            },
+                                                            "expiration_date": {
+                                                                "description": "The contract's expiration date in YYYY-MM-DD format.",
+                                                                "format": "date",
+                                                                "type": "string",
+                                                                "x-polygon-go-type": {
+                                                                    "name": "IDaysPolygonDateString",
+                                                                    "path": "github.com/polygon-io/ptime"
+                                                                }
+                                                            },
+                                                            "shares_per_contract": {
+                                                                "description": "The number of shares per contract for this contract.",
                                                                 "type": "number"
                                                             },
-                                                            "details": {
-                                                                "description": "The details for this contract.",
-                                                                "properties": {
-                                                                    "contract_type": {
-                                                                        "description": "The type of contract. Can be \"put\", \"call\", or in some rare cases, \"other\".",
-                                                                        "enum": [
-                                                                            "put",
-                                                                            "call",
-                                                                            "other"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    },
-                                                                    "exercise_style": {
-                                                                        "description": "The exercise style of this contract. See <a rel=\"nofollow\" target=\"_blank\" href=\"https://en.wikipedia.org/wiki/Option_style\">this link</a> for more details on exercise styles.",
-                                                                        "enum": [
-                                                                            "american",
-                                                                            "european",
-                                                                            "bermudan"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    },
-                                                                    "expiration_date": {
-                                                                        "description": "The contract's expiration date in YYYY-MM-DD format.",
-                                                                        "format": "date",
-                                                                        "type": "string",
-                                                                        "x-polygon-go-type": {
-                                                                            "name": "IDaysPolygonDateString",
-                                                                            "path": "github.com/polygon-io/ptime"
-                                                                        }
-                                                                    },
-                                                                    "shares_per_contract": {
-                                                                        "description": "The number of shares per contract for this contract.",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "strike_price": {
-                                                                        "description": "The strike price of the option contract.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "contract_type",
-                                                                    "exercise_style",
-                                                                    "expiration_date",
-                                                                    "shares_per_contract",
-                                                                    "strike_price"
-                                                                ],
-                                                                "type": "object"
-                                                            },
-                                                            "error": {
-                                                                "description": "The error while looking for this ticker.",
-                                                                "type": "string"
-                                                            },
-                                                            "greeks": {
-                                                                "description": "The greeks for this contract. This is only returned if your current plan includes greeks.",
-                                                                "properties": {
-                                                                    "delta": {
-                                                                        "description": "The change in the option's price per $0.01 increment in the price of the underlying asset.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "gamma": {
-                                                                        "description": "The change in delta per $0.01 change in the price of the underlying asset.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "theta": {
-                                                                        "description": "The change in the option's price per day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "vega": {
-                                                                        "description": "The change in the option's price per 1% increment in volatility.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    }
-                                                                },
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "Greeks"
-                                                                }
-                                                            },
-                                                            "implied_volatility": {
-                                                                "description": "The market's forecast for the volatility of the underlying asset, based on this option's current price.",
+                                                            "strike_price": {
+                                                                "description": "The strike price of the option contract.",
                                                                 "format": "double",
                                                                 "type": "number"
-                                                            },
-                                                            "last_quote": {
-                                                                "description": "The most recent quote for this contract. This is only returned if your current plan includes quotes.",
-                                                                "properties": {
-                                                                    "ask": {
-                                                                        "description": "The ask price.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "ask_size": {
-                                                                        "description": "The ask size.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "bid": {
-                                                                        "description": "The bid price.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "bid_size": {
-                                                                        "description": "The bid size.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "last_updated": {
-                                                                        "description": "The nanosecond timestamp of when this information was updated.",
-                                                                        "format": "int64",
-                                                                        "type": "integer",
-                                                                        "x-polygon-go-type": {
-                                                                            "name": "INanoseconds",
-                                                                            "path": "github.com/polygon-io/ptime"
-                                                                        }
-                                                                    },
-                                                                    "midpoint": {
-                                                                        "description": "The average of the bid and ask price.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "timeframe": {
-                                                                        "description": "The time relevance of the data.",
-                                                                        "enum": [
-                                                                            "DELAYED",
-                                                                            "REAL-TIME"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "last_updated",
-                                                                    "timeframe",
-                                                                    "ask",
-                                                                    "ask_size",
-                                                                    "bid_size",
-                                                                    "bid",
-                                                                    "midpoint"
-                                                                ],
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "LastQuote"
-                                                                }
-                                                            },
-                                                            "last_trade": {
-                                                                "description": "The most recent trade for this contract. This is only returned if your current plan includes trades.",
-                                                                "properties": {
-                                                                    "conditions": {
-                                                                        "description": "A list of condition codes.",
-                                                                        "items": {
-                                                                            "description": "The condition code. These are the conditions of this message. See\n[Condition Mappings](https://polygon.io/docs/options/get_v3_reference_conditions)\nfor a mapping to exchange conditions.",
-                                                                            "format": "int32",
-                                                                            "type": "integer"
-                                                                        },
-                                                                        "type": "array"
-                                                                    },
-                                                                    "exchange": {
-                                                                        "description": "The exchange ID. See <a href=\"https://polygon.io/docs/options/get_v3_reference_exchanges\" alt=\"Exchanges\">Exchanges</a> for Polygon.io's mapping of exchange IDs.",
-                                                                        "type": "integer"
-                                                                    },
-                                                                    "price": {
-                                                                        "description": "The price of the trade. This is the actual dollar value per whole share of\nthis trade. A trade of 100 shares with a price of $2.00 would be worth a\ntotal dollar value of $200.00.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "sip_timestamp": {
-                                                                        "description": "The nanosecond accuracy SIP Unix Timestamp. This is the timestamp of when the SIP received this trade from the exchange which produced it.",
-                                                                        "format": "int64",
-                                                                        "type": "integer"
-                                                                    },
-                                                                    "size": {
-                                                                        "description": "The size of a trade (also known as volume).",
-                                                                        "format": "int32",
-                                                                        "type": "integer"
-                                                                    },
-                                                                    "timeframe": {
-                                                                        "description": "The time relevance of the data.",
-                                                                        "enum": [
-                                                                            "DELAYED",
-                                                                            "REAL-TIME"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "timeframe",
-                                                                    "exchange",
-                                                                    "price",
-                                                                    "sip_timestamp",
-                                                                    "size"
-                                                                ],
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "OptionsLastTrade"
-                                                                }
-                                                            },
-                                                            "market_status": {
-                                                                "description": "The market status for the market that trades this ticker.",
-                                                                "type": "string"
-                                                            },
-                                                            "message": {
-                                                                "description": "The error message while looking for this ticker.",
-                                                                "type": "string"
-                                                            },
-                                                            "name": {
-                                                                "description": "The name of this contract.",
-                                                                "type": "string"
-                                                            },
-                                                            "open_interest": {
-                                                                "description": "The quantity of this contract held at the end of the last trading day.",
-                                                                "format": "double",
-                                                                "type": "number"
-                                                            },
-                                                            "session": {
-                                                                "properties": {
-                                                                    "change": {
-                                                                        "description": "The value of the price change for the asset from the previous trading day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "change_percent": {
-                                                                        "description": "The percent of the price change for the asset from the previous trading day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "close": {
-                                                                        "description": "The closing price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "early_trading_change": {
-                                                                        "description": "Today's early trading change amount, difference between price and previous close if in early trading hours, otherwise difference between last price during early trading and previous close.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "early_trading_change_percent": {
-                                                                        "description": "Today's early trading change as a percentage.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "high": {
-                                                                        "description": "The highest price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "late_trading_change": {
-                                                                        "description": "Today's late trading change amount, difference between price and today's close if in late trading hours, otherwise difference between last price during late trading and today's close.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "late_trading_change_percent": {
-                                                                        "description": "Today's late trading change as a percentage.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "low": {
-                                                                        "description": "The lowest price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "open": {
-                                                                        "description": "The open price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "previous_close": {
-                                                                        "description": "The closing price of the asset for the previous trading day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "volume": {
-                                                                        "description": "The trading volume for the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "change",
-                                                                    "change_percent",
-                                                                    "close",
-                                                                    "high",
-                                                                    "low",
-                                                                    "open",
-                                                                    "previous_close"
-                                                                ],
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "Session"
-                                                                }
-                                                            },
-                                                            "ticker": {
-                                                                "description": "The ticker of this contract.",
-                                                                "type": "string"
-                                                            },
-                                                            "type": {
-                                                                "description": "The asset class this ticker belongs to.",
-                                                                "type": "string"
-                                                            },
-                                                            "underlying_asset": {
-                                                                "description": "Information on the underlying stock for this options contract.  The market data returned depends on your current stocks plan.",
-                                                                "properties": {
-                                                                    "change_to_break_even": {
-                                                                        "description": "The change in price for the contract to break even.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "last_updated": {
-                                                                        "description": "The nanosecond timestamp of when this information was updated.",
-                                                                        "format": "int64",
-                                                                        "type": "integer",
-                                                                        "x-polygon-go-type": {
-                                                                            "name": "INanoseconds",
-                                                                            "path": "github.com/polygon-io/ptime"
-                                                                        }
-                                                                    },
-                                                                    "price": {
-                                                                        "description": "The price of the trade. This is the actual dollar value per whole share of this trade. A trade of 100 shares with a price of $2.00 would be worth a total dollar value of $200.00.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "ticker": {
-                                                                        "description": "The ticker symbol for the contract's underlying asset.",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "timeframe": {
-                                                                        "description": "The time relevance of the data.",
-                                                                        "enum": [
-                                                                            "DELAYED",
-                                                                            "REAL-TIME"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    },
-                                                                    "value": {
-                                                                        "description": "The value of the underlying index.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "last_updated",
-                                                                    "timeframe",
-                                                                    "ticker",
-                                                                    "change_to_break_even"
-                                                                ],
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "UnderlyingAsset"
-                                                                }
                                                             }
                                                         },
                                                         "required": [
-                                                            "session",
-                                                            "underlying_asset",
-                                                            "details",
-                                                            "break_even_price",
-                                                            "open_interest",
-                                                            "market_status",
-                                                            "name",
-                                                            "ticker",
-                                                            "type"
+                                                            "contract_type",
+                                                            "exercise_style",
+                                                            "expiration_date",
+                                                            "shares_per_contract",
+                                                            "strike_price"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "error": {
+                                                        "description": "The error while looking for this ticker.",
+                                                        "type": "string"
+                                                    },
+                                                    "greeks": {
+                                                        "description": "The greeks for this contract. This is only returned if your current plan includes greeks.",
+                                                        "properties": {
+                                                            "delta": {
+                                                                "description": "The change in the option's price per $0.01 increment in the price of the underlying asset.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "gamma": {
+                                                                "description": "The change in delta per $0.01 change in the price of the underlying asset.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "theta": {
+                                                                "description": "The change in the option's price per day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "vega": {
+                                                                "description": "The change in the option's price per 1% increment in volatility.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "delta",
+                                                            "gamma",
+                                                            "theta",
+                                                            "vega"
                                                         ],
                                                         "type": "object",
                                                         "x-polygon-go-type": {
-                                                            "name": "OptionSnapshotResultV2"
+                                                            "name": "Greeks"
                                                         }
                                                     },
-                                                    {
+                                                    "implied_volatility": {
+                                                        "description": "The market's forecast for the volatility of the underlying asset, based on this option's current price.",
+                                                        "format": "double",
+                                                        "type": "number"
+                                                    },
+                                                    "last_quote": {
+                                                        "description": "The most recent quote for this contract. This is only returned if your current plan includes quotes.",
                                                         "properties": {
-                                                            "error": {
-                                                                "description": "The error while looking for this ticker.",
-                                                                "type": "string"
+                                                            "ask": {
+                                                                "description": "The ask price.",
+                                                                "format": "double",
+                                                                "type": "number"
                                                             },
-                                                            "last_quote": {
-                                                                "description": "The most recent quote for this stock. This is only returned if your current plan includes quotes.",
-                                                                "properties": {
-                                                                    "ask": {
-                                                                        "description": "The ask price.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "ask_size": {
-                                                                        "description": "The ask size.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "bid": {
-                                                                        "description": "The bid price.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "bid_size": {
-                                                                        "description": "The bid size.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "last_updated": {
-                                                                        "description": "The nanosecond timestamp of when this information was updated.",
-                                                                        "format": "int64",
-                                                                        "type": "integer",
-                                                                        "x-polygon-go-type": {
-                                                                            "name": "INanoseconds",
-                                                                            "path": "github.com/polygon-io/ptime"
-                                                                        }
-                                                                    },
-                                                                    "timeframe": {
-                                                                        "description": "The time relevance of the data.",
-                                                                        "enum": [
-                                                                            "DELAYED",
-                                                                            "REAL-TIME"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "last_updated",
-                                                                    "timeframe",
-                                                                    "ask",
-                                                                    "ask_size",
-                                                                    "bid",
-                                                                    "bid_size"
-                                                                ],
-                                                                "type": "object",
+                                                            "ask_size": {
+                                                                "description": "The ask size.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "bid": {
+                                                                "description": "The bid price.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "bid_size": {
+                                                                "description": "The bid size.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "exchange": {
+                                                                "description": "Exchange of last quote",
+                                                                "format": "int32",
+                                                                "type": "integer"
+                                                            },
+                                                            "last_updated": {
+                                                                "description": "The nanosecond timestamp of when this information was updated.",
+                                                                "format": "int64",
+                                                                "type": "integer",
                                                                 "x-polygon-go-type": {
-                                                                    "name": "StocksLastQuote"
+                                                                    "name": "INanoseconds",
+                                                                    "path": "github.com/polygon-io/ptime"
                                                                 }
                                                             },
-                                                            "last_trade": {
-                                                                "description": "The most recent trade for this stock. This is only returned if your current plan includes trades.",
-                                                                "properties": {
-                                                                    "conditions": {
-                                                                        "description": "A list of condition codes.",
-                                                                        "items": {
-                                                                            "description": "The condition code. These are the conditions of this message. See\n[Condition Mappings](https://polygon.io/docs/stocks/get_v3_reference_conditions)\nfor a mapping to exchange conditions.",
-                                                                            "format": "int32",
-                                                                            "type": "integer"
-                                                                        },
-                                                                        "type": "array"
-                                                                    },
-                                                                    "exchange": {
-                                                                        "description": "The exchange ID. See <a href=\"https://polygon.io/docs/stocks/get_v3_reference_exchanges\" alt=\"Exchanges\">Exchanges</a> for Polygon.io's mapping of exchange IDs.",
-                                                                        "type": "integer"
-                                                                    },
-                                                                    "id": {
-                                                                        "description": "The Trade ID which uniquely identifies a trade. These are unique per combination of ticker, exchange, and TRF. For example: A trade for AAPL executed on NYSE and a trade for AAPL executed on NASDAQ could potentially have the same Trade ID.",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "last_updated": {
-                                                                        "description": "The nanosecond timestamp of when this information was updated.",
-                                                                        "format": "int64",
-                                                                        "type": "integer",
-                                                                        "x-polygon-go-type": {
-                                                                            "name": "INanoseconds",
-                                                                            "path": "github.com/polygon-io/ptime"
-                                                                        }
-                                                                    },
-                                                                    "price": {
-                                                                        "description": "The price of the trade. This is the actual dollar value per whole share of\nthis trade. A trade of 100 shares with a price of $2.00 would be worth a\ntotal dollar value of $200.00.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "size": {
-                                                                        "description": "The size of a trade (also known as volume).",
-                                                                        "format": "int32",
-                                                                        "type": "integer"
-                                                                    },
-                                                                    "timeframe": {
-                                                                        "description": "The time relevance of the data.",
-                                                                        "enum": [
-                                                                            "DELAYED",
-                                                                            "REAL-TIME"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "timeframe",
-                                                                    "last_updated",
-                                                                    "timeframe",
-                                                                    "last_updated",
-                                                                    "id",
-                                                                    "price",
-                                                                    "size",
-                                                                    "exchange"
-                                                                ],
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "StocksLastTrade"
-                                                                }
+                                                            "midpoint": {
+                                                                "description": "The average of the bid and ask price.",
+                                                                "format": "double",
+                                                                "type": "number"
                                                             },
-                                                            "market_status": {
-                                                                "description": "The market status for the market that trades this ticker.",
-                                                                "type": "string"
-                                                            },
-                                                            "message": {
-                                                                "description": "The error message while looking for this ticker.",
-                                                                "type": "string"
-                                                            },
-                                                            "name": {
-                                                                "description": "Name of the company associated with this ticker.",
-                                                                "type": "string"
-                                                            },
-                                                            "session": {
-                                                                "properties": {
-                                                                    "change": {
-                                                                        "description": "The value of the price change for the asset from the previous trading day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "change_percent": {
-                                                                        "description": "The percent of the price change for the asset from the previous trading day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "close": {
-                                                                        "description": "The closing price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "early_trading_change": {
-                                                                        "description": "Today's early trading change amount, difference between price and previous close if in early trading hours, otherwise difference between last price during early trading and previous close.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "early_trading_change_percent": {
-                                                                        "description": "Today's early trading change as a percentage.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "high": {
-                                                                        "description": "The highest price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "late_trading_change": {
-                                                                        "description": "Today's late trading change amount, difference between price and today's close if in late trading hours, otherwise difference between last price during late trading and today's close.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "late_trading_change_percent": {
-                                                                        "description": "Today's late trading change as a percentage.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "low": {
-                                                                        "description": "The lowest price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "open": {
-                                                                        "description": "The open price of the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "previous_close": {
-                                                                        "description": "The closing price of the asset for the previous trading day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    },
-                                                                    "volume": {
-                                                                        "description": "The trading volume for the asset for the day.",
-                                                                        "format": "double",
-                                                                        "type": "number"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "change",
-                                                                    "change_percent",
-                                                                    "close",
-                                                                    "high",
-                                                                    "low",
-                                                                    "open",
-                                                                    "previous_close"
-                                                                ],
-                                                                "type": "object",
-                                                                "x-polygon-go-type": {
-                                                                    "name": "Session"
-                                                                }
-                                                            },
-                                                            "ticker": {
-                                                                "description": "Ticker of the asset that was queried.",
-                                                                "type": "string"
-                                                            },
-                                                            "type": {
-                                                                "description": "The asset class this ticker belongs to.",
+                                                            "timeframe": {
+                                                                "description": "The time relevance of the data.",
                                                                 "enum": [
-                                                                    "stocks"
+                                                                    "DELAYED",
+                                                                    "REAL-TIME"
                                                                 ],
                                                                 "type": "string"
                                                             }
                                                         },
                                                         "required": [
-                                                            "ticker"
+                                                            "last_updated",
+                                                            "timeframe",
+                                                            "ask",
+                                                            "bid",
+                                                            "last_updated",
+                                                            "timeframe"
                                                         ],
                                                         "type": "object",
                                                         "x-polygon-go-type": {
-                                                            "name": "StocksSnapshotResult"
+                                                            "name": "SnapshotLastQuote"
                                                         }
-                                                    }
-                                                ],
-                                                "properties": {
-                                                    "last_updated": {
-                                                        "description": "The nanosecond timestamp of when this information was updated.",
-                                                        "format": "int64",
-                                                        "type": "integer",
+                                                    },
+                                                    "last_trade": {
+                                                        "description": "The most recent quote for this contract. This is only returned if your current plan includes quotes.",
+                                                        "properties": {
+                                                            "conditions": {
+                                                                "description": "A list of condition codes.",
+                                                                "items": {
+                                                                    "description": "The condition code. These are the conditions of this message. See\n[Condition Mappings](https://polygon.io/docs/stocks/get_v3_reference_conditions)\nfor a mapping to exchange conditions.",
+                                                                    "format": "int32",
+                                                                    "type": "integer"
+                                                                },
+                                                                "type": "array"
+                                                            },
+                                                            "exchange": {
+                                                                "description": "The exchange ID. See <a href=\"https://polygon.io/docs/stocks/get_v3_reference_exchanges\" alt=\"Exchanges\">Exchanges</a> for Polygon.io's mapping of exchange IDs.",
+                                                                "type": "integer"
+                                                            },
+                                                            "id": {
+                                                                "description": "The Trade ID which uniquely identifies a trade. These are unique per combination of ticker, exchange, and TRF. For example: A trade for AAPL executed on NYSE and a trade for AAPL executed on NASDAQ could potentially have the same Trade ID.",
+                                                                "type": "string"
+                                                            },
+                                                            "last_updated": {
+                                                                "description": "The nanosecond timestamp of when this information was updated.",
+                                                                "format": "int64",
+                                                                "type": "integer",
+                                                                "x-polygon-go-type": {
+                                                                    "name": "INanoseconds",
+                                                                    "path": "github.com/polygon-io/ptime"
+                                                                }
+                                                            },
+                                                            "participant_timestamp": {
+                                                                "description": "The nanosecond Exchange Unix Timestamp. This is the timestamp of when the trade was generated at the exchange.",
+                                                                "format": "int64",
+                                                                "type": "integer",
+                                                                "x-polygon-go-type": {
+                                                                    "name": "INanoseconds",
+                                                                    "path": "github.com/polygon-io/ptime"
+                                                                }
+                                                            },
+                                                            "price": {
+                                                                "description": "The price of the trade. This is the actual dollar value per whole share of\nthis trade. A trade of 100 shares with a price of $2.00 would be worth a\ntotal dollar value of $200.00.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "sip_timestamp": {
+                                                                "description": "The nanosecond accuracy SIP Unix Timestamp. This is the timestamp of when the SIP received this trade from the exchange which produced it.",
+                                                                "format": "int64",
+                                                                "type": "integer"
+                                                            },
+                                                            "size": {
+                                                                "description": "The size of a trade (also known as volume).",
+                                                                "format": "int32",
+                                                                "type": "integer"
+                                                            },
+                                                            "timeframe": {
+                                                                "description": "The time relevance of the data.",
+                                                                "enum": [
+                                                                    "DELAYED",
+                                                                    "REAL-TIME"
+                                                                ],
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "last_updated",
+                                                            "timeframe",
+                                                            "participant_timestamp",
+                                                            "price",
+                                                            "size"
+                                                        ],
+                                                        "type": "object",
                                                         "x-polygon-go-type": {
-                                                            "name": "INanoseconds",
-                                                            "path": "github.com/polygon-io/ptime"
+                                                            "name": "SnapshotLastTrade"
+                                                        }
+                                                    },
+                                                    "market_status": {
+                                                        "description": "The market status for the market that trades this ticker.",
+                                                        "type": "string"
+                                                    },
+                                                    "message": {
+                                                        "description": "The error message while looking for this ticker.",
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "description": "The name of this contract.",
+                                                        "type": "string"
+                                                    },
+                                                    "open_interest": {
+                                                        "description": "The quantity of this contract held at the end of the last trading day.",
+                                                        "format": "double",
+                                                        "type": "number"
+                                                    },
+                                                    "session": {
+                                                        "properties": {
+                                                            "change": {
+                                                                "description": "The value of the price change for the asset from the previous trading day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "change_percent": {
+                                                                "description": "The percent of the price change for the asset from the previous trading day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "close": {
+                                                                "description": "The closing price of the asset for the day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "early_trading_change": {
+                                                                "description": "Today's early trading change amount, difference between price and previous close if in early trading hours, otherwise difference between last price during early trading and previous close.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "early_trading_change_percent": {
+                                                                "description": "Today's early trading change as a percentage.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "high": {
+                                                                "description": "The highest price of the asset for the day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "late_trading_change": {
+                                                                "description": "Today's late trading change amount, difference between price and today's close if in late trading hours, otherwise difference between last price during late trading and today's close.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "late_trading_change_percent": {
+                                                                "description": "Today's late trading change as a percentage.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "low": {
+                                                                "description": "The lowest price of the asset for the day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "open": {
+                                                                "description": "The open price of the asset for the day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "previous_close": {
+                                                                "description": "The closing price of the asset for the previous trading day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "price": {
+                                                                "description": "The price of the most recent trade or bid price for this asset.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "volume": {
+                                                                "description": "The trading volume for the asset for the day.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "change",
+                                                            "change_percent",
+                                                            "close",
+                                                            "high",
+                                                            "low",
+                                                            "open",
+                                                            "previous_close"
+                                                        ],
+                                                        "type": "object",
+                                                        "x-polygon-go-type": {
+                                                            "name": "Session"
                                                         }
                                                     },
                                                     "ticker": {
@@ -27686,14 +27407,65 @@
                                                             "crypto"
                                                         ],
                                                         "type": "string"
+                                                    },
+                                                    "underlying_asset": {
+                                                        "description": "Information on the underlying stock for this options contract.  The market data returned depends on your current stocks plan.",
+                                                        "properties": {
+                                                            "change_to_break_even": {
+                                                                "description": "The change in price for the contract to break even.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "last_updated": {
+                                                                "description": "The nanosecond timestamp of when this information was updated.",
+                                                                "format": "int64",
+                                                                "type": "integer",
+                                                                "x-polygon-go-type": {
+                                                                    "name": "INanoseconds",
+                                                                    "path": "github.com/polygon-io/ptime"
+                                                                }
+                                                            },
+                                                            "price": {
+                                                                "description": "The price of the trade. This is the actual dollar value per whole share of this trade. A trade of 100 shares with a price of $2.00 would be worth a total dollar value of $200.00.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            },
+                                                            "ticker": {
+                                                                "description": "The ticker symbol for the contract's underlying asset.",
+                                                                "type": "string"
+                                                            },
+                                                            "timeframe": {
+                                                                "description": "The time relevance of the data.",
+                                                                "enum": [
+                                                                    "DELAYED",
+                                                                    "REAL-TIME"
+                                                                ],
+                                                                "type": "string"
+                                                            },
+                                                            "value": {
+                                                                "description": "The value of the underlying index.",
+                                                                "format": "double",
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "last_updated",
+                                                            "timeframe",
+                                                            "ticker",
+                                                            "change_to_break_even"
+                                                        ],
+                                                        "type": "object",
+                                                        "x-polygon-go-type": {
+                                                            "name": "UnderlyingAsset"
+                                                        }
+                                                    },
+                                                    "value": {
+                                                        "description": "Value of Index.",
+                                                        "type": "number"
                                                     }
                                                 },
                                                 "required": [
-                                                    "ticker",
-                                                    "type",
-                                                    "market_status",
-                                                    "name",
-                                                    "last_updated"
+                                                    "ticker"
                                                 ],
                                                 "type": "object",
                                                 "x-polygon-go-type": {
@@ -27723,6 +27495,10 @@
                     {
                         "description": "Real Time Data",
                         "name": "realtime"
+                    },
+                    {
+                        "description": "15 minute delayed data",
+                        "name": "delayed"
                     }
                 ],
                 "x-polygon-entitlement-data-type": {
@@ -27735,9 +27511,9 @@
                 },
                 "x-polygon-paginate": {
                     "limit": {
-                        "default": 250,
+                        "default": 10,
                         "max": 250,
-                        "min": 250
+                        "min": 1
                     },
                     "sort": {
                         "default": "ticker",
@@ -28448,6 +28224,12 @@
                                                                 "type": "number"
                                                             }
                                                         },
+                                                        "required": [
+                                                            "delta",
+                                                            "gamma",
+                                                            "theta",
+                                                            "vega"
+                                                        ],
                                                         "type": "object",
                                                         "x-polygon-go-type": {
                                                             "name": "Greeks"
@@ -28961,6 +28743,12 @@
                                                             "type": "number"
                                                         }
                                                     },
+                                                    "required": [
+                                                        "delta",
+                                                        "gamma",
+                                                        "theta",
+                                                        "vega"
+                                                    ],
                                                     "type": "object",
                                                     "x-polygon-go-type": {
                                                         "name": "Greeks"
