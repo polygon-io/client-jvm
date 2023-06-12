@@ -227,6 +227,7 @@ constructor(
                 "XS" -> serializer.decodeFromJsonElement(CryptoMessage.ConsolidatedQuote.serializer(), frame)
                 "XL2" -> serializer.decodeFromJsonElement(CryptoMessage.Level2Tick.serializer(), frame)
                 "V" -> serializer.decodeFromJsonElement(IndicesMessage.Value.serializer(), frame)
+                "LV" -> serializer.decodeFromJsonElement(LaunchpadMessage.LaunchpadValue.serializer(), frame)
                 else -> RawMessage(frame.toString().toByteArray())
             }
             collector.add(message)

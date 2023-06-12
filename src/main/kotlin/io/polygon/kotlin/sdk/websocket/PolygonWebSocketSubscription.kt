@@ -23,6 +23,8 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Quotes: Stocks("Q")
         object AggPerSecond : Stocks("A")
         object AggPerMinute : Stocks("AM")
+        object AggPerMinuteLaunchpad : Stocks("AM")
+        object LaunchpadValue : Launchpad("LV")
     }
 
     /**
@@ -34,6 +36,8 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Bonds: Forex("BONDS")
         object Commodities: Forex("COMMODITIES")
         object Metals: Forex("METALS")
+        object AggPerMinuteLaunchpad : Stocks("AM")
+        object LaunchpadValue : Launchpad("LV")
     }
 
     /**
@@ -50,6 +54,11 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
     sealed class Indices(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Aggregates : Stocks("AM")
         object Value : Indices("V")
+    }
+
+    sealed class Launchpad(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object Aggregates : Stocks("AM")
+        object LaunchpadValue : Launchpad("LV")
     }
 
     /**
