@@ -52,7 +52,7 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
         )
 
     /**
-     * GGet a timeline of events for the entity associated with the given ticker, 
+     * Get a timeline of events for the entity associated with the given ticker,
      * CUSIP, or Composite FIGI.
      *
      * This API is experimental. The contract may change without a major version update.
