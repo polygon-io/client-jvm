@@ -51,4 +51,27 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
             polygonClient.requestIteratorFetch<FinancialsResponse>(*opts)
         )
 
+    /**
+     * GGet a timeline of events for the entity associated with the given ticker, 
+     * CUSIP, or Composite FIGI.
+     *
+     * This API is experimental. The contract may change without a major version update.
+     */
+	@SafeVarargs
+	@ExperimentalAPI
+	fun getTickerEventsBlocking(params: TickerEventsParameters, vararg opts: PolygonRestOption): TickerEventsResponse =
+	    runBlocking { getTickerEvents(params, *opts) }
+
+	/** See [getTickerEventsBlocking] */
+	@SafeVarargs
+	@ExperimentalAPI
+	fun getTickerEvents(
+	    params: TickerEventsParameters,
+	    callback: PolygonRestApiCallback<TickerEventsResponse>,
+	    vararg opts: PolygonRestOption
+	) =
+	    coroutineToRestCallback(callback, { getTickerEvents(params, *opts) })
+
+
+
 }
