@@ -15,7 +15,10 @@ suspend fun PolygonReferenceClient.getMarketStatus(vararg opts: PolygonRestOptio
 data class MarketStatusDTO(
     val market: String? = null,
     val serverTime: String? = null,
+    val afterHours: Boolean = false,
+    val earlyHours: Boolean = false,
     val exchanges: ExchangesStatusDTO = ExchangesStatusDTO(),
+    val indicesGroups: IndicesGroupsStatusDTO = IndicesGroupsStatusDTO(),
     val currencies: CurrenciesStatusDTO = CurrenciesStatusDTO()
 )
 
@@ -24,6 +27,19 @@ data class ExchangesStatusDTO(
     val nyse: String? = null,
     val nasdaq: String? = null,
     val otc: String? = null
+)
+
+@Serializable
+data class IndicesGroupsStatusDTO(
+    val s_and_p: String? = null,
+    val societe_generale: String? = null,
+    val msci: String? = null,
+    val ftse_russell: String? = null,
+    val mstar: String? = null,
+    val mstarc: String? = null,
+    val cccy: String? = null,
+    val nasdaq: String? = null,
+    val dow_jones: String? = null
 )
 
 @Serializable
