@@ -11,12 +11,10 @@ import kotlinx.serialization.Serializable
 
 @SafeVarargs
 @ExperimentalAPI
-suspend fun PolygonExperimentalClient.getTickerEvents(params: TickerEventsParameters, vararg opts: PolygonRestOption): TickerEventsResponse =
+suspend fun PolygonExperimentalClient.getTickerEvents(id: String, types: String? = null, vararg opts: PolygonRestOption): TickerEventsResponse =
     polygonClient.fetchResult({
-        path("vX", "reference", "tickers", params.id, "events")
-
-        params.types?.let { parameters["types"] = it }
-
+        path("vX", "reference", "tickers", id, "events")
+        types?.let { parameters["types"] = it }
     }, *opts)
 
 @Builder

@@ -59,19 +59,18 @@ internal constructor(internal val polygonClient: PolygonRestClient) {
      */
 	@SafeVarargs
 	@ExperimentalAPI
-	fun getTickerEventsBlocking(params: TickerEventsParameters, vararg opts: PolygonRestOption): TickerEventsResponse =
-	    runBlocking { getTickerEvents(params, *opts) }
+	fun getTickerEventsBlocking(id: String, types: String? = null, vararg opts: PolygonRestOption): TickerEventsResponse =
+	    runBlocking { getTickerEvents(id, types, *opts) }
 
 	/** See [getTickerEventsBlocking] */
 	@SafeVarargs
 	@ExperimentalAPI
 	fun getTickerEvents(
-	    params: TickerEventsParameters,
+	    id: String,
+	    types: String? = null,
 	    callback: PolygonRestApiCallback<TickerEventsResponse>,
 	    vararg opts: PolygonRestOption
 	) =
-	    coroutineToRestCallback(callback, { getTickerEvents(params, *opts) })
-
-
+	    coroutineToRestCallback(callback, { getTickerEvents(id, types, *opts) })
 
 }
