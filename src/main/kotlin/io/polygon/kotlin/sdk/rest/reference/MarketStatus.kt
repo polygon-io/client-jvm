@@ -34,12 +34,12 @@ data class ExchangesStatusDTO(
 data class IndicesGroupsStatusDTO(
     @SerialName("s_and_p") val sAndP: String? = null,
     @SerialName("societe_generale") val societeGenerale: String? = null,
-    @SerialName("msci") val msci: String? = null,
+    val msci: String? = null,
     @SerialName("ftse_russell") val ftseRussell: String? = null,
-    @SerialName("mstar") val mstar: String? = null,
-    @SerialName("mstarc") val mstarc: String? = null,
-    @SerialName("cccy") val cccy: String? = null,
-    @SerialName("nasdaq") val nasdaq: String? = null,
+    val mstar: String? = null,
+    val mstarc: String? = null,
+    val cccy: String? = null,
+    val nasdaq: String? = null,
     @SerialName("dow_jones") val dowJones: String? = null
 )
 
