@@ -2,6 +2,7 @@ package io.polygon.kotlin.sdk.rest.reference
 
 import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.PolygonRestOption
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** See [PolygonReferenceClient.getMarketStatusBlocking] */
@@ -31,15 +32,15 @@ data class ExchangesStatusDTO(
 
 @Serializable
 data class IndicesGroupsStatusDTO(
-    val s_and_p: String? = null,
-    val societe_generale: String? = null,
-    val msci: String? = null,
-    val ftse_russell: String? = null,
-    val mstar: String? = null,
-    val mstarc: String? = null,
-    val cccy: String? = null,
-    val nasdaq: String? = null,
-    val dow_jones: String? = null
+    @SerialName("s_and_p") val sAndP: String? = null,
+    @SerialName("societe_generale") val societeGenerale: String? = null,
+    @SerialName("msci") val msci: String? = null,
+    @SerialName("ftse_russell") val ftseRussell: String? = null,
+    @SerialName("mstar") val mstar: String? = null,
+    @SerialName("mstarc") val mstarc: String? = null,
+    @SerialName("cccy") val cccy: String? = null,
+    @SerialName("nasdaq") val nasdaq: String? = null,
+    @SerialName("dow_jones") val dowJones: String? = null
 )
 
 @Serializable
