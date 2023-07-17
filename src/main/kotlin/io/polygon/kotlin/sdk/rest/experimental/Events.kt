@@ -17,21 +17,6 @@ suspend fun PolygonExperimentalClient.getTickerEvents(id: String, types: String?
         types?.let { parameters["types"] = it }
     }, *opts)
 
-@Builder
-@ExperimentalAPI
-data class TickerEventsParameters(
-
-    /**
-     * Identifier of an asset. This can currently be a Ticker, CUSIP, or Composite FIGI.
-     */
-    val id: String,
-
-    /**
-     * A comma-separated list of the types of event to include. Currently ticker_change is the only supported event_type. Leave blank to return all supported event_types.
-     */
-    val types: String? = null
-)
-
 @Serializable
 @ExperimentalAPI
 data class TickerEventsResponse(
