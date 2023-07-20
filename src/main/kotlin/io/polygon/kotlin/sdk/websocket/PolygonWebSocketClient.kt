@@ -20,18 +20,31 @@ import kotlinx.serialization.json.*
 private const val EVENT_TYPE_MESSAGE_KEY = "ev"
 
 /**
- * See https://polygon.io/sockets for details
+ * Feed is the data feed (e.g. Delayed, RealTime) which represents the server host.
  */
-enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
+enum class Feed(val url: String) {
+    Delayed("delayed.polygon.io"),
+    RealTime("socket.polygon.io"),
+    Nasdaq("nasdaqfeed.polygon.io"),
+    PolyFeed("polyfeed.polygon.io"),
+    PolyFeedPlus("polyfeedplus.polygon.io"),
+    StarterFeed("starterfeed.polygon.io"),
+    LaunchpadFeed("launchpad.polygon.io")
+}
+
+/**
+ * Market is the type of market (e.g. Stocks, Crypto) used to connect to the server.
+ */
+enum class Market(val market: String) {
     Stocks("stocks"),
+    Options("options"),
     Forex("forex"),
     Crypto("crypto"),
-    Options("options"),
     Indices("indices"),
     LaunchpadStocks("stocks"),
-    LaunchpadForex("forex"),
-    LaunchpadCrypto("crypto"),
     LaunchpadOptions("options"),
+    LaunchpadForex("forex"),
+    LaunchpadCrypto("crypto")
 }
 
 /**
@@ -40,7 +53,8 @@ enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
  * https://polygon.io/sockets
  *
  * @param apiKey the API key to use with all API requests
- * @param cluster the [PolygonWebSocketCluster] to connect to
+ * @param feed the data feed (e.g. Delayed, RealTime) which represents the server host
+ * @param market the type of market (e.g. Stocks, Crypto) used to connect to the server
  * @param listener the [PolygonWebSocketListener] to send events to
  * @param bufferSize the size of the back buffer to use when websocket events start coming in faster than they can be processed. To drop all but the latest event, use [Channel.CONFLATED]
  * @param httpClientProvider (Optional) A provider for the ktor [HttpClient] to use; defaults to [DefaultJvmHttpClientProvider]
@@ -51,11 +65,11 @@ class PolygonWebSocketClient
 @JvmOverloads
 constructor(
     private val apiKey: String,
-    val cluster: PolygonWebSocketCluster,
+    private val feed: Feed = Feed.RealTime, // defaults to RealTime feed if not provided
+    private val market: Market = Market.Stocks, // defaults to Stocks market if not provided
     private val listener: PolygonWebSocketListener,
     private val bufferSize: Int = Channel.UNLIMITED,
     private val httpClientProvider: HttpClientProvider = DefaultJvmHttpClientProvider(),
-    private val polygonWebSocketDomain: String = "socket.polygon.io"
 ) {
 
     private val serializer by lazy {
@@ -92,12 +106,12 @@ constructor(
 
         val client = httpClientProvider.buildClient()
         val session = client.webSocketSession {
-            host = polygonWebSocketDomain
-
-            url.protocol = URLProtocol.WSS
-            url.port = URLProtocol.WSS.defaultPort
-            url.path(*cluster.pathComponents)
-
+            url {
+                protocol = URLProtocol.WSS
+                host = feed.url
+                port = URLProtocol.WSS.defaultPort
+                encodedPath = market.market
+            }
             headers["User-Agent"] = Version.userAgent
         }
 
@@ -199,7 +213,7 @@ constructor(
                 listener.onReceive(this, RawMessage(frame.readBytes()))
             } else {
                 val json = serializer.parseToJsonElement(String(frame.readBytes()))
-                processFrameJson(json).forEach { listener.onReceive(this, it) }
+                processFrameJson(market, feed, json).forEach { listener.onReceive(this, it) }
             }
         } catch (ex: Exception) {
             listener.onReceive(this, RawMessage(frame.readBytes()))
@@ -209,25 +223,27 @@ constructor(
 
 	@Throws(SerializationException::class)
 	private fun processFrameJson(
+	    market: Market,
+	    feed: Feed,
 	    frame: JsonElement,
 	    collector: MutableList<PolygonWebSocketMessage> = mutableListOf()
 	): List<PolygonWebSocketMessage> {
 
 	    if (frame is JsonArray) {
-	        frame.jsonArray.forEach { processFrameJson(it, collector) }
+	        frame.jsonArray.forEach { processFrameJson(market, feed, it, collector) }
 	    }
 
 	    if (frame is JsonObject) {
-	        val message = when (cluster) {
-	            PolygonWebSocketCluster.Stocks -> parseStockMessage(frame)
-	            PolygonWebSocketCluster.Options -> parseOptionMessage(frame)
-	            PolygonWebSocketCluster.Indices -> parseIndicesMessage(frame)
-	            PolygonWebSocketCluster.Forex -> parseForexMessage(frame)
-	            PolygonWebSocketCluster.Crypto -> parseCryptoMessage(frame)
-	            PolygonWebSocketCluster.LaunchpadStocks -> parseLaunchpadMessage(frame)
-	            PolygonWebSocketCluster.LaunchpadOptions -> parseLaunchpadMessage(frame)
-	            PolygonWebSocketCluster.LaunchpadForex -> parseLaunchpadMessage(frame)
-	            PolygonWebSocketCluster.LaunchpadCrypto -> parseLaunchpadMessage(frame)
+	        val message = when (market) {
+	            Market.Stocks -> parseStockMessage(frame)
+	            Market.Options -> parseOptionMessage(frame)
+	            Market.Indices -> parseIndicesMessage(frame)
+	            Market.Forex -> parseForexMessage(frame)
+	            Market.Crypto -> parseCryptoMessage(frame)
+	            Market.LaunchpadStocks -> parseLaunchpadMessage(frame)
+	            Market.LaunchpadOptions -> parseLaunchpadMessage(frame)
+	            Market.LaunchpadForex -> parseLaunchpadMessage(frame)
+	            Market.LaunchpadCrypto -> parseLaunchpadMessage(frame)
 	        }
 	        val finalMessage = message ?: RawMessage(frame.toString().toByteArray())
 	        collector.add(finalMessage)
