@@ -24,7 +24,32 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object AggPerSecond : Stocks("A")
         object AggPerMinute : Stocks("AM")
         object AggPerMinuteLaunchpad : Stocks("AM")
-        object LaunchpadValue : Launchpad("LV")
+    }
+
+    /**
+     * Usable in the [PolygonWebSocketCluster.LaunchpadStocks] cluster
+     */
+    sealed class LaunchpadStocks(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object AggPerMinute : LaunchpadStocks("AM")
+        object LaunchpadValue : LaunchpadStocks("LV")
+    }
+
+    /**
+     * Usable in the [PolygonWebSocketCluster.Options] cluster
+     */
+    sealed class Options(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object Trades: Options("T")
+        object Quotes: Options("Q")
+        object AggPerSecond : Options("A")
+        object AggPerMinute : Options("AM")
+    }
+
+    /**
+     * Usable in the [PolygonWebSocketCluster.LaunchpadOptions] cluster
+     */
+    sealed class LaunchpadOptions(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object AggPerMinute : LaunchpadOptions("AM")
+        object LaunchpadValue : LaunchpadOptions("LV")
     }
 
     /**
@@ -36,8 +61,14 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Bonds: Forex("BONDS")
         object Commodities: Forex("COMMODITIES")
         object Metals: Forex("METALS")
-        object AggPerMinuteLaunchpad : Stocks("AM")
-        object LaunchpadValue : Launchpad("LV")
+    }
+
+    /**
+     * Usable in the [PolygonWebSocketCluster.LaunchpadForex] cluster
+     */
+    sealed class LaunchpadForex(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object AggPerMinute : LaunchpadForex("AM")
+        object LaunchpadValue : LaunchpadForex("LV")
     }
 
     /**
@@ -46,19 +77,25 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
     sealed class Crypto(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Trades : Crypto("XT")
         object Quotes : Crypto("XQ")
-        object Aggregates : Crypto("XA")
+        object AggPerMinute : Crypto("XA")
         object ConsolidatedQuotes : Crypto("XS")
         object Level2Books : Crypto("XL2")
     }
 
-    sealed class Indices(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
-        object Aggregates : Stocks("AM")
-        object Value : Indices("V")
+    /**
+     * Usable in the [PolygonWebSocketCluster.LaunchpadCrypto] cluster
+     */
+    sealed class LaunchpadCrypto(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object AggPerMinute : LaunchpadCrypto("AM")
+        object LaunchpadValue : LaunchpadCrypto("LV")
     }
 
-    sealed class Launchpad(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
-        object Aggregates : Stocks("AM")
-        object LaunchpadValue : Launchpad("LV")
+    /**
+     * Usable in the [PolygonWebSocketCluster.Indices] cluster
+     */
+    sealed class Indices(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object Aggregates : Indices("AM")
+        object Value : Indices("V")
     }
 
     /**
