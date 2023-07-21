@@ -254,60 +254,60 @@ constructor(
 
 	private fun parseStockMessage(frame: JsonObject): PolygonWebSocketMessage? {
 	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-	    	"status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
-            "T" -> serializer.decodeFromJsonElement(StocksMessage.Trade.serializer(), frame)
-            "Q" -> serializer.decodeFromJsonElement(StocksMessage.Quote.serializer(), frame)
-            "A", "AM" -> serializer.decodeFromJsonElement(StocksMessage.Aggregate.serializer(), frame)
-	        else -> null
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "T" -> serializer.decodeFromJsonElement(StocksMessage.Trade.serializer(), frame)
+	        "Q" -> serializer.decodeFromJsonElement(StocksMessage.Quote.serializer(), frame)
+	        "A", "AM" -> serializer.decodeFromJsonElement(StocksMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
 	    }
 	}
 
 	private fun parseOptionMessage(frame: JsonObject): PolygonWebSocketMessage? {
 	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-	    	"status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
-            "T" -> serializer.decodeFromJsonElement(OptionsMessage.Trade.serializer(), frame)
-            "Q" -> serializer.decodeFromJsonElement(OptionsMessage.Quote.serializer(), frame)
-            "A", "AM" -> serializer.decodeFromJsonElement(OptionsMessage.Aggregate.serializer(), frame)
-	        else -> null
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "T" -> serializer.decodeFromJsonElement(OptionsMessage.Trade.serializer(), frame)
+	        "Q" -> serializer.decodeFromJsonElement(OptionsMessage.Quote.serializer(), frame)
+	        "A", "AM" -> serializer.decodeFromJsonElement(OptionsMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
 	    }
 	}
 
 	private fun parseIndicesMessage(frame: JsonObject): PolygonWebSocketMessage? {
 	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-	    	"status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
 	        "V" -> serializer.decodeFromJsonElement(IndicesMessage.Value.serializer(), frame)
-	        "AM" -> serializer.decodeFromJsonElement(IndicesMessage.Aggregate.serializer(), frame)
-	        else -> null
+	        "A", "AM" -> serializer.decodeFromJsonElement(IndicesMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
 	    }
 	}
 
 	private fun parseForexMessage(frame: JsonObject): PolygonWebSocketMessage? {
 	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-	    	"status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
-            "C" -> serializer.decodeFromJsonElement(ForexMessage.Quote.serializer(), frame)
-            "CA" -> serializer.decodeFromJsonElement(ForexMessage.Aggregate.serializer(), frame)
-	        else -> null
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "C" -> serializer.decodeFromJsonElement(ForexMessage.Quote.serializer(), frame)
+	        "CA", "CAS" -> serializer.decodeFromJsonElement(ForexMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
 	    }
 	}
 
 	private fun parseCryptoMessage(frame: JsonObject): PolygonWebSocketMessage? {
 	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-	    	"status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
 	        "XQ" -> serializer.decodeFromJsonElement(CryptoMessage.Quote.serializer(), frame)
 	        "XT" -> serializer.decodeFromJsonElement(CryptoMessage.Trade.serializer(), frame)
-	        "XA" -> serializer.decodeFromJsonElement(CryptoMessage.Aggregate.serializer(), frame)
+	        "XA", "XAS" -> serializer.decodeFromJsonElement(CryptoMessage.Aggregate.serializer(), frame)
 	        "XS" -> serializer.decodeFromJsonElement(CryptoMessage.ConsolidatedQuote.serializer(), frame)
 	        "XL2" -> serializer.decodeFromJsonElement(CryptoMessage.Level2Tick.serializer(), frame)
-	        else -> null
+	        else -> RawMessage(frame.toString().toByteArray())
 	    }
 	}
 
 	private fun parseLaunchpadMessage(frame: JsonObject): PolygonWebSocketMessage? {
 	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-	    	"status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
-            "LV" -> serializer.decodeFromJsonElement(LaunchpadMessage.LaunchpadValue.serializer(), frame)
-            "AM" -> serializer.decodeFromJsonElement(LaunchpadMessage.Aggregate.serializer(), frame)
-	        else -> null
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "LV" -> serializer.decodeFromJsonElement(LaunchpadMessage.LaunchpadValue.serializer(), frame)
+	        "AM" -> serializer.decodeFromJsonElement(LaunchpadMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
 	    }
 	}
 
