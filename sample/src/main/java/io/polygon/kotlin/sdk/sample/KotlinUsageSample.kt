@@ -84,8 +84,6 @@ suspend fun main() {
 
     indicesSample(polygonClient)
 
-    println("\n\nWebsocket sample:")
-    websocketSample(polygonKey)
 }
 
 fun supportedTickersSample(polygonClient: PolygonRestClient) {
