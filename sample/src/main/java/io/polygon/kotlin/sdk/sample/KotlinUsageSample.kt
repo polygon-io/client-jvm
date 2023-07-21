@@ -91,7 +91,8 @@ suspend fun main() {
 suspend fun websocketSample(polygonKey: String) {
     val websocketClient = PolygonWebSocketClient(
         polygonKey,
-        PolygonWebSocketCluster.Crypto,
+        Feed.RealTime,
+        Market.Crypto,
         object : PolygonWebSocketListener {
             override fun onAuthenticated(client: PolygonWebSocketClient) {
                 println("Connected!")
@@ -133,7 +134,8 @@ suspend fun websocketSample(polygonKey: String) {
 suspend fun indicesWebsocketSample(polygonKey: String) {
     val websocketClient = PolygonWebSocketClient(
         polygonKey,
-        PolygonWebSocketCluster.Indices,
+        Feed.RealTime,
+        Market.Indices,
         object : PolygonWebSocketListener {
             override fun onAuthenticated(client: PolygonWebSocketClient) {
                 println("Connected!")
@@ -163,7 +165,7 @@ suspend fun indicesWebsocketSample(polygonKey: String) {
     val subscriptions = listOf(
         PolygonWebSocketSubscription(PolygonWebSocketChannel.Indices.Value, "I:NDX"),
         // Likely you will need to increase the delay call below to see Indices.Aggregates messages
-        PolygonWebSocketSubscription(PolygonWebSocketChannel.Indices.Aggregates, "I:SPX")
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Indices.AggPerMinute, "I:SPX")
     )
 
     websocketClient.connect()
