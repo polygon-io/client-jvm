@@ -46,14 +46,17 @@ suspend fun main() {
         exitProcess(1)
     }
 
-    val polygonClient = PolygonRestClient(polygonKey, httpClientProvider = okHttpClientProvider)
+    val polygonClient = PolygonRestClient(
+    	polygonKey, 
+    	httpClientProvider = okHttpClientProvider
+    )
 
 
 	// Stocks section
 	// Access to stocks data depends on your entitlements
 
 	// Stocks function calls
-	stocksAggregatesBars(polygonClient)
+	//stocksAggregatesBars(polygonClient)
 	//stocksConditions(polygonClient)
 	//stocksDailyOpenClose(polygonClient)
 	//stocksDividends(polygonClient)
@@ -80,6 +83,8 @@ suspend fun main() {
 	//stocksTickerTypes(polygonClient)
 	//stocksTickers(polygonClient)
 	//stocksTrades(polygonClient)
+
+	//universalSnapshot(polygonClient)
 
 	// Stocks websocket sample
 	//stocksWebsocketSample(polygonKey)
@@ -187,6 +192,9 @@ suspend fun main() {
     // Crypto websocket sample
 	//cryptoWebsocketSample(polygonKey)
 
+	// launchpad
+	//launchpadWebsocketSample(polygonKey)
+
 
 /*
 
@@ -249,3 +257,13 @@ fun snapshotSingleTickerSample(polygonClient: PolygonRestClient) {
     println("RDFN snapshot:")
     polygonClient.stocksClient.getSnapshotBlocking("RDFN").pp()
 }
+
+
+fun universalSnapshot(polygonClient: PolygonRestClient) {
+    println("Universal Snapshot:")
+    polygonClient.referenceClient.getUniversalSnapshotBlocking(UniversalSnapshotParameters(tickers = listOf("NCLH", "O:SPY250321C00380000", "C:EURUSD", "X:BTCUSD", "I:SPX"), limit = 50)).pp()
+
+}
+
+
+

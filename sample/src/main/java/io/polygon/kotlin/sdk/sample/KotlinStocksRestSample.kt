@@ -3,7 +3,6 @@ package io.polygon.kotlin.sdk.sample
 import io.polygon.kotlin.sdk.rest.*
 import io.polygon.kotlin.sdk.rest.reference.*
 import io.polygon.kotlin.sdk.rest.stocks.GainersOrLosersDirection
-import io.polygon.kotlin.sdk.rest.experimental.TickerEventsParameters
 import io.polygon.kotlin.sdk.rest.PolygonRestClient
 import com.tylerthrailkill.helpers.prettyprint.pp
 
@@ -210,7 +209,7 @@ fun stocksTickerDetails(polygonClient: PolygonRestClient) {
 // https://polygon.io/docs/stocks/get_vx_reference_tickers__id__events
 fun stocksTickerEvents(polygonClient: PolygonRestClient) {
     println("META events:")
-    polygonClient.experimentalClient.getTickerEventsBlocking(TickerEventsParameters(id = "META")).pp()
+    polygonClient.experimentalClient.getTickerEventsBlocking("META").pp()
 }
 
 // Stocks Ticker News
