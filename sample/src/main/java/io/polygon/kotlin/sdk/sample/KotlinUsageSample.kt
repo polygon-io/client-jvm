@@ -51,11 +51,9 @@ suspend fun main() {
     	httpClientProvider = okHttpClientProvider
     )
 
-
-	// Stocks section
-	// Access to stocks data depends on your entitlements
-
-	// Stocks function calls
+    /**
+     * Stocks REST - access to stocks data depends on your entitlements
+     */
 	//stocksAggregatesBars(polygonClient)
 	//stocksConditions(polygonClient)
 	//stocksDailyOpenClose(polygonClient)
@@ -83,17 +81,16 @@ suspend fun main() {
 	//stocksTickerTypes(polygonClient)
 	//stocksTickers(polygonClient)
 	//stocksTrades(polygonClient)
-
 	//universalSnapshot(polygonClient)
 
-	// Stocks websocket sample
+    /**
+     * Stocks WebSocket - access to streaming stocks data depends on your entitlements
+     */
 	//stocksWebsocketSample(polygonKey)
 
-
-	// Options section
-	// Access to options data depends on your entitlements
-
-    // Options function calls
+    /**
+     * Options REST - access to options data depends on your entitlements
+     */
 	//optionsAggregatesBars(polygonClient)
 	//optionsConditions(polygonClient)
 	//optionsContract(polygonClient)
@@ -116,13 +113,14 @@ suspend fun main() {
 	//optionsTickers(polygonClient)
 	//optionsTrades(polygonClient)
 
-    // Options websocket sample
-	//optionsWebsocketSample(polygonKey) // not implemented yet
+    /**
+     * Options WebSocket - access to streaming options data depends on your entitlements
+     */
+	//optionsWebsocketSample(polygonKey)
 
-	// Indices section
-	// Access to indices data depends on your entitlements
-
-    // Indices function calls
+    /**
+     * Indices REST - access to indices data depends on your entitlements
+     */
 	//indicesAggregatesBars(polygonClient)
 	//indicesDailyOpenClose(polygonClient)
 	//indicesMarketHolidays(polygonClient)
@@ -136,13 +134,14 @@ suspend fun main() {
 	//indicesTickerTypes(polygonClient)
 	//indicesTickers(polygonClient)
 
-    // Indices websocket sample
+    /**
+     * Indices WebSocket - access to streaming indices data depends on your entitlements
+     */
 	//indicesWebsocketSample(polygonKey)
 
-	// Forex section
-	// Access to forex data depends on your entitlements
-
-    // Forex function calls
+    /**
+     * Forex REST - access to forex data depends on your entitlements
+     */
 	//forexAggregatesBars(polygonClient)
 	//forexConditions(polygonClient)
 	//forexExchanges(polygonClient)
@@ -162,13 +161,14 @@ suspend fun main() {
 	//forexTechnicalIndicatorsSMA(polygonClient)
 	//forexTickers(polygonClient)
 
-    // Forex websocket sample
+    /**
+     * Forex WebSocket - access to streaming forex data depends on your entitlements
+     */
 	//forexWebsocketSample(polygonKey)
 
-	// Crypto section
-	// Access to crypto data depends on your entitlements
-
-    // Crypto function calls
+    /**
+     * Crypto REST - access to crypto data depends on your entitlements
+     */
 	//cryptoAggregatesBars(polygonClient)
 	//cryptoConditions(polygonClient)
 	//cryptoDailyOpenClose(polygonClient)
@@ -189,81 +189,12 @@ suspend fun main() {
 	//cryptoTickers(polygonClient)
 	//cryptoTrades(polygonClient)
 
-    // Crypto websocket sample
+    /**
+     * Crypto WebSocket - access to streaming crypto data depends on your entitlements
+     */
 	//cryptoWebsocketSample(polygonKey)
 
-	// launchpad
+    /**
+     * Launchpad WebSocket - access to streaming launchpad data depends on your entitlements
+     */
 	//launchpadWebsocketSample(polygonKey)
-
-
-/*
-
-    println("Blocking for markets...")
-    val markets = polygonClient.referenceClient.getSupportedMarketsBlocking()
-    println("Got markets synchronously: $markets")
-
-    println("Getting markets asynchronously...")
-    val deferred = GlobalScope.async {
-        val asyncMarkets = polygonClient.referenceClient.getSupportedMarkets()
-        println("Got markets asynchronously: $asyncMarkets")
-    }
-
-    deferred.await()
-    println("Done getting markets asynchronously!")
-
-    println("Using options")
-    val groupedDaily = polygonClient.getGroupedDailyAggregates(
-        GroupedDailyParameters("us", "stocks", "2022-12-08"),
-        PolygonRestOptions.withTimeout(10_000), // Custom timeout for this request
-        PolygonRestOptions.withQueryParam("additional-param", "additional-value"), // Additional query parameter
-        PolygonRestOptions.withHeader("X-Custom-Header", "custom-value"), // Custom header for this request
-        { this.expectSuccess = true }, // Example of an arbitrary option that doesn't use a helper function
-    )
-
-    println("Got ${groupedDaily.results.size} results from grouped daily")
-
-    iteratorExample(polygonClient)
-    tradesIteratorExample(polygonClient)
-    quotesIteratorExample(polygonClient)
-
-    financialsSample(polygonClient)
-
-    indicesSample(polygonClient)
-
-    println("\n\nWebsocket sample:")
-    websocketSample(polygonKey)
-
-*/
-
-}
-
-@OptIn(ExperimentalAPI::class)
-fun financialsSample(polygonClient: PolygonRestClient) {
-    println("RDFN financials:")
-
-    polygonClient.experimentalClient.getFinancialsBlocking(FinancialsParameters(ticker = "RDFN")).pp()
-    polygonClient.experimentalClient.listFinancials(FinancialsParameters(limit = 5))
-        .asSequence()
-        .take(15)
-        .forEach { println("got financials from ${it.sourceFilingURL}") }
-}
-
-fun snapshotAllTickersSample(polygonClient: PolygonRestClient) {
-    println("All tickers snapshot: ")
-    polygonClient.stocksClient.getSnapshotAllTickersBlocking().pp()
-}
-
-fun snapshotSingleTickerSample(polygonClient: PolygonRestClient) {
-    println("RDFN snapshot:")
-    polygonClient.stocksClient.getSnapshotBlocking("RDFN").pp()
-}
-
-
-fun universalSnapshot(polygonClient: PolygonRestClient) {
-    println("Universal Snapshot:")
-    polygonClient.referenceClient.getUniversalSnapshotBlocking(UniversalSnapshotParameters(tickers = listOf("NCLH", "O:SPY250321C00380000", "C:EURUSD", "X:BTCUSD", "I:SPX"), limit = 50)).pp()
-
-}
-
-
-

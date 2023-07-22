@@ -207,10 +207,10 @@ fun stocksTickerDetails(polygonClient: PolygonRestClient) {
 
 // Stocks Ticker Events (experimental)
 // https://polygon.io/docs/stocks/get_vx_reference_tickers__id__events
-fun stocksTickerEvents(polygonClient: PolygonRestClient) {
-    println("META events:")
-    polygonClient.experimentalClient.getTickerEventsBlocking("META").pp()
-}
+//fun stocksTickerEvents(polygonClient: PolygonRestClient) {
+//    println("META events:")
+//    polygonClient.experimentalClient.getTickerEventsBlocking("META").pp()
+//}
 
 // Stocks Ticker News
 // https://polygon.io/docs/stocks/get_v2_reference_news
