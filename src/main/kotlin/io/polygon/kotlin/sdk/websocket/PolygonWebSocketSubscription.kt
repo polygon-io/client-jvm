@@ -32,6 +32,7 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
      */
     sealed class Forex(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Quotes: Forex("C")
+        object AggPerSecond: Forex("CAS")
         object AggPerMinute: Forex("CA")
         object Bonds: Forex("BONDS")
         object Commodities: Forex("COMMODITIES")
@@ -47,12 +48,14 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Trades : Crypto("XT")
         object Quotes : Crypto("XQ")
         object Aggregates : Crypto("XA")
+        object AggPerSecond : Crypto("XAS")
         object ConsolidatedQuotes : Crypto("XS")
         object Level2Books : Crypto("XL2")
     }
 
     sealed class Indices(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
         object Aggregates : Stocks("AM")
+        object AggPerSecond : Stocks("A")
         object Value : Indices("V")
     }
 
