@@ -73,7 +73,7 @@ public class JavaUsageSample {
     public static void websocketSample(String polygonKey) {
         PolygonWebSocketClient client = new PolygonWebSocketClient(
                 polygonKey,
-                Feed.RealTime,
+                Feed.RealTime.INSTANCE,
                 Market.Crypto,
                 new DefaultPolygonWebSocketListener() {
                     @Override

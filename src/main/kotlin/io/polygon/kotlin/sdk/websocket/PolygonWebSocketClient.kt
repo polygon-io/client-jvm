@@ -22,14 +22,19 @@ private const val EVENT_TYPE_MESSAGE_KEY = "ev"
 /**
  * Feed is the data feed (e.g. Delayed, RealTime) which represents the server host.
  */
-enum class Feed(val url: String) {
-    Delayed("delayed.polygon.io"),
-    RealTime("socket.polygon.io"),
-    Nasdaq("nasdaqfeed.polygon.io"),
-    PolyFeed("polyfeed.polygon.io"),
-    PolyFeedPlus("polyfeedplus.polygon.io"),
-    StarterFeed("starterfeed.polygon.io"),
-    LaunchpadFeed("launchpad.polygon.io")
+sealed class Feed(val url: String) {
+    object Delayed : Feed("delayed.polygon.io")
+    object RealTime : Feed("socket.polygon.io")
+    object Nasdaq : Feed("nasdaqfeed.polygon.io")
+    object PolyFeed : Feed("polyfeed.polygon.io")
+    object PolyFeedPlus : Feed("polyfeedplus.polygon.io")
+    object StarterFeed : Feed("starterfeed.polygon.io")
+    object LaunchpadFeed : Feed("launchpad.polygon.io")
+
+    /**
+     * Use Other if there's a new feed that this client library doesn't yet support.
+     */
+    class Other(url: String) : Feed(url)
 }
 
 /**
