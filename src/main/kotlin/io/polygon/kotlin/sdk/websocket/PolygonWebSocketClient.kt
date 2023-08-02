@@ -65,8 +65,8 @@ class PolygonWebSocketClient
 @JvmOverloads
 constructor(
     private val apiKey: String,
-    private val feed: Feed = Feed.RealTime, // defaults to RealTime feed if not provided
-    private val market: Market = Market.Stocks, // defaults to Stocks market if not provided
+    private val feed: Feed = Feed.RealTime,
+    private val market: Market = Market.Stocks,
     private val listener: PolygonWebSocketListener,
     private val bufferSize: Int = Channel.UNLIMITED,
     private val httpClientProvider: HttpClientProvider = DefaultJvmHttpClientProvider(),
