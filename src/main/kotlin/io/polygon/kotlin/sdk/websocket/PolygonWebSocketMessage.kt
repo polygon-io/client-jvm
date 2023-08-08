@@ -29,7 +29,10 @@ sealed class PolygonWebSocketMessage {
             @SerialName("p") val price: Double? = null,
             @SerialName("s") val size: Double? = null,
             @SerialName("c") val conditions: List<Int> = emptyList(),
-            @SerialName("t") val timestampMillis: Long? = null
+            @SerialName("t") val timestampMillis: Long? = null,
+            @SerialName("q") val sequenceNumber: Long? = null,
+            @SerialName("trfi") val trf : Long? = null,
+            @SerialName("trft") val trfTimestampMillis: Long? = null
         ) : StocksMessage()
 
         @Serializable
@@ -43,7 +46,10 @@ sealed class PolygonWebSocketMessage {
             @SerialName("ap") val askPrice: Double? = null,
             @SerialName("as") val askSize: Double? = null,
             @SerialName("c") val condition: Int? = null,
-            @SerialName("t") val timestampMillis: Long? = null
+            @SerialName("i") val indicators: List<Int> = emptyList(),
+            @SerialName("t") val timestampMillis: Long? = null,
+            @SerialName("q") val sequenceNumber: Long? = null,
+            @SerialName("z") val tape: String? = null
         ) : StocksMessage()
 
         @Serializable
@@ -59,9 +65,58 @@ sealed class PolygonWebSocketMessage {
             @SerialName("h") val highPrice: Double? = null,
             @SerialName("l") val lowPrice: Double? = null,
             @SerialName("a") val averagePrice: Double? = null,
+            @SerialName("z") val averageTradeSize: Double? = null,
+            @SerialName("s") val startTimestampMillis: Long? = null,
+            @SerialName("e") val endTimestampMillis: Long? = null,
+            @SerialName("otc") val otcTicker: Boolean? = null
+        ) : StocksMessage()
+    }
+
+    sealed class OptionsMessage : PolygonWebSocketMessage() {
+
+        @Serializable
+        data class Trade(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("sym") val ticker: String? = null,
+            @SerialName("x") val exchangeId: Long? = null,
+            @SerialName("p") val price: Double? = null,
+            @SerialName("s") val size: Double? = null,
+            @SerialName("c") val conditions: List<Int> = emptyList(),
+            @SerialName("t") val timestampMillis: Long? = null,
+            @SerialName("q") val sequenceNumber: Long? = null
+        ) : OptionsMessage()
+
+        @Serializable
+        data class Quote(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("sym") val ticker: String? = null,
+            @SerialName("bx") val bidExchangeId: Long? = null,
+            @SerialName("bp") val bidPrice: Double? = null,
+            @SerialName("bs") val bidSize: Double? = null,
+            @SerialName("ax") val askExchangeId: Long? = null,
+            @SerialName("ap") val askPrice: Double? = null,
+            @SerialName("as") val askSize: Double? = null,
+            @SerialName("t") val timestampMillis: Long? = null,
+            @SerialName("q") val sequenceNumber: Long? = null
+        ) : OptionsMessage()
+
+        @Serializable
+        data class Aggregate(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("sym") val ticker: String? = null,
+            @SerialName("v") val volume: Double? = null,
+            @SerialName("av") val accumulatedVolume: Double? = null,
+            @SerialName("op") val officialOpenPrice: Double? = null,
+            @SerialName("vw") val volumeWeightedAveragePrice: Double? = null,
+            @SerialName("o") val openPrice: Double? = null,
+            @SerialName("c") val closePrice: Double? = null,
+            @SerialName("h") val highPrice: Double? = null,
+            @SerialName("l") val lowPrice: Double? = null,
+            @SerialName("a") val averagePrice: Double? = null,
+            @SerialName("z") val averageTradeSize: Double? = null,
             @SerialName("s") val startTimestampMillis: Long? = null,
             @SerialName("e") val endTimestampMillis: Long? = null
-        ) : StocksMessage()
+        ) : OptionsMessage()
     }
 
     sealed class ForexMessage : PolygonWebSocketMessage() {
@@ -96,8 +151,6 @@ sealed class PolygonWebSocketMessage {
         data class Quote(
             @SerialName("ev") val eventType: String? = null,
             @SerialName("pair") val cryptoPair: String? = null,
-            @SerialName("lp") val lastTradePrice: Double? = null,
-            @SerialName("ls") val lastTradeSize: Double? = null,
             @SerialName("bp") val bidPrice: Double? = null,
             @SerialName("bs") val bidSize: Double? = null,
             @SerialName("ap") val askPrice: Double? = null,
@@ -125,16 +178,14 @@ sealed class PolygonWebSocketMessage {
             @SerialName("ev") val eventType: String? = null,
             @SerialName("pair") val cryptoPair: String? = null,
             @SerialName("o") val openPrice: Double? = null,
-            @SerialName("ox") val openExchangeId: Long? = null,
-            @SerialName("h") val highPrice: Double? = null,
-            @SerialName("hx") val highExchangeId: Long? = null,
-            @SerialName("l") val lowPrice: Double? = null,
-            @SerialName("lx") val lowExchangeId: Long? = null,
             @SerialName("c") val closePrice: Double? = null,
-            @SerialName("cx") val closeExchangeId: Long? = null,
+            @SerialName("h") val highPrice: Double? = null,
+            @SerialName("l") val lowPrice: Double? = null,
             @SerialName("v") val volumeInAgg: Double? = null,
             @SerialName("s") val aggStartTimestamp: Long? = null,
-            @SerialName("e") val aggEndTimestamp: Long? = null
+            @SerialName("e") val aggEndTimestamp: Long? = null,
+            @SerialName("vw") val volumeWeightedAveragePrice: Double? = null,
+            @SerialName("z") val averageTradeSize: Double? = null
         ) : CryptoMessage()
 
         @Serializable
@@ -163,10 +214,6 @@ sealed class PolygonWebSocketMessage {
     }
 
     sealed class IndicesMessage : PolygonWebSocketMessage() {
-        /**
-         * Note: Indices use the "AM" event type for Aggregates and thus return a StocksMessage.Aggregate
-         * Type can be inferred via the "sym" field as Indices will be prefixed by "I:"
-         */
 
         @Serializable
         data class Value(
@@ -175,12 +222,23 @@ sealed class PolygonWebSocketMessage {
             @SerialName("T") val ticker: String? = null,
             @SerialName("t") val exchangeTimestampMillis: Long? = null
         ) : IndicesMessage()
+
+        @Serializable
+        data class Aggregate(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("sym") val ticker: String? = null,
+            @SerialName("op") val officialOpenPrice: Double? = null,
+            @SerialName("o") val openPrice: Double? = null,
+            @SerialName("c") val closePrice: Double? = null,
+            @SerialName("h") val highPrice: Double? = null,
+            @SerialName("l") val lowPrice: Double? = null,
+            @SerialName("s") val startTimestampMillis: Long? = null,
+            @SerialName("e") val endTimestampMillis: Long? = null
+        ) : IndicesMessage()
+
     }
 
     sealed class LaunchpadMessage : PolygonWebSocketMessage() {
-        /**
-         * Note: Launchpad use the "AM" event type for Aggregates and thus return a StocksMessage.Aggregate
-         */
 
         @Serializable
         data class LaunchpadValue(
@@ -189,5 +247,19 @@ sealed class PolygonWebSocketMessage {
             @SerialName("sym") val symbol: String? = null,
             @SerialName("t") val timestampMillis: Long? = null
         ) : LaunchpadMessage()
+
+        @Serializable
+        data class Aggregate(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("sym") val ticker: String? = null,
+            @SerialName("op") val officialOpenPrice: Double? = null,
+            @SerialName("o") val openPrice: Double? = null,
+            @SerialName("c") val closePrice: Double? = null,
+            @SerialName("h") val highPrice: Double? = null,
+            @SerialName("l") val lowPrice: Double? = null,
+            @SerialName("s") val startTimestampMillis: Long? = null,
+            @SerialName("e") val endTimestampMillis: Long? = null
+        ) : LaunchpadMessage()
+
     }
 }
