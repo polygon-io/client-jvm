@@ -59,9 +59,6 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Quotes: Forex("C")
         object AggPerSecond : Forex("CAS")
         object AggPerMinute: Forex("CA")
-        object Bonds: Forex("BONDS")
-        object Commodities: Forex("COMMODITIES")
-        object Metals: Forex("METALS")
     }
 
     /**
