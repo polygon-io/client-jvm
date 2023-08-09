@@ -120,7 +120,6 @@ public class JavaUsageSample {
                         if (message instanceof PolygonWebSocketMessage.LaunchpadMessage) {
                             System.out.println("Launchpad " + message);
                         } else {
-
                             System.out.println(message.toString());
                         }
                     }
@@ -139,7 +138,7 @@ public class JavaUsageSample {
         client.subscribeBlocking(subs);
 
         try {
-            Thread.sleep(4000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
