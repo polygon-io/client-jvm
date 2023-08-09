@@ -117,8 +117,8 @@ public class JavaUsageSample {
                 new DefaultPolygonWebSocketListener() {
                     @Override
                     public void onReceive(@NotNull PolygonWebSocketClient client, @NotNull PolygonWebSocketMessage message) {
-                        if (message instanceof PolygonWebSocketMessage.RawMessage) {
-                            System.out.println(new String(((PolygonWebSocketMessage.RawMessage) message).getData()));
+                        if (message instanceof PolygonWebSocketMessage.LaunchpadMessage) {
+                            System.out.println("Launchpad " + message);
                         } else {
 
                             System.out.println(message.toString());
@@ -135,7 +135,7 @@ public class JavaUsageSample {
         client.connectBlocking();
 
         List<PolygonWebSocketSubscription> subs = Collections.singletonList(
-                new PolygonWebSocketSubscription(PolygonWebSocketChannel.LaunchpadStocks.AggPerMinute.INSTANCE, "BTC-USD"));
+                new PolygonWebSocketSubscription(PolygonWebSocketChannel.LaunchpadStocks.AggPerMinute.INSTANCE, "TSLA"));
         client.subscribeBlocking(subs);
 
         try {
