@@ -109,6 +109,45 @@ public class JavaUsageSample {
         client.disconnectBlocking();
     }
 
+    public static void websocketLaunchpadSample(String polygonKey) {
+        PolygonWebSocketClient client = new PolygonWebSocketClient(
+                polygonKey,
+                Feed.RealTime.INSTANCE,
+                Market.LaunchpadStocks.INSTANCE,
+                new DefaultPolygonWebSocketListener() {
+                    @Override
+                    public void onReceive(@NotNull PolygonWebSocketClient client, @NotNull PolygonWebSocketMessage message) {
+                        if (message instanceof PolygonWebSocketMessage.RawMessage) {
+                            System.out.println(new String(((PolygonWebSocketMessage.RawMessage) message).getData()));
+                        } else {
+
+                            System.out.println(message.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NotNull PolygonWebSocketClient client, @NotNull Throwable error) {
+                        System.out.println("Error in websocket");
+                        error.printStackTrace();
+                    }
+                });
+
+        client.connectBlocking();
+
+        List<PolygonWebSocketSubscription> subs = Collections.singletonList(
+                new PolygonWebSocketSubscription(PolygonWebSocketChannel.LaunchpadStocks.AggPerMinute.INSTANCE, "BTC-USD"));
+        client.subscribeBlocking(subs);
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        client.unsubscribeBlocking(subs);
+        client.disconnectBlocking();
+    }
+
     public static void supportedTickersSample(PolygonRestClient polygonRestClient) {
         System.out.println("3 Supported Tickers: ");
         SupportedTickersParameters params = new SupportedTickersParametersBuilder()
