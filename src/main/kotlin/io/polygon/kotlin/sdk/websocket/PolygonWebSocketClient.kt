@@ -20,14 +20,41 @@ import kotlinx.serialization.json.*
 private const val EVENT_TYPE_MESSAGE_KEY = "ev"
 
 /**
- * See https://polygon.io/sockets for details
+ * Feed is the data feed (e.g. Delayed, RealTime) which represents the server host.
  */
-enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
-    Stocks("stocks"),
-    Forex("forex"),
-    Crypto("crypto"),
-    Options("options"),
-    Indices("indices"),
+sealed class Feed(val url: String) {
+    object Delayed : Feed("delayed.polygon.io")
+    object RealTime : Feed("socket.polygon.io")
+    object Nasdaq : Feed("nasdaqfeed.polygon.io")
+    object PolyFeed : Feed("polyfeed.polygon.io")
+    object PolyFeedPlus : Feed("polyfeedplus.polygon.io")
+    object StarterFeed : Feed("starterfeed.polygon.io")
+    object LaunchpadFeed : Feed("launchpad.polygon.io")
+
+    /**
+     * Use Other if there's a new feed that this client library doesn't yet support.
+     */
+    class Other(url: String) : Feed(url)
+}
+
+/**
+ * Market is the type of market (e.g. Stocks, Crypto) used to connect to the server.
+ */
+sealed class Market(val market: String) {
+    object Stocks : Market("stocks")
+    object Options : Market("options")
+    object Forex : Market("forex")
+    object Crypto : Market("crypto")
+    object Indices : Market("indices")
+    object LaunchpadStocks : Market("stocks")
+    object LaunchpadOptions : Market("options")
+    object LaunchpadForex : Market("forex")
+    object LaunchpadCrypto : Market("crypto")
+
+    /**
+     * Use Other if there's a new market that this client library doesn't yet support.
+     */
+    class Other(market: String) : Market(market)
 }
 
 /**
@@ -36,7 +63,8 @@ enum class PolygonWebSocketCluster(internal vararg val pathComponents: String) {
  * https://polygon.io/sockets
  *
  * @param apiKey the API key to use with all API requests
- * @param cluster the [PolygonWebSocketCluster] to connect to
+ * @param feed the data feed (e.g. Delayed, RealTime) which represents the server host
+ * @param market the type of market (e.g. Stocks, Crypto) used to connect to the server
  * @param listener the [PolygonWebSocketListener] to send events to
  * @param bufferSize the size of the back buffer to use when websocket events start coming in faster than they can be processed. To drop all but the latest event, use [Channel.CONFLATED]
  * @param httpClientProvider (Optional) A provider for the ktor [HttpClient] to use; defaults to [DefaultJvmHttpClientProvider]
@@ -47,11 +75,11 @@ class PolygonWebSocketClient
 @JvmOverloads
 constructor(
     private val apiKey: String,
-    val cluster: PolygonWebSocketCluster,
+    private val feed: Feed = Feed.RealTime,
+    private val market: Market = Market.Stocks,
     private val listener: PolygonWebSocketListener,
     private val bufferSize: Int = Channel.UNLIMITED,
     private val httpClientProvider: HttpClientProvider = DefaultJvmHttpClientProvider(),
-    private val polygonWebSocketDomain: String = "socket.polygon.io"
 ) {
 
     private val serializer by lazy {
@@ -88,12 +116,12 @@ constructor(
 
         val client = httpClientProvider.buildClient()
         val session = client.webSocketSession {
-            host = polygonWebSocketDomain
-
-            url.protocol = URLProtocol.WSS
-            url.port = URLProtocol.WSS.defaultPort
-            url.path(*cluster.pathComponents)
-
+            url {
+                protocol = URLProtocol.WSS
+                host = feed.url
+                port = URLProtocol.WSS.defaultPort
+                encodedPath = market.market
+            }
             headers["User-Agent"] = Version.userAgent
         }
 
@@ -195,7 +223,7 @@ constructor(
                 listener.onReceive(this, RawMessage(frame.readBytes()))
             } else {
                 val json = serializer.parseToJsonElement(String(frame.readBytes()))
-                processFrameJson(json).forEach { listener.onReceive(this, it) }
+                processFrameJson(market, feed, json).forEach { listener.onReceive(this, it) }
             }
         } catch (ex: Exception) {
             listener.onReceive(this, RawMessage(frame.readBytes()))
@@ -203,38 +231,98 @@ constructor(
         }
     }
 
-    @Throws(SerializationException::class)
-    private fun processFrameJson(
-        frame: JsonElement,
-        collector: MutableList<PolygonWebSocketMessage> = mutableListOf()
-    ): List<PolygonWebSocketMessage> {
+	@Throws(SerializationException::class)
+	private fun processFrameJson(
+	    market: Market,
+	    feed: Feed,
+	    frame: JsonElement,
+	    collector: MutableList<PolygonWebSocketMessage> = mutableListOf()
+	): List<PolygonWebSocketMessage> {
 
-        if (frame is JsonArray) {
-            frame.jsonArray.forEach { processFrameJson(it, collector) }
-        }
+	    if (frame is JsonArray) {
+	        frame.jsonArray.forEach { processFrameJson(market, feed, it, collector) }
+	    }
 
-        if (frame is JsonObject) {
-            val message = when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
-                "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
-                "T" -> serializer.decodeFromJsonElement(StocksMessage.Trade.serializer(), frame)
-                "Q" -> serializer.decodeFromJsonElement(StocksMessage.Quote.serializer(), frame)
-                "A", "AM" -> serializer.decodeFromJsonElement(StocksMessage.Aggregate.serializer(), frame)
-                "C" -> serializer.decodeFromJsonElement(ForexMessage.Quote.serializer(), frame)
-                "CA" -> serializer.decodeFromJsonElement(ForexMessage.Aggregate.serializer(), frame)
-                "XQ" -> serializer.decodeFromJsonElement(CryptoMessage.Quote.serializer(), frame)
-                "XT" -> serializer.decodeFromJsonElement(CryptoMessage.Trade.serializer(), frame)
-                "XA" -> serializer.decodeFromJsonElement(CryptoMessage.Aggregate.serializer(), frame)
-                "XS" -> serializer.decodeFromJsonElement(CryptoMessage.ConsolidatedQuote.serializer(), frame)
-                "XL2" -> serializer.decodeFromJsonElement(CryptoMessage.Level2Tick.serializer(), frame)
-                "V" -> serializer.decodeFromJsonElement(IndicesMessage.Value.serializer(), frame)
-                "LV" -> serializer.decodeFromJsonElement(LaunchpadMessage.LaunchpadValue.serializer(), frame)
-                else -> RawMessage(frame.toString().toByteArray())
-            }
-            collector.add(message)
-        }
+	    if (frame is JsonObject) {
+	        val message = when (market) {
+	            Market.Stocks -> parseStockMessage(frame)
+	            Market.Options -> parseOptionMessage(frame)
+	            Market.Indices -> parseIndicesMessage(frame)
+	            Market.Forex -> parseForexMessage(frame)
+	            Market.Crypto -> parseCryptoMessage(frame)
+	            Market.LaunchpadStocks -> parseLaunchpadMessage(frame)
+	            Market.LaunchpadOptions -> parseLaunchpadMessage(frame)
+	            Market.LaunchpadForex -> parseLaunchpadMessage(frame)
+	            Market.LaunchpadCrypto -> parseLaunchpadMessage(frame)
+	            is Market.Other -> parseOtherMessage(frame)
+	        }
+	    }
 
-        return collector
-    }
+	    return collector
+	}
+
+	private fun parseStockMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "T" -> serializer.decodeFromJsonElement(StocksMessage.Trade.serializer(), frame)
+	        "Q" -> serializer.decodeFromJsonElement(StocksMessage.Quote.serializer(), frame)
+	        "A", "AM" -> serializer.decodeFromJsonElement(StocksMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
+	    }
+	}
+
+	private fun parseOptionMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "T" -> serializer.decodeFromJsonElement(OptionsMessage.Trade.serializer(), frame)
+	        "Q" -> serializer.decodeFromJsonElement(OptionsMessage.Quote.serializer(), frame)
+	        "A", "AM" -> serializer.decodeFromJsonElement(OptionsMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
+	    }
+	}
+
+	private fun parseIndicesMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "V" -> serializer.decodeFromJsonElement(IndicesMessage.Value.serializer(), frame)
+	        "A", "AM" -> serializer.decodeFromJsonElement(IndicesMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
+	    }
+	}
+
+	private fun parseForexMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "C" -> serializer.decodeFromJsonElement(ForexMessage.Quote.serializer(), frame)
+	        "CA", "CAS" -> serializer.decodeFromJsonElement(ForexMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
+	    }
+	}
+
+	private fun parseCryptoMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "XQ" -> serializer.decodeFromJsonElement(CryptoMessage.Quote.serializer(), frame)
+	        "XT" -> serializer.decodeFromJsonElement(CryptoMessage.Trade.serializer(), frame)
+	        "XA", "XAS" -> serializer.decodeFromJsonElement(CryptoMessage.Aggregate.serializer(), frame)
+	        "XS" -> serializer.decodeFromJsonElement(CryptoMessage.ConsolidatedQuote.serializer(), frame)
+	        "XL2" -> serializer.decodeFromJsonElement(CryptoMessage.Level2Tick.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
+	    }
+	}
+
+	private fun parseLaunchpadMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return when (frame.jsonObject[EVENT_TYPE_MESSAGE_KEY]?.jsonPrimitive?.content) {
+	        "status" -> serializer.decodeFromJsonElement(StatusMessage.serializer(), frame)
+	        "LV" -> serializer.decodeFromJsonElement(LaunchpadMessage.LaunchpadValue.serializer(), frame)
+	        "AM" -> serializer.decodeFromJsonElement(LaunchpadMessage.Aggregate.serializer(), frame)
+	        else -> RawMessage(frame.toString().toByteArray())
+	    }
+	}
+
+	private fun parseOtherMessage(frame: JsonObject): PolygonWebSocketMessage {
+	    return RawMessage(frame.toString().toByteArray())
+	}
 
     @Throws(SerializationException::class)
     private fun parseAuthenticationFrame(frame: Frame): Boolean {

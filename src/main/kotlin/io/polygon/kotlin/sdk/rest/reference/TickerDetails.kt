@@ -63,8 +63,10 @@ data class TickerDetails(
     val ticker: String = "",
     @SerialName("ticker_root") val tickerRoot: String? = null,
     @SerialName("ticker_suffix") val tickerSuffix: String? = null,
-    @SerialName("total_employees") val totalEmployees: String? = null,
-    val type: String? = null
+    @SerialName("total_employees") val totalEmployees: Long? = null,
+    val type: String? = null,
+    @SerialName("currency_name") val currencyName: String? = null,
+    @SerialName("round_lot") val roundLot: Long? = null
 )
 
 @Serializable

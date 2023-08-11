@@ -73,7 +73,8 @@ public class JavaUsageSample {
     public static void websocketSample(String polygonKey) {
         PolygonWebSocketClient client = new PolygonWebSocketClient(
                 polygonKey,
-                PolygonWebSocketCluster.Crypto,
+                Feed.RealTime.INSTANCE,
+                Market.Crypto.INSTANCE,
                 new DefaultPolygonWebSocketListener() {
                     @Override
                     public void onReceive(@NotNull PolygonWebSocketClient client, @NotNull PolygonWebSocketMessage message) {
@@ -111,15 +112,15 @@ public class JavaUsageSample {
     public static void websocketLaunchpadSample(String polygonKey) {
         PolygonWebSocketClient client = new PolygonWebSocketClient(
                 polygonKey,
-                PolygonWebSocketCluster.Crypto, // Available in Stocks, Options, Forex, Crypto
+                Feed.RealTime.INSTANCE,
+                Market.LaunchpadStocks.INSTANCE,
                 new DefaultPolygonWebSocketListener() {
                     @Override
                     public void onReceive(@NotNull PolygonWebSocketClient client, @NotNull PolygonWebSocketMessage message) {
                         if (message instanceof PolygonWebSocketMessage.LaunchpadMessage) {
                             System.out.println("Launchpad " + message);
                         } else {
-
-                            System.out.println(message);
+                            System.out.println(message.toString());
                         }
                     }
 
@@ -128,20 +129,13 @@ public class JavaUsageSample {
                         System.out.println("Error in websocket");
                         error.printStackTrace();
                     }
-                },
-                Channel.UNLIMITED,
-                new DefaultJvmHttpClientProvider(),
-                "launchpad.polygon.io");
+                });
 
         client.connectBlocking();
 
         List<PolygonWebSocketSubscription> subs = Collections.singletonList(
-                new PolygonWebSocketSubscription(PolygonWebSocketChannel.Launchpad.Aggregates.INSTANCE, "X:BTC-USD"));
+                new PolygonWebSocketSubscription(PolygonWebSocketChannel.LaunchpadStocks.AggPerMinute.INSTANCE, "TSLA"));
         client.subscribeBlocking(subs);
-
-        List<PolygonWebSocketSubscription> subsVal = Collections.singletonList(
-                new PolygonWebSocketSubscription(PolygonWebSocketChannel.Launchpad.LaunchpadValue.INSTANCE, "X:BTC-USD"));
-        client.subscribeBlocking(subsVal);
 
         try {
             Thread.sleep(60000);
@@ -150,7 +144,6 @@ public class JavaUsageSample {
         }
 
         client.unsubscribeBlocking(subs);
-        client.unsubscribeBlocking(subsVal);
         client.disconnectBlocking();
     }
 
