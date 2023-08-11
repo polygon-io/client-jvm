@@ -1,8 +1,8 @@
-# Polygon JVM Client SDK written in Kotlin
+# Polygon JVM Client SDK written in Kotlin - WebSocket & RESTful APIs
 
-A client SDK for Polygon.io's API usable by any JVM language (including in Android SDK version 21+)
+Welcome to the official JVM client library SDK, written in Kotlin, for the [Polygon](https://polygon.io/) REST and WebSocket API. This client SDK is usable by any JVM language (including in Android SDK version 21+). To get started, please see the [Getting Started](https://polygon.io/docs/stocks/getting-started) section in our documentation, and the [sample](./sample/src/main/java/io/polygon/kotlin/sdk/sample/) directory for code snippets.
 
-Supports Polygon's [REST](https://polygon.io/docs/#getting-started) and [WebSocket](https://polygon.io/sockets) APIs
+## Install
 
 To use the SDK in a Gradle project:
 ```groovy
@@ -16,10 +16,18 @@ dependencies {
 }
 ```
 
-(See GitHub releases for the current release version)
+Please see the GitHub releases for the current release version.
 
-## Features
-Everything you'd expect from a client SDK plus...
+## Getting started
+
+To access real-time and historical market data with Polygon.io, you will first need to create an account and obtain an API key to authenticate your requests. If you run the samples makes sure to set the `POLYGON_API_KEY` environment variable for the sample code to use. To persist the environment variable you need to add the above command to the shell startup script (e.g. .bashrc or .bash_profile.
+
+```bash
+setx POLYGON_API_KEY "<your_api_key>"   # windows
+export POLYGON_API_KEY="<your_api_key>" # mac/linux
+```
+
+After setup, you can start using our SDK, which includes a rich set of features:
 - Configurable HTTP client via [HttpClientProvider](src/main/kotlin/io/polygon/kotlin/sdk/HttpClientProvider.kt)
 - Configurable [REST request options](#rest-request-options)
 - Iterators to handle [request pagination](#pagination) automatically
@@ -27,6 +35,135 @@ Everything you'd expect from a client SDK plus...
 - Idiomatic interoperability with Java
   - Synchronous and callback based APIs
   - Generated builder classes for API parameter data classes
+
+Please see the [sample](./sample/src/main/java/io/polygon/kotlin/sdk/sample/) module in this repo for examples. There are [Kotlin samples](sample/src/main/java/io/polygon/kotlin/sdk/sample/KotlinUsageSample.kt) and [Java sample](./sample/src/main/java/io/polygon/kotlin/sdk/sample/JavaUsageSample.java). You can run the samples by cloning the repo and running the following commands from the repo's root directory:
+
+Kotlin: `./gradlew kotlinSample`
+
+Java: `./gradlew javaSample`
+
+
+
+## REST API Client
+
+The [REST API](https://polygon.io/docs/stocks/getting-started) provides endpoints that let you query the latest stock, options, indices, forex, and crypto market data market data. You can request data using client methods.
+
+Create the client using your API key.
+
+```kotlin
+    val polygonKey = System.getenv("POLYGON_API_KEY")
+
+    val polygonClient = PolygonRestClient(
+        polygonKey, 
+        httpClientProvider = okHttpClientProvider
+    )
+```
+
+Get [aggregate bars](https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__range__multiplier___timespan___from___to) for a stock over a given date range in custom time window sizes.
+
+```kotlin
+    println("AAPL Aggs:")
+    val params = AggregatesParameters(
+        ticker = "AAPL",
+        timespan = "day",
+        fromDate = "2023-07-03",
+        toDate = "2023-07-07",
+        limit = 50_000,
+    )
+    polygonClient.getAggregatesBlocking(params)
+```
+
+Get [trades](https://polygon.io/docs/stocks/get_v3_trades__stockticker) for a ticker symbol in a given time range.
+
+```kotlin
+    println("AAPL Trades:")
+    val params = TradesParameters(timestamp = ComparisonQueryFilterParameters.equal("2023-02-01"), limit = 2)
+    polygonClient.getTradesBlocking("AAPL", params)
+```
+
+Get the [last trade](https://polygon.io/docs/stocks/get_v2_last_trade__stocksticker) for a given stock.
+
+```kotlin
+    println("Last AAPL trade:")
+    polygonClient.stocksClient.getLastTradeBlockingV2("AAPL")
+```
+
+Get the NBBO [quotes](https://polygon.io/docs/stocks/get_v3_quotes__stockticker) for a ticker symbol in a given time range.
+
+```kotlin
+    println("AAPL Quotes:")
+    val params = QuotesParameters(timestamp = ComparisonQueryFilterParameters.equal("2023-02-01"), limit = 2)
+    polygonClient.getQuotesBlocking("AAPL", params)
+```
+
+Get the last NBBO [quote](https://polygon.io/docs/stocks/get_v2_last_nbbo__stocksticker) for a given stock.
+
+```kotlin
+    println("Last AAPL quote:")
+    polygonClient.stocksClient.getLastQuoteBlockingV2("AAPL")
+```
+
+Please see more detailed code in the [sample](./sample/src/main/java/io/polygon/kotlin/sdk/sample/) directory.
+
+## WebSocket Client
+
+The [WebSocket API](https://polygon.io/docs/stocks/ws_getting-started) provides streaming access to the latest stock, options, indices, forex, and crypto market data. You can specify which channels you want to consume by sending instructions in the form of actions. Our WebSockets emit events to notify you when an event has occurred in a channel you've subscribed to.
+
+Our WebSocket APIs are based on entitlements that control which WebSocket Clusters you can connect to and which kinds of data you can access. You can [login](https://polygon.io/) to see examples that include your API key and are personalized to your entitlements.
+
+```kotlin
+package io.polygon.kotlin.sdk.sample
+
+import io.polygon.kotlin.sdk.websocket.*
+import kotlinx.coroutines.delay
+
+suspend fun stocksWebsocketSample(polygonKey: String) {
+    val websocketClient = PolygonWebSocketClient(
+        polygonKey,
+        Feed.RealTime,
+        Market.Stocks,
+        object : PolygonWebSocketListener {
+            override fun onAuthenticated(client: PolygonWebSocketClient) {
+                println("Connected!")
+            }
+
+            override fun onReceive(
+                client: PolygonWebSocketClient,
+                message: PolygonWebSocketMessage
+            ) {
+                when (message) {
+                    is PolygonWebSocketMessage.RawMessage -> println(String(message.data))
+                    else -> println("Receieved Message: $message")
+                }
+            }
+
+            override fun onDisconnect(client: PolygonWebSocketClient) {
+                println("Disconnected!")
+            }
+
+            override fun onError(client: PolygonWebSocketClient, error: Throwable) {
+                println("Error: ")
+                error.printStackTrace()
+            }
+
+        })
+
+    val subscriptions = listOf(
+        PolygonWebSocketSubscription(PolygonWebSocketChannel.Stocks.Trades, "*"),
+        //PolygonWebSocketSubscription(PolygonWebSocketChannel.Stocks.Quotes, "*"),
+        //PolygonWebSocketSubscription(PolygonWebSocketChannel.Stocks.AggPerSecond, "*"),
+        //PolygonWebSocketSubscription(PolygonWebSocketChannel.Stocks.AggPerMinute, "*")
+    )
+
+    websocketClient.connect()
+    websocketClient.subscribe(subscriptions)
+    delay(65_000)
+    websocketClient.unsubscribe(subscriptions)
+    websocketClient.disconnect()
+}
+```
+
+Please see more detailed code in the [sample](./sample/src/main/java/io/polygon/kotlin/sdk/sample/) directory.
 
 ## REST Request Options
 
@@ -73,19 +210,6 @@ This is because we usually won't know how many total results to expect.
 
 In general, an iterator will make `num_total_results / page_size` requests to the Polygon API.
 Where `page_size` is determined by the `limit` request parameter (discussed above).
-
-## Sample code
-See the sample module in this repo; There's a short [Kotlin sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/KotlinUsageSample.kt) 
-and [Java sample](sample/src/main/java/io/polygon/kotlin/sdk/sample/JavaUsageSample.java)
-
-
-You can run the samples by cloning the repo and running the following commands from the repo's root directory:
-
-Kotlin: `./gradlew kotlinSample`
-
-Java: `./gradlew javaSample`
-
-NOTE: If you run the samples makes sure to set the `POLYGON_API_KEY` environment variable for the sample code to use
 
 ## Release planning
 This client will attempt to follow the release cadence of our API. 
