@@ -98,6 +98,10 @@ sealed class PolygonWebSocketChannel(val prefix: String) {
         object Value : Indices("V")
     }
 
+    sealed class Business(channelPrefix: String) : PolygonWebSocketChannel(channelPrefix) {
+        object FairMarketValue : Business("FMV")
+    }
+
     /**
      * Use this if there's a new channel that this SDK doesn't fully support yet
      */
