@@ -45,7 +45,8 @@ data class SnapshotForexTickerDTO(
     val day: SnapshotAggregateDTO = SnapshotAggregateDTO(),
     val min: SnapshotAggregateDTO = SnapshotAggregateDTO(),
     val prevDay: SnapshotAggregateDTO = SnapshotAggregateDTO(),
-    val lastQuote: SnapshotForexQuoteDTO = SnapshotForexQuoteDTO()
+    val lastQuote: SnapshotForexQuoteDTO = SnapshotForexQuoteDTO(),
+    val fmv: Double? = null
 )
 
 @Serializable

@@ -95,7 +95,8 @@ data class CryptoTickerSnapshotDTO(
     val day: CryptoSnapshotAggregateDTO = CryptoSnapshotAggregateDTO(),
     val lastTrade: CryptoTickDTO = CryptoTickDTO(),
     val min: CryptoSnapshotAggregateDTO = CryptoSnapshotAggregateDTO(),
-    val prevDay: CryptoSnapshotAggregateDTO = CryptoSnapshotAggregateDTO()
+    val prevDay: CryptoSnapshotAggregateDTO = CryptoSnapshotAggregateDTO(),
+    val fmv: Double? = null
 )
 
 @Serializable

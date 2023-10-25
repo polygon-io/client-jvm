@@ -262,4 +262,15 @@ sealed class PolygonWebSocketMessage {
         ) : LaunchpadMessage()
 
     }
+
+    sealed class BusinessMessage : PolygonWebSocketMessage() {
+
+        @Serializable
+        data class FairMarketValue(
+            @SerialName("ev") val eventType: String? = null,
+            @SerialName("fmv") val value: Double? = null,
+            @SerialName("sym") val symbol: String? = null,
+            @SerialName("t") val timestampMillis: Long? = null
+        ) : BusinessMessage()
+    }
 }
