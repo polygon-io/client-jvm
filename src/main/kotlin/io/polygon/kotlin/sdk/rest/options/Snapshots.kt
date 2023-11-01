@@ -96,6 +96,7 @@ data class Snapshot(
     @SerialName("last_quote") val lastQuote: SnapshotLastQuote? = null,
     @SerialName("open_interest") val openInterest: Double? = null,
     @SerialName("underlying_asset") val underlyingAsset: SnapshotUnderlyingAssetInfo? = null,
+    @SerialName("fmv") val fairMarketValue: Double? = null,
 )
 
 @Serializable
