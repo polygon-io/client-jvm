@@ -1,12 +1,16 @@
+@file:OptIn(ExperimentalSerializationApi::class)
+
 package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
+import io.polygon.kotlin.sdk.rest.options.SnapshotContractDetails
+import io.polygon.kotlin.sdk.rest.options.SnapshotGreeks
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @SafeVarargs
-
 suspend fun PolygonRestClient.getSnapshots(
     params: SnapshotsParameters,
     vararg opts: PolygonRestOption
@@ -58,6 +62,61 @@ data class SnapshotsResponse(
 ) : Paginatable<Snapshot>
 
 @Serializable
-data class Snapshot(
-    val todo: String? = null,
+data class Snapshot (
+    // Common: fields that apply to most/all of the asset types.
+    val error: String? = null,
+    val message: String? = null,
+    val market_status: String? = null,
+    val name: String? = null,
+    val type: String? = null, // Type of the asset: stocks, options, fx, crypto, indices.
+    @SerialName("session") val session: SnapshotSession? = null,
+
+    // fmv is only available on Business plans, see docs for details.
+    @SerialName("fmv") val fmv: Double? = null,
+
+    // Quote is only returned if your current plan includes quotes.
+    @SerialName("last_quote") val lastQuote: Quote? = null,
+
+    // Trade is only returned if your current plan includes trades.
+    @SerialName("last_trade") val lastTrade: Trade? = null,
+
+    // Options
+    @SerialName("break_even_price") val breakEvenPrice: Double? = null,
+    @SerialName("details") val optionDetails: SnapshotContractDetails? = null,
+    @SerialName("greeks") val optionGreeks: SnapshotGreeks? = null,
+    @SerialName("implied_volatility") val impliedVolatility: Double? = null,
+    @SerialName("open_interest") val openInterest: Double? = null,
+    @SerialName("underlying_asset") val underlyingAsset: SnapshotUnderlyingAsset? = null,
+
+    // Indices
+    @SerialName("value") val value: Double? = null,
+)
+
+@Serializable
+data class SnapshotSession(
+    @SerialName("change") val change: Double? = null,
+    @SerialName("change_percent") val changePercent: Double? = null,
+    @SerialName("close") val close: Double? = null,
+    @SerialName("early_trading_change") val earlyTradingChange: Double? = null,
+    @SerialName("early_trading_change_percent") val earlyTradingChangePercent: Double? = null,
+    @SerialName("high") val high: Double? = null,
+    @SerialName("late_trading_change") val lateTradingChange: Double? = null,
+    @SerialName("late_trading_change_percent") val lateTradingChangePercent: Double? = null,
+    @SerialName("low") val low: Double? = null,
+    @SerialName("open") val open: Double? = null,
+    @SerialName("previous_close") val previousClose: Double? = null,
+    @SerialName("price") val price: Double? = null,
+    @SerialName("volume") val volume: Double? = null,
+)
+
+@Serializable
+data class SnapshotUnderlyingAsset(
+    @SerialName("change_to_break_even") val changeToBreakEven: Double? = null,
+    @SerialName("last_updated") val lastUpdated: Long? = null,
+    @SerialName("price") val price: Double? = null,
+    @SerialName("ticker") val ticker: String? = null,
+    @SerialName("timeframe") val timeframe: String? = null,
+
+    // Value of underlying index, if parent is an index option.
+    @SerialName("value") val value: Double? = null,
 )

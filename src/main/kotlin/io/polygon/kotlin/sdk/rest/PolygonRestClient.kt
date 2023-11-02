@@ -190,7 +190,7 @@ constructor(
      *  Note that non-stocks symbols must be prepended, e.g.
      *      Options:  "O:<ticker>"
      *      Crypto:   "X:<ticker>"
-     *      Indicies: "I:<ticker>"
+     *      Indices: "I:<ticker>"
      *      Forex:    "C:<ticker>"
      * API Docs:
      *     https://polygon.io/docs/stocks/get_v3_snapshot

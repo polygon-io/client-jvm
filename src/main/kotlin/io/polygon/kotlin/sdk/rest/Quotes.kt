@@ -65,7 +65,12 @@ data class QuotesResponse(
 data class Quote(
     @SerialName("ask_exchange") val askExchange: Int? = null,
     @JsonNames("ask", "ask_price") val askPrice: Double? = null,
+    @SerialName("ask_size") val askSize: Double? = null,
     @SerialName("bid_exchange") val bidExchange: Int? = null,
     @JsonNames("bid", "bid_price") val bidPrice: Double? = null,
+    @SerialName("bid_size") val bidSize: Double? = null,
     @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
+    @SerialName("last_updated") val lastUpdated: Long? = null,
+    @SerialName("midpoint") val midpoint: Double? = null,
+    @SerialName("timeframe") val timeframe: String? = null,
 )
