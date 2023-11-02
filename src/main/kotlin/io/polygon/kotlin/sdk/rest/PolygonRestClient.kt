@@ -201,20 +201,18 @@ constructor(
      */
     @SafeVarargs
     fun getSnapshotsBlocking(
-        tickers: List<String>?= emptyList(),
         params: SnapshotsParameters,
         vararg opts: PolygonRestOption
     ) : SnapshotsResponse =
-        runBlocking { getSnapshots(tickers, params, *opts) }
+        runBlocking { getSnapshots(params, *opts) }
 
     @SafeVarargs
     fun getSnapshots(
-        tickers: List<String>?= emptyList(),
         params: SnapshotsParameters,
         callback: PolygonRestApiCallback<SnapshotsResponse>,
         vararg opts: PolygonRestOption
     ) {
-        coroutineToRestCallback(callback, { getSnapshots(tickers, params, *opts) })
+        coroutineToRestCallback(callback, { getSnapshots(params, *opts) })
     }
 
     /**

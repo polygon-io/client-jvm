@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 @SafeVarargs
 
 suspend fun PolygonRestClient.getSnapshots(
-    tickers: List<String>? = emptyList(),
     params: SnapshotsParameters,
     vararg opts: PolygonRestOption
 ): SnapshotsResponse =
@@ -16,8 +15,8 @@ suspend fun PolygonRestClient.getSnapshots(
         path(
             "v3",
             "snapshot",
-            // TODO parse tickers
         )
+        params.tickers?.let{ parameters["tickers.any_of"] = it.joinToString(",") }
         params.order?.let { parameters["order"] = it }
         params.limit?.let { parameters["limit"] = it.toString() }
         params.sort?.let { parameters["sort"] = it }
@@ -25,6 +24,13 @@ suspend fun PolygonRestClient.getSnapshots(
 
 @Builder
 data class SnapshotsParameters(
+    /**
+     * List of tickers of any asset class.
+     * Maximum of 250.
+     * If no tickers are passed then all results will be returned in a paginated manner.
+     */
+    val tickers: List<String>? = null,
+
     /**
      * Order results based on the sort field.
      * Can be "asc" or "desc"
@@ -46,8 +52,8 @@ data class SnapshotsParameters(
 @Serializable
 data class SnapshotsResponse(
     val status: String? = null,
-    @SerialName("request_id") val requestID: String? = null,
     @SerialName("next_url") override val nextUrl: String? = null,
+    @SerialName("request_id") val requestID: String? = null,
     override val results: List<Snapshot> = emptyList()
 ) : Paginatable<Snapshot>
 
