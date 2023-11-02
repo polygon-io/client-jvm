@@ -58,7 +58,7 @@ data class SnapshotsResponse(
     val status: String? = null,
     @SerialName("next_url") override val nextUrl: String? = null,
     @SerialName("request_id") val requestID: String? = null,
-    override val results: List<Snapshot> = emptyList()
+    override val results: List<Snapshot>? = emptyList(),
 ) : Paginatable<Snapshot>
 
 @Serializable
