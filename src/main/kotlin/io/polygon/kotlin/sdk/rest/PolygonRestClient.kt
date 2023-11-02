@@ -186,6 +186,38 @@ constructor(
     }
 
     /**
+     *  Get snapshots for a list of tickers of any asset class
+     *  Note that non-stocks symbols must be prepended, e.g.
+     *      Options:  "O:<ticker>"
+     *      Crypto:   "X:<ticker>"
+     *      Indicies: "I:<ticker>"
+     *      Forex:    "C:<ticker>"
+     * API Docs:
+     *     https://polygon.io/docs/stocks/get_v3_snapshot
+     *     https://polygon.io/docs/options/get_v3_snapshot
+     *     https://polygon.io/docs/indices/get_v3_snapshot
+     *     https://polygon.io/docs/forex/get_v3_snapshot
+     *     https://polygon.io/docs/crypto/get_v3_snapshot
+     */
+    @SafeVarargs
+    fun getSnapshotsBlocking(
+        tickers: List<String>?= emptyList(),
+        params: SnapshotsParameters,
+        vararg opts: PolygonRestOption
+    ) : SnapshotsResponse =
+        runBlocking { getSnapshots(tickers, params, *opts) }
+
+    @SafeVarargs
+    fun getSnapshots(
+        tickers: List<String>?= emptyList(),
+        params: SnapshotsParameters,
+        callback: PolygonRestApiCallback<SnapshotsResponse>,
+        vararg opts: PolygonRestOption
+    ) {
+        coroutineToRestCallback(callback, { getSnapshots(tickers, params, *opts) })
+    }
+
+    /**
      * Get an iterator to iterate through all pages of results for the given parameters.
      *
      * See [getQuotesBlocking] if you instead need to get exactly one page of results.
