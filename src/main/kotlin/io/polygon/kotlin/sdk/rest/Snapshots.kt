@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalSerializationApi::class)
-
 package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
@@ -119,4 +117,18 @@ data class SnapshotUnderlyingAsset(
 
     // Value of underlying index, if parent is an index option.
     @SerialName("value") val value: Double? = null,
+)
+
+@Serializable
+data class SnapshotsQuote(
+    @SerialName("ask_exchange") val askExchange: Int? = null,
+    @SerialName("ask") val ask: Double? = null,
+    @SerialName("ask_size") val askSize: Double? = null,
+    @SerialName("bid_exchange") val bidExchange: Int? = null,
+    @SerialName("bid") val bid: Double? = null,
+    @SerialName("bid_size") val bidSize: Double? = null,
+    @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
+    @SerialName("last_updated") val lastUpdated: Long? = null,
+    @SerialName("midpoint") val midpoint: Double? = null,
+    @SerialName("timeframe") val timeframe: String? = null,
 )

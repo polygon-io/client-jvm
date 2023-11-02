@@ -2,10 +2,8 @@ package io.polygon.kotlin.sdk.rest
 
 import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNames
 
 /** See [PolygonRestClient.getQuotesBlocking] */
 suspend fun PolygonRestClient.getQuotes(
@@ -60,17 +58,11 @@ data class QuotesResponse(
     override val results: List<Quote>? = null
 ) : Paginatable<Quote>
 
-@ExperimentalSerializationApi
 @Serializable
 data class Quote(
     @SerialName("ask_exchange") val askExchange: Int? = null,
-    @JsonNames("ask", "ask_price") val askPrice: Double? = null,
-    @SerialName("ask_size") val askSize: Double? = null,
+    @SerialName("ask_price") val askPrice: Double? = null,
     @SerialName("bid_exchange") val bidExchange: Int? = null,
-    @JsonNames("bid", "bid_price") val bidPrice: Double? = null,
-    @SerialName("bid_size") val bidSize: Double? = null,
+    @SerialName("bid_price") val bidPrice: Double? = null,
     @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
-    @SerialName("last_updated") val lastUpdated: Long? = null,
-    @SerialName("midpoint") val midpoint: Double? = null,
-    @SerialName("timeframe") val timeframe: String? = null,
 )
