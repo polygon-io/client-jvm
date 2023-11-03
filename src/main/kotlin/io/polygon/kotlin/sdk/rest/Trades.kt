@@ -65,11 +65,8 @@ data class Trade(
     val conditions: List<Int>? = null,
     val correction: Int? = null,
     val exchange: Int? = null,
-    @SerialName("id") val tradeID: String? = null,
-    @SerialName("last_updated") val lastUpdated: Long? = null,
     @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
     val price: Double? = null,
     @SerialName("sip_timestamp") val sipTimestamp: Long? = null,
     val size: Double? = null,
-    @SerialName("timeframe") val timeframe: String? = null,
 )

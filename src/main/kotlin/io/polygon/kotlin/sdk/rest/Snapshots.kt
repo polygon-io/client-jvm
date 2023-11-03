@@ -76,7 +76,7 @@ data class Snapshot (
     @SerialName("last_quote") val lastQuote: Quote? = null,
 
     // Trade is only returned if your current plan includes trades.
-    @SerialName("last_trade") val lastTrade: Trade? = null,
+    @SerialName("last_trade") val lastTrade: SnapshotsTrade? = null,
 
     // Options
     @SerialName("break_even_price") val breakEvenPrice: Double? = null,
@@ -130,5 +130,18 @@ data class SnapshotsQuote(
     @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
     @SerialName("last_updated") val lastUpdated: Long? = null,
     @SerialName("midpoint") val midpoint: Double? = null,
+    @SerialName("timeframe") val timeframe: String? = null,
+)
+
+@Serializable
+data class SnapshotsTrade(
+    val conditions: List<Int>? = null,
+    val exchange: Int? = null,
+    @SerialName("id") val tradeID: String? = null,
+    @SerialName("last_updated") val lastUpdated: Long? = null,
+    @SerialName("participant_timestamp") val participantTimestamp: Long? = null,
+    val price: Double? = null,
+    @SerialName("sip_timestamp") val sipTimestamp: Long? = null,
+    val size: Double? = null,
     @SerialName("timeframe") val timeframe: String? = null,
 )
