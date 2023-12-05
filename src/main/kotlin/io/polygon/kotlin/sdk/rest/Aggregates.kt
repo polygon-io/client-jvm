@@ -27,6 +27,7 @@ suspend fun PolygonRestClient.getAggregates(
 
         parameters["unadjusted"] = params.unadjusted.toString()
         parameters["limit"] = params.limit.toString()
+        parameters["sort"] = params.sort
     }, *opts)
 
 @Builder
@@ -61,7 +62,14 @@ data class AggregatesParameters(
 
     /** Limits the number of base aggregates */
     @DefaultValue("5000")
-    val limit: Long = 5000
+    val limit: Long = 5000,
+
+    /**
+     * Sort the results by timestamp. asc will return results in ascending order (oldest at the top),
+     * desc will return results in descending order (newest at the top).
+     * */
+    @DefaultValue("asc")
+    val sort: String
 )
 
 @Serializable

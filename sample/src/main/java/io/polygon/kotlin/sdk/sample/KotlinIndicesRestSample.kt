@@ -15,6 +15,7 @@ fun indicesAggregatesBars(polygonClient: PolygonRestClient) {
         timespan = "day",
         fromDate = "2023-07-03",
         toDate = "2023-07-07",
+        sort = "asc",
         limit = 50_000,
     )
     polygonClient.getAggregatesBlocking(idxParams).pp()

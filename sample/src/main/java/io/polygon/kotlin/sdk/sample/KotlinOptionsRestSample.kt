@@ -15,6 +15,7 @@ fun optionsAggregatesBars(polygonClient: PolygonRestClient) {
         timespan = "day",
         fromDate = "2023-01-30",
         toDate = "2023-02-03",
+        sort = "asc",
         limit = 50_000
     )
 
