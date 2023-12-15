@@ -4,7 +4,6 @@ import com.thinkinglogic.builder.annotation.Builder
 import io.ktor.http.*
 import io.polygon.kotlin.sdk.rest.options.SnapshotContractDetails
 import io.polygon.kotlin.sdk.rest.options.SnapshotGreeks
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,7 +17,7 @@ suspend fun PolygonRestClient.getSnapshots(
             "v3",
             "snapshot",
         )
-        params.tickers?.let{ parameters["tickers.any_of"] = it.joinToString(",") }
+        params.tickers?.let{ parameters["ticker.any_of"] = it.joinToString(",") }
         params.order?.let { parameters["order"] = it }
         params.limit?.let { parameters["limit"] = it.toString() }
         params.sort?.let { parameters["sort"] = it }
