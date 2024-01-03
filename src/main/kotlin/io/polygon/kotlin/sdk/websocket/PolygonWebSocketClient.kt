@@ -275,6 +275,7 @@ constructor(
                         Market.BusinessCrypto -> parseBusinessMessage(frame)
                         is Market.Other -> parseOtherMessage(frame)
                     }
+            collector.add(message)
         }
 
         return collector
