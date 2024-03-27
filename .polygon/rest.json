@@ -7007,7 +7007,7 @@
                 "operationId": "EMA",
                 "parameters": [
                     {
-                        "description": "The ticker symbol for which to get exponential moving average (EMA) data.",
+                        "description": "Specify a case-sensitive ticker symbol for which to get exponential moving average (EMA) data. For example, AAPL represents Apple Inc.",
                         "example": "AAPL",
                         "in": "path",
                         "name": "stockTicker",
@@ -8757,7 +8757,7 @@
                 "operationId": "MACD",
                 "parameters": [
                     {
-                        "description": "The ticker symbol for which to get MACD data.",
+                        "description": "Specify a case-sensitive ticker symbol for which to get moving average convergence/divergence (MACD) data. For example, AAPL represents Apple Inc.",
                         "example": "AAPL",
                         "in": "path",
                         "name": "stockTicker",
@@ -10375,7 +10375,7 @@
                 "operationId": "RSI",
                 "parameters": [
                     {
-                        "description": "The ticker symbol for which to get relative strength index (RSI) data.",
+                        "description": "Specify a case-sensitive ticker symbol for which to get relative strength index (RSI) data. For example, AAPL represents Apple Inc.",
                         "example": "AAPL",
                         "in": "path",
                         "name": "stockTicker",
@@ -12015,7 +12015,7 @@
                 "operationId": "SMA",
                 "parameters": [
                     {
-                        "description": "The ticker symbol for which to get simple moving average (SMA) data.",
+                        "description": "Specify a case-sensitive ticker symbol for which to get simple moving average (SMA) data. For example, AAPL represents Apple Inc.",
                         "example": "AAPL",
                         "in": "path",
                         "name": "stockTicker",
@@ -24828,7 +24828,7 @@
                                                         "type": "string"
                                                     },
                                                     "mic": {
-                                                        "description": "The Market Identifer Code of this exchange (see ISO 10383).",
+                                                        "description": "The Market Identifier Code of this exchange (see ISO 10383).",
                                                         "example": "XASE",
                                                         "type": "string"
                                                     },
@@ -25542,7 +25542,7 @@
                 "operationId": "ListStockSplits",
                 "parameters": [
                     {
-                        "description": "Return the stock splits that contain this ticker.",
+                        "description": "Specify a case-sensitive ticker symbol. For example, AAPL represents Apple Inc.",
                         "in": "query",
                         "name": "ticker",
                         "schema": {
@@ -25576,7 +25576,7 @@
                         }
                     },
                     {
-                        "description": "Search by ticker.",
+                        "description": "Range by ticker.",
                         "in": "query",
                         "name": "ticker.gte",
                         "schema": {
@@ -25584,7 +25584,7 @@
                         }
                     },
                     {
-                        "description": "Search by ticker.",
+                        "description": "Range by ticker.",
                         "in": "query",
                         "name": "ticker.gt",
                         "schema": {
@@ -25592,7 +25592,7 @@
                         }
                     },
                     {
-                        "description": "Search by ticker.",
+                        "description": "Range by ticker.",
                         "in": "query",
                         "name": "ticker.lte",
                         "schema": {
@@ -25600,7 +25600,7 @@
                         }
                     },
                     {
-                        "description": "Search by ticker.",
+                        "description": "Range by ticker.",
                         "in": "query",
                         "name": "ticker.lt",
                         "schema": {
@@ -25608,7 +25608,7 @@
                         }
                     },
                     {
-                        "description": "Search by execution_date.",
+                        "description": "Range by execution_date.",
                         "in": "query",
                         "name": "execution_date.gte",
                         "schema": {
@@ -25617,7 +25617,7 @@
                         }
                     },
                     {
-                        "description": "Search by execution_date.",
+                        "description": "Range by execution_date.",
                         "in": "query",
                         "name": "execution_date.gt",
                         "schema": {
@@ -25626,7 +25626,7 @@
                         }
                     },
                     {
-                        "description": "Search by execution_date.",
+                        "description": "Range by execution_date.",
                         "in": "query",
                         "name": "execution_date.lte",
                         "schema": {
@@ -25635,7 +25635,7 @@
                         }
                     },
                     {
-                        "description": "Search by execution_date.",
+                        "description": "Range by execution_date.",
                         "in": "query",
                         "name": "execution_date.lt",
                         "schema": {
@@ -28345,7 +28345,7 @@
                     },
                     {
                         "description": "The option contract identifier.",
-                        "example": "O:EVRI240119C00002500",
+                        "example": "O:EVRI240920P00012500",
                         "in": "path",
                         "name": "optionContract",
                         "required": true,
