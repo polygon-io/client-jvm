@@ -34,6 +34,7 @@ data class ExchangesStatusDTO(
 data class IndicesGroupsStatusDTO(
     @SerialName("s_and_p") val sAndP: String? = null,
     @SerialName("societe_generale") val societeGenerale: String? = null,
+    val cgi: String? = null,
     val msci: String? = null,
     @SerialName("ftse_russell") val ftseRussell: String? = null,
     val mstar: String? = null,
