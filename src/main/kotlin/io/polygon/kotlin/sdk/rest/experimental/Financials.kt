@@ -138,7 +138,7 @@ data class Financials(
 @Serializable
 @ExperimentalAPI
 data class FinancialForms(
-    @SerialName("balance_sheel") val balanceSheet: FinancialForm? = null,
+    @SerialName("balance_sheet") val balanceSheet: FinancialForm? = null,
     @SerialName("cash_flow_statement") val cashFlowStatement: FinancialForm? = null,
     @SerialName("compreshensive_income") val comprehensiveIncome: FinancialForm? = null,
     @SerialName("income_statement") val incomeStatement: FinancialForm? = null,
