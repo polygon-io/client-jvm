@@ -88,7 +88,7 @@ data class SnapshotLastQuoteDTO(
 data class SnapshotLastTradeDTO(
     @SerialName("p") val price: Double? = null,
     @SerialName("s") val size: Long? = null,
-    @SerialName("e") val exchange: Long? = null,
+    @SerialName("x") val exchange: Long? = null,
     @SerialName("c1") val cond1: Long? = null,
     @SerialName("c2") val cond2: Long? = null,
     @SerialName("c3") val cond3: Long? = null,
