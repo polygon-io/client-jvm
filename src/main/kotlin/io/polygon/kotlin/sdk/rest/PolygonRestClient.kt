@@ -95,6 +95,16 @@ constructor(
         coroutineToRestCallback(callback, { getAggregates(params, *opts) })
 
     /**
+     * listAggregates is an iterator wrapper for getAggregates
+     */
+    @SafeVarargs
+    fun listAggregates(params: AggregatesParameters, vararg opts: PolygonRestOption): RequestIterator<AggregateDTO> =
+        RequestIterator(
+            { getAggregatesBlocking(params, *opts) },
+            requestIteratorFetch<AggregatesDTO>()
+        )
+
+    /**
      * Get the daily OHLC for entire markets.
      * The response size is large.
      *

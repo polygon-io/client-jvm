@@ -269,7 +269,7 @@
                                         },
                                         "c": {
                                             "type": "array",
-                                            "description": "The trade conditions. See <a target=\"_blank\" href=\"https://polygon.io/glossary/us/stocks/conditions-indicators\" \nalt=\"Conditions and Indicators\">Conditions and Indicators\"</a> for Polygon.io's trade conditions glossary.\n",
+                                            "description": "The trade conditions. See <a target=\"_blank\" href=\"https://polygon.io/glossary/us/stocks/conditions-indicators\" \nalt=\"Conditions and Indicators\">Conditions and Indicators</a> for Polygon.io's trade conditions glossary.\n",
                                             "items": {
                                                 "type": "integer",
                                                 "description": "The ID of the condition."
@@ -277,7 +277,7 @@
                                         },
                                         "t": {
                                             "type": "integer",
-                                            "description": "The Timestamp in Unix MS."
+                                            "description": "The SIP timestamp in Unix MS."
                                         },
                                         "q": {
                                             "type": "integer",
@@ -407,7 +407,7 @@
                                         },
                                         "t": {
                                             "type": "integer",
-                                            "description": "The Timestamp in Unix MS."
+                                            "description": "The SIP timestamp in Unix MS."
                                         },
                                         "q": {
                                             "type": "integer",
@@ -3964,7 +3964,7 @@
                     },
                     "c": {
                         "type": "array",
-                        "description": "The trade conditions. See <a target=\"_blank\" href=\"https://polygon.io/glossary/us/stocks/conditions-indicators\" \nalt=\"Conditions and Indicators\">Conditions and Indicators\"</a> for Polygon.io's trade conditions glossary.\n",
+                        "description": "The trade conditions. See <a target=\"_blank\" href=\"https://polygon.io/glossary/us/stocks/conditions-indicators\" \nalt=\"Conditions and Indicators\">Conditions and Indicators</a> for Polygon.io's trade conditions glossary.\n",
                         "items": {
                             "type": "integer",
                             "description": "The ID of the condition."
@@ -3972,7 +3972,7 @@
                     },
                     "t": {
                         "type": "integer",
-                        "description": "The Timestamp in Unix MS."
+                        "description": "The SIP timestamp in Unix MS."
                     },
                     "q": {
                         "type": "integer",
@@ -4041,7 +4041,7 @@
                     },
                     "t": {
                         "type": "integer",
-                        "description": "The Timestamp in Unix MS."
+                        "description": "The SIP timestamp in Unix MS."
                     },
                     "q": {
                         "type": "integer",

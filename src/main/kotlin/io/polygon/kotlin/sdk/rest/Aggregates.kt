@@ -79,8 +79,9 @@ data class AggregatesDTO(
     val queryCount: Long? = null,
     val resultsCount: Long? = null,
     val adjusted: Boolean? = null,
-    val results: List<AggregateDTO> = emptyList()
-)
+    override val results: List<AggregateDTO> = emptyList(),
+    @SerialName("next_url") override val nextUrl: String? = null,
+) : Paginatable<AggregateDTO>
 
 @Serializable
 data class AggregateDTO(

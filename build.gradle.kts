@@ -87,6 +87,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.github.polygon-io"
             artifactId = "client-jvm"
+            version = "0.1.0"
             artifact(sourcesJar)
 
             from(components["java"])
