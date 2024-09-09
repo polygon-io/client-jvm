@@ -21,13 +21,13 @@ dependencies {
 task(name = "javaSample", type = JavaExec::class) {
     group = "samples"
     description = "Sample usage of the polygon client from Java"
-    main = "io.polygon.kotlin.sdk.sample.JavaUsageSample"
+    mainClass = "io.polygon.kotlin.sdk.sample.JavaUsageSample"
     classpath = sourceSets["main"].runtimeClasspath
 }
 
 task(name = "kotlinSample", type = JavaExec::class) {
     group = "samples"
     description = "Sample usage of the polygon client from Kotlin"
-    main = "io.polygon.kotlin.sdk.sample.KotlinUsageSampleKt"
+    mainClass = "io.polygon.kotlin.sdk.sample.KotlinUsageSampleKt"
     classpath = sourceSets["main"].runtimeClasspath
 }

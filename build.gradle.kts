@@ -8,25 +8,25 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.6.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:2.0.20")
     }
 }
 
 plugins {
     `java-library`
     `maven-publish`
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
-    kotlin("kapt") version "1.6.10"
+    kotlin("jvm") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("kapt") version "2.0.20"
 }
 
 group = "com.github.polygon-io"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.20")
 
-    val ktorVersion = "2.1.3"
+    val ktorVersion = "2.3.12"
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-websockets-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp-jvm:$ktorVersion")
@@ -34,7 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Annotation processor that generates Java builders for data classes
-    val ktBuilderVersion = "1.2.1"
+    val ktBuilderVersion = "1.2.2"
     implementation("com.thinkinglogic.builder:kotlin-builder-annotation:$ktBuilderVersion")
     kapt("com.thinkinglogic.builder:kotlin-builder-processor:$ktBuilderVersion")
 
@@ -48,15 +48,16 @@ allprojects {
     }
 }
 
-val sourcesJar = tasks.create("sources", Jar::class) {
-    dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-    classifier = "sources"
-    from(sourceSets["main"].allSource)
-}
+val sourcesJar =
+    tasks.create("sources", Jar::class) {
+        dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+        archiveClassifier = "sources"
+        from(sourceSets["main"].allSource)
+    }
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_22.toString()
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 
