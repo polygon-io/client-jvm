@@ -60,11 +60,12 @@ data class SnapshotsResponse(
 
 @Serializable
 data class Snapshot (
-    // Common: fields that apply to most/all of the asset types.
+    // Common: fields that apply to most/all the asset types.
     val error: String? = null,
     val message: String? = null,
     val market_status: String? = null,
     val name: String? = null,
+    val ticker: String? = null,
     val type: String? = null, // Type of the asset: stocks, options, fx, crypto, indices.
     @SerialName("session") val session: SnapshotSession? = null,
 
@@ -96,6 +97,8 @@ data class SnapshotSession(
     @SerialName("close") val close: Double? = null,
     @SerialName("early_trading_change") val earlyTradingChange: Double? = null,
     @SerialName("early_trading_change_percent") val earlyTradingChangePercent: Double? = null,
+    @SerialName("regular_trading_change") val regularTradingChange: Double? = null,
+    @SerialName("regular_trading_change_percent") val regularTradingChangePercent: Double? = null,
     @SerialName("high") val high: Double? = null,
     @SerialName("late_trading_change") val lateTradingChange: Double? = null,
     @SerialName("late_trading_change_percent") val lateTradingChangePercent: Double? = null,
